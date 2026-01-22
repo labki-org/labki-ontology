@@ -1,0 +1,8 @@
+{
+  "id": "Agent",
+  "label": "Agent",
+  "description": "An abstract entity that can perform actions - either a person or an organization.",
+  "parent": null,
+  "properties": ["has_name"],
+  "subobjects": []
+}

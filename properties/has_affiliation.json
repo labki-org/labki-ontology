@@ -1,0 +1,7 @@
+{
+  "id": "has_affiliation",
+  "label": "Affiliation",
+  "description": "The organization a person is affiliated with.",
+  "datatype": "Page",
+  "cardinality": "multiple"
+}

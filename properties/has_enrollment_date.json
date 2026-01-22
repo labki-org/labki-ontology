@@ -1,0 +1,7 @@
+{
+  "id": "has_enrollment_date",
+  "label": "Enrollment Date",
+  "description": "The date when a student enrolled in their program.",
+  "datatype": "Date",
+  "cardinality": "single"
+}

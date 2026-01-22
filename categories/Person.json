@@ -2,7 +2,7 @@
   "id": "Person",
   "label": "Person",
   "description": "A human being, whether alive or deceased.",
-  "parent": null,
+  "parent": "Agent",
   "properties": ["has_name", "has_email", "has_birthdate"],
   "subobjects": ["Address"]
 }

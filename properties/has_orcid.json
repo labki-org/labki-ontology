@@ -1,0 +1,7 @@
+{
+  "id": "has_orcid",
+  "label": "ORCID",
+  "description": "Open Researcher and Contributor ID for scholarly authors.",
+  "datatype": "Text",
+  "cardinality": "single"
+}

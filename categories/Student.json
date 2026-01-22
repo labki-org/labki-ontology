@@ -1,0 +1,8 @@
+{
+  "id": "Student",
+  "label": "Student",
+  "description": "A person enrolled in an educational institution.",
+  "parent": "Person",
+  "properties": ["has_enrollment_date", "has_major"],
+  "subobjects": []
+}

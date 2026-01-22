@@ -1,0 +1,7 @@
+{
+  "id": "research",
+  "label": "Research Module",
+  "description": "Categories for academic and research contexts.",
+  "categories": ["Researcher", "Student"],
+  "dependencies": ["core"]
+}

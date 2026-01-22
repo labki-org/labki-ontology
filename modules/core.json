@@ -2,6 +2,6 @@
   "id": "core",
   "label": "Core Module",
   "description": "Essential categories used across all profiles.",
-  "categories": ["Person", "Organization"],
+  "categories": ["Agent", "Person", "Organization"],
   "dependencies": []
 }

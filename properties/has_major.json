@@ -1,0 +1,7 @@
+{
+  "id": "has_major",
+  "label": "Major",
+  "description": "The primary field of study for a student.",
+  "datatype": "Text",
+  "cardinality": "single"
+}
