@@ -65,7 +65,11 @@ See [SCHEMA.md](SCHEMA.md) for the complete specification including:
 
 ## Contributing
 
-Contributions are welcome! When adding new entities:
+Contributions are welcome!
+
+The easiest way to contribute is through [schemas.labki.org](https://schemas.labki.org), which provides a user-friendly interface for browsing, creating, and editing schema entities. The frontend is powered by the [ontology-hub](https://github.com/labki-org/ontology-hub) project.
+
+For direct contributions to this repository:
 
 1. Follow the naming conventions above
 2. Validate against the appropriate `_schema.json`
