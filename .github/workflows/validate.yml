@@ -1,6 +1,6 @@
 name: Validate Entity Schemas
 
-on:
+"on":
   pull_request:
     branches: [main]
   push:
