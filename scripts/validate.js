@@ -6,6 +6,12 @@ import fg from 'fast-glob'
 import fs from 'node:fs'
 import path from 'node:path'
 
+// Reference validation modules
+import { buildEntityIndex } from './lib/entity-index.js'
+import { validateReferences } from './lib/reference-validator.js'
+import { validateConstraints } from './lib/constraint-validator.js'
+import { findOrphanedEntities } from './lib/orphan-detector.js'
+
 // Initialize Ajv with draft 2020-12 support
 // CRITICAL: Must use ajv/dist/2020.js (not default export)
 const ajv = new Ajv2020({
@@ -169,93 +175,178 @@ function validateFile(filePath) {
 }
 
 /**
- * Format errors for console output
+ * Format errors and warnings for console output
  * @param {Array} allErrors - All validation errors
+ * @param {Array} allWarnings - All validation warnings
  * @param {number} totalFiles - Total files validated
  */
-function formatConsoleOutput(allErrors, totalFiles) {
-  if (allErrors.length === 0) {
-    console.log(`✅ All ${totalFiles} file(s) validated successfully`)
-    return
-  }
+function formatConsoleOutput(allErrors, allWarnings, totalFiles) {
+  const hasErrors = allErrors.length > 0
+  const hasWarnings = allWarnings.length > 0
 
-  const uniqueFiles = new Set(allErrors.map(e => e.file)).size
-  console.error(`\n❌ Found ${allErrors.length} error(s) in ${uniqueFiles} file(s) (out of ${totalFiles} total)\n`)
+  // Print errors first
+  if (hasErrors) {
+    const uniqueErrorFiles = new Set(allErrors.map(e => e.file)).size
+    console.error(`\n\u274C Found ${allErrors.length} error(s) in ${uniqueErrorFiles} file(s) (out of ${totalFiles} total)\n`)
 
-  // Group errors by file
-  const errorsByFile = {}
-  for (const error of allErrors) {
-    if (!errorsByFile[error.file]) {
-      errorsByFile[error.file] = []
+    // Group errors by file
+    const errorsByFile = {}
+    for (const error of allErrors) {
+      if (!errorsByFile[error.file]) {
+        errorsByFile[error.file] = []
+      }
+      errorsByFile[error.file].push(error)
     }
-    errorsByFile[error.file].push(error)
-  }
 
-  // Print each file's errors
-  for (const [file, fileErrors] of Object.entries(errorsByFile)) {
-    console.error(`\n📄 ${file}`)
+    // Print each file's errors
+    for (const [file, fileErrors] of Object.entries(errorsByFile)) {
+      console.error(`\n\uD83D\uDCC4 ${file}`)
 
-    for (const error of fileErrors) {
-      console.error(`\n   Type: ${error.type}`)
+      for (const error of fileErrors) {
+        console.error(`\n   Type: ${error.type}`)
 
-      if (error.output) {
-        console.error(error.output)
-      } else {
-        console.error(`   ${error.message}`)
+        if (error.output) {
+          console.error(error.output)
+        } else {
+          console.error(`   ${error.message}`)
+        }
       }
     }
+
+    console.error('') // Newline after errors
   }
 
-  console.error('') // Final newline
+  // Print warnings (separate section)
+  if (hasWarnings) {
+    const uniqueWarningFiles = new Set(allWarnings.map(w => w.file)).size
+    console.warn(`\n\u26A0\uFE0F  Found ${allWarnings.length} warning(s) in ${uniqueWarningFiles} file(s)\n`)
+
+    // Emit GitHub Actions annotations for warnings
+    if (process.env.GITHUB_ACTIONS) {
+      for (const warning of allWarnings) {
+        console.log(`::warning file=${warning.file},title=${warning.type}::${warning.message}`)
+      }
+    } else {
+      // Group warnings by file for local console
+      const warningsByFile = {}
+      for (const warning of allWarnings) {
+        if (!warningsByFile[warning.file]) {
+          warningsByFile[warning.file] = []
+        }
+        warningsByFile[warning.file].push(warning)
+      }
+
+      for (const [file, fileWarnings] of Object.entries(warningsByFile)) {
+        console.warn(`   ${file}`)
+        for (const warning of fileWarnings) {
+          console.warn(`      - ${warning.message}`)
+        }
+      }
+    }
+
+    console.warn('') // Newline after warnings
+  }
+
+  // Success message (only if no errors)
+  if (!hasErrors) {
+    if (hasWarnings) {
+      console.log(`\u2705 All ${totalFiles} file(s) validated successfully (with ${allWarnings.length} warning(s))`)
+    } else {
+      console.log(`\u2705 All ${totalFiles} file(s) validated successfully`)
+    }
+  }
 }
 
 /**
  * Generate markdown summary for GitHub Actions Job Summary
  * @param {Array} allErrors - All validation errors
+ * @param {Array} allWarnings - All validation warnings
  * @param {number} totalFiles - Total files validated
  * @returns {string} Markdown content
  */
-function generateMarkdownSummary(allErrors, totalFiles) {
-  if (allErrors.length === 0) {
-    return `## ✅ Schema Validation Passed\n\n**${totalFiles} file(s)** validated successfully\n`
+function generateMarkdownSummary(allErrors, allWarnings, totalFiles) {
+  const hasErrors = allErrors.length > 0
+  const hasWarnings = allWarnings.length > 0
+
+  let markdown = ''
+
+  // Overall status header
+  if (!hasErrors) {
+    markdown += `## \u2705 Validation Passed\n\n`
+    markdown += `**${totalFiles} file(s)** validated successfully`
+    if (hasWarnings) {
+      markdown += ` (with ${allWarnings.length} warning(s))`
+    }
+    markdown += '\n\n'
+  } else {
+    const uniqueErrorFiles = new Set(allErrors.map(e => e.file)).size
+    markdown += '## \u274C Validation Failed\n\n'
+    markdown += `**${allErrors.length} error(s)** found in **${uniqueErrorFiles} file(s)** (out of ${totalFiles} total)\n\n`
   }
 
-  const uniqueFiles = new Set(allErrors.map(e => e.file)).size
+  // Errors section
+  if (hasErrors) {
+    markdown += '### Errors\n\n'
 
-  let markdown = '## ❌ Schema Validation Failed\n\n'
-  markdown += `**${allErrors.length} error(s)** found in **${uniqueFiles} file(s)** (out of ${totalFiles} total)\n\n`
-
-  // Group errors by file
-  const errorsByFile = {}
-  for (const error of allErrors) {
-    if (!errorsByFile[error.file]) {
-      errorsByFile[error.file] = []
+    // Group errors by file
+    const errorsByFile = {}
+    for (const error of allErrors) {
+      if (!errorsByFile[error.file]) {
+        errorsByFile[error.file] = []
+      }
+      errorsByFile[error.file].push(error)
     }
-    errorsByFile[error.file].push(error)
+
+    // Document each file's errors
+    for (const [file, fileErrors] of Object.entries(errorsByFile)) {
+      markdown += `#### \`${file}\`\n\n`
+
+      for (const error of fileErrors) {
+        markdown += `**Type:** ${error.type}\n\n`
+
+        if (error.output) {
+          markdown += '```\n' + error.output + '\n```\n\n'
+        } else {
+          markdown += `**Error:** ${error.message}\n\n`
+        }
+
+        // Add suggestions for common issues
+        if (error.type === 'id-mismatch') {
+          markdown += `**Suggestion:** Rename the file to match the id, or update the id field to match the filename.\n\n`
+        } else if (error.type === 'no-schema') {
+          markdown += `**Suggestion:** Create a _schema.json file in the same directory as this entity.\n\n`
+        } else if (error.type === 'parse') {
+          markdown += `**Suggestion:** Check for syntax errors (trailing commas, missing quotes, invalid escape sequences).\n\n`
+        } else if (error.type === 'missing-reference') {
+          markdown += `**Suggestion:** Create the referenced entity or fix the reference.\n\n`
+        } else if (error.type === 'property-conflict' || error.type === 'subobject-conflict') {
+          markdown += `**Suggestion:** Remove the item from either required or optional list (not both).\n\n`
+        } else if (error.type === 'scope-violation') {
+          markdown += `**Suggestion:** Add the referenced entity's module as a dependency.\n\n`
+        }
+      }
+    }
   }
 
-  // Document each file's errors
-  for (const [file, fileErrors] of Object.entries(errorsByFile)) {
-    markdown += `### \`${file}\`\n\n`
+  // Warnings section
+  if (hasWarnings) {
+    markdown += '### Warnings\n\n'
 
-    for (const error of fileErrors) {
-      markdown += `**Type:** ${error.type}\n\n`
-
-      if (error.output) {
-        markdown += '```\n' + error.output + '\n```\n\n'
-      } else {
-        markdown += `**Error:** ${error.message}\n\n`
+    const warningsByFile = {}
+    for (const warning of allWarnings) {
+      if (!warningsByFile[warning.file]) {
+        warningsByFile[warning.file] = []
       }
+      warningsByFile[warning.file].push(warning)
+    }
 
-      // Add suggestions for common issues
-      if (error.type === 'id-mismatch') {
-        markdown += `**Suggestion:** Rename the file to match the id, or update the id field to match the filename.\n\n`
-      } else if (error.type === 'no-schema') {
-        markdown += `**Suggestion:** Create a _schema.json file in the same directory as this entity.\n\n`
-      } else if (error.type === 'parse') {
-        markdown += `**Suggestion:** Check for syntax errors (trailing commas, missing quotes, invalid escape sequences).\n\n`
+    for (const [file, fileWarnings] of Object.entries(warningsByFile)) {
+      markdown += `- \`${file}\`\n`
+      for (const warning of fileWarnings) {
+        markdown += `  - ${warning.message}\n`
       }
     }
+    markdown += '\n'
   }
 
   return markdown
@@ -264,16 +355,17 @@ function generateMarkdownSummary(allErrors, totalFiles) {
 /**
  * Write Job Summary for GitHub Actions
  * @param {Array} allErrors - All validation errors
+ * @param {Array} allWarnings - All validation warnings
  * @param {number} totalFiles - Total files validated
  */
-function writeJobSummary(allErrors, totalFiles) {
+function writeJobSummary(allErrors, allWarnings, totalFiles) {
   const summaryFile = process.env.GITHUB_STEP_SUMMARY
 
   if (!summaryFile) {
     return  // Not running in GitHub Actions
   }
 
-  const markdown = generateMarkdownSummary(allErrors, totalFiles)
+  const markdown = generateMarkdownSummary(allErrors, allWarnings, totalFiles)
   fs.appendFileSync(summaryFile, markdown, 'utf8')
 }
 
@@ -292,21 +384,39 @@ async function main() {
 
     console.log(`Validating ${files.length} file(s)...\n`)
 
-    // Validate each file, collecting all errors
-    const allErrors = []
+    // Phase 1: Schema validation - collect all errors
+    const schemaErrors = []
     for (const file of files) {
       const fileErrors = validateFile(file)
-      allErrors.push(...fileErrors)
+      schemaErrors.push(...fileErrors)
     }
 
+    // Phase 2: Reference validation (only if schema validation passed for all files)
+    // Build entity index once for all reference checks
+    const entityIndex = await buildEntityIndex()
+
+    // Run reference validation
+    const { errors: referenceErrors, warnings: referenceWarnings } = validateReferences(entityIndex)
+
+    // Run constraint validation
+    const { errors: constraintErrors } = validateConstraints(entityIndex)
+
+    // Run orphan detection (warnings only)
+    const { warnings: orphanWarnings } = findOrphanedEntities(entityIndex)
+
+    // Combine all errors and warnings
+    const allErrors = [...schemaErrors, ...referenceErrors, ...constraintErrors]
+    const allWarnings = [...referenceWarnings, ...orphanWarnings]
+
     // Format and output results
-    formatConsoleOutput(allErrors, files.length)
+    formatConsoleOutput(allErrors, allWarnings, files.length)
 
     // Write GitHub Actions Job Summary if available
-    writeJobSummary(allErrors, files.length)
+    writeJobSummary(allErrors, allWarnings, files.length)
 
-    // Exit with appropriate code
-    process.exit(allErrors.length > 0 ? 1 : 0)
+    // Exit with appropriate code (errors fail, warnings don't)
+    const hasErrors = allErrors.length > 0
+    process.exit(hasErrors ? 1 : 0)
 
   } catch (error) {
     console.error('Fatal error during validation:', error.message)
