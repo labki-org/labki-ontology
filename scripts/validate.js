@@ -16,7 +16,7 @@ import { detectCycles } from './lib/cycle-detector.js'
 
 // Version validation modules
 import { validateVersionFormat, compareVersions, getBaseVersion } from './lib/version-validator.js'
-import { detectChanges } from './lib/change-detector.js'
+import { detectChanges, getChangedFiles } from './lib/change-detector.js'
 
 // Initialize Ajv with draft 2020-12 support
 // CRITICAL: Must use ajv/dist/2020.js (not default export)
@@ -264,6 +264,93 @@ function formatConsoleOutput(allErrors, allWarnings, totalFiles) {
 }
 
 /**
+ * Generate PR comment markdown with collapsible sections
+ * @param {Array} schemaErrors - Schema validation errors
+ * @param {Array} refErrors - Reference validation errors
+ * @param {Array} cycleErrors - Cycle detection errors
+ * @param {Array} allWarnings - All validation warnings
+ * @param {number} totalFiles - Total files validated
+ * @param {object} versionAnalysis - Version analysis results (optional)
+ * @param {object} validationMode - Mode and file count info
+ * @returns {string} Markdown for PR comment
+ */
+function generatePRComment(schemaErrors, refErrors, cycleErrors, allWarnings, totalFiles, versionAnalysis = null, validationMode = null) {
+  const allErrors = [...schemaErrors, ...refErrors, ...cycleErrors]
+  const hasAnyError = allErrors.length > 0
+  const status = hasAnyError ? 'FAIL' : 'PASS'
+  const emoji = hasAnyError ? '\u274C' : '\u2705'
+
+  let md = `## ${emoji} Schema Validation ${status}\n\n`
+  md += `Validated ${totalFiles} entities`
+  if (validationMode && validationMode.mode === 'changed') {
+    md += ` (${validationMode.changedCount} changed)`
+  }
+  md += '\n\n'
+
+  // Schema validation section
+  md += '<details>\n'
+  md += `<summary>Schema Validation ${schemaErrors.length === 0 ? '\u2705' : '\u274C'}</summary>\n\n`
+  if (schemaErrors.length === 0) {
+    md += 'All files passed schema validation.\n'
+  } else {
+    for (const err of schemaErrors) {
+      md += `- \`${err.file}\`: ${err.message}\n`
+      if (err.output) {
+        md += '```\n' + err.output + '\n```\n'
+      }
+    }
+  }
+  md += '\n</details>\n\n'
+
+  // Reference integrity section
+  md += '<details>\n'
+  md += `<summary>Reference Integrity ${refErrors.length === 0 ? '\u2705' : '\u274C'}</summary>\n\n`
+  if (refErrors.length === 0) {
+    md += 'All references resolve correctly.\n'
+  } else {
+    for (const err of refErrors) {
+      md += `- \`${err.file}\`: ${err.message}\n`
+    }
+  }
+  md += '\n</details>\n\n'
+
+  // Cycle detection section
+  md += '<details>\n'
+  md += `<summary>Cycle Detection ${cycleErrors.length === 0 ? '\u2705' : '\u274C'}</summary>\n\n`
+  if (cycleErrors.length === 0) {
+    md += 'No circular dependencies detected.\n'
+  } else {
+    for (const err of cycleErrors) {
+      md += `- \`${err.file}\`: ${err.message}\n`
+    }
+  }
+  md += '\n</details>\n\n'
+
+  // Version analysis section
+  if (versionAnalysis && versionAnalysis.prVersion) {
+    const versionStatus = (versionAnalysis.isValid && versionAnalysis.isIncremented) ? '\u2705' : '\u26A0\uFE0F'
+    md += '<details>\n'
+    md += `<summary>Version Analysis ${versionStatus}</summary>\n\n`
+    md += '| Field | Value |\n'
+    md += '|-------|-------|\n'
+    md += `| PR Version | ${versionAnalysis.prVersion} |\n`
+    md += `| Base Version | ${versionAnalysis.baseVersion} |\n`
+    md += `| Required Bump | ${versionAnalysis.requiredBump} |\n`
+    md += `| Actual Bump | ${versionAnalysis.actualBump} |\n`
+
+    if (versionAnalysis.breakingChanges.length > 0) {
+      md += '\n**Breaking Changes Detected:**\n'
+      for (const reason of versionAnalysis.breakingChanges) {
+        md += `- ${reason}\n`
+      }
+    }
+    md += '\n</details>\n'
+  }
+
+  return md
+}
+
+/**
  * Generate markdown summary for GitHub Actions Job Summary
  * @param {Array} allErrors - All validation errors
  * @param {Array} allWarnings - All validation warnings
@@ -505,19 +592,46 @@ function validateVersion(entityIndex) {
  */
 async function main() {
   try {
-    // Discover all entity files
-    const files = await discoverFiles()
+    // Parse command-line arguments
+    const changedOnly = process.argv.includes('--changed-only')
+    const outputMarkdown = process.argv.includes('--output-markdown')
 
-    if (files.length === 0) {
+    // Discover files based on mode
+    let filesToValidate
+    let validationMode = null
+
+    if (changedOnly) {
+      const baseBranch = process.env.GITHUB_BASE_REF
+        ? `origin/${process.env.GITHUB_BASE_REF}`
+        : 'origin/main'
+
+      const changedFiles = getChangedFiles(baseBranch)
+
+      if (changedFiles.length === 0) {
+        console.log('No entity files changed, running full validation')
+        filesToValidate = await discoverFiles()
+        validationMode = { mode: 'full', changedCount: 0 }
+      } else {
+        console.log(`Diff-based validation: ${changedFiles.length} changed files`)
+        filesToValidate = changedFiles
+        validationMode = { mode: 'changed', changedCount: changedFiles.length }
+      }
+    } else {
+      filesToValidate = await discoverFiles()
+      console.log(`Full validation: ${filesToValidate.length} files`)
+      validationMode = { mode: 'full', changedCount: 0 }
+    }
+
+    if (filesToValidate.length === 0) {
       console.log('No entity files found to validate')
       process.exit(0)
     }
 
-    console.log(`Validating ${files.length} file(s)...\n`)
+    console.log(`Validating ${filesToValidate.length} file(s)...\n`)
 
-    // Phase 1: Schema validation - collect all errors
+    // Phase 1: Schema validation - collect all errors (uses selected files)
     const schemaErrors = []
-    for (const file of files) {
+    for (const file of filesToValidate) {
       const fileErrors = validateFile(file)
       schemaErrors.push(...fileErrors)
     }
@@ -545,8 +659,11 @@ async function main() {
     const allErrors = [...schemaErrors, ...referenceErrors, ...constraintErrors, ...cycleErrors, ...versionErrors]
     const allWarnings = [...referenceWarnings, ...orphanWarnings, ...versionWarnings]
 
+    // Get total entity count (always from full discovery for accurate reporting)
+    const allFiles = await discoverFiles()
+
     // Format and output results
-    formatConsoleOutput(allErrors, allWarnings, files.length)
+    formatConsoleOutput(allErrors, allWarnings, allFiles.length)
 
     // Output version analysis
     if (versionAnalysis.prVersion) {
@@ -558,7 +675,22 @@ async function main() {
     }
 
     // Write GitHub Actions Job Summary if available
-    writeJobSummary(allErrors, allWarnings, files.length, versionAnalysis)
+    writeJobSummary(allErrors, allWarnings, allFiles.length, versionAnalysis)
+
+    // Write PR comment markdown if requested
+    if (outputMarkdown) {
+      const prComment = generatePRComment(
+        schemaErrors,
+        referenceErrors.concat(constraintErrors),
+        cycleErrors,
+        allWarnings,
+        allFiles.length,
+        versionAnalysis,
+        validationMode
+      )
+      fs.writeFileSync('validation-results.md', prComment, 'utf8')
+      console.log('\nPR comment markdown written to validation-results.md')
+    }
 
     // Exit with appropriate code (errors fail, warnings don't)
     const hasErrors = allErrors.length > 0
