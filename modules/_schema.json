@@ -4,7 +4,7 @@
   "title": "Module",
   "description": "A logical grouping of related schema entities",
   "type": "object",
-  "required": ["id", "label", "description"],
+  "required": ["id", "version", "label", "description"],
   "anyOf": [
     { "required": ["categories"] },
     { "required": ["properties"] },
@@ -16,6 +16,11 @@
       "type": "string",
       "description": "Unique identifier matching the filename (without .json)",
       "pattern": "^[A-Z][a-z]*(_[a-z]+)*$"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of this module (MAJOR.MINOR.PATCH)",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
     },
     "label": {
       "type": "string",
