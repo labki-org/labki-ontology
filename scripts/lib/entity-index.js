@@ -49,6 +49,7 @@ export async function buildEntityIndex(rootDir = process.cwd()) {
       ignore: [
         '**/_schema.json',
         '**/node_modules/**',
+        '**/versions/**',  // Exclude generated version artifacts
         'package*.json',
         '.planning/**',
         '.claude/**',

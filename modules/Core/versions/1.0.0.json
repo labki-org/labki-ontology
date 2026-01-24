@@ -2,7 +2,7 @@
   "$schema": "https://labki.org/schemas/module-version.schema.json",
   "id": "Core",
   "version": "1.0.0",
-  "generated": "2026-01-24T16:46:17.890Z",
+  "generated": "2026-01-24T16:49:12.295Z",
   "dependencies": {},
   "categories": [
     {

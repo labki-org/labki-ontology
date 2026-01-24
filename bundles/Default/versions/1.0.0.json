@@ -2,7 +2,7 @@
   "$schema": "https://labki.org/schemas/bundle-version.schema.json",
   "id": "Default",
   "version": "1.0.0",
-  "generated": "2026-01-24T16:46:17.892Z",
+  "generated": "2026-01-24T16:49:12.296Z",
   "ontologyVersion": "0.1.0",
   "modules": {
     "Core": "1.0.0"

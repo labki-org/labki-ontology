@@ -61,6 +61,7 @@ async function discoverFiles() {
       ignore: [
         '**/_schema.json',
         '**/node_modules/**',
+        '**/versions/**',  // Exclude generated version artifacts
         'package*.json',
         '.planning/**',
         '.claude/**',
