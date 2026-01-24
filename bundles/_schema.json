@@ -4,12 +4,17 @@
   "title": "Bundle",
   "description": "A curated collection of Modules designed for a specific use case or deployment scenario",
   "type": "object",
-  "required": ["id", "label", "description", "modules"],
+  "required": ["id", "version", "label", "description", "modules"],
   "properties": {
     "id": {
       "type": "string",
       "description": "Unique identifier matching the filename (without .json)",
       "pattern": "^[A-Z][a-z]*(_[a-z]+)*$"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of this bundle (MAJOR.MINOR.PATCH)",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
     },
     "label": {
       "type": "string",
