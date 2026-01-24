@@ -1,5 +1,7 @@
 import { describe, test } from 'node:test'
 import assert from 'node:assert'
+import fs from 'node:fs'
+import path from 'node:path'
 import { DepGraph } from 'dependency-graph'
 import {
   buildReverseModuleIndex,
@@ -8,7 +10,10 @@ import {
   buildModuleDependencyGraph,
   propagateDependencyCascade,
   calculateBundleBumps,
-  calculateOntologyBump
+  calculateOntologyBump,
+  loadOverrides,
+  applyOverrides,
+  calculateNewVersion
 } from './version-cascade.js'
 
 describe('maxBumpType', () => {
@@ -442,5 +447,111 @@ describe('calculateOntologyBump', () => {
     const bump = calculateOntologyBump(changes, new Map(), new Map())
 
     assert.strictEqual(bump, 'minor')
+  })
+})
+
+describe('loadOverrides', () => {
+  const testOverridesPath = path.join(process.cwd(), 'VERSION_OVERRIDES.json')
+
+  test('returns empty object when file missing', () => {
+    // Ensure file doesn't exist
+    if (fs.existsSync(testOverridesPath)) {
+      fs.unlinkSync(testOverridesPath)
+    }
+    const result = loadOverrides()
+    assert.deepStrictEqual(result, {})
+  })
+
+  test('returns parsed JSON when file exists', () => {
+    fs.writeFileSync(testOverridesPath, JSON.stringify({ Core: 'major' }))
+    const result = loadOverrides()
+    assert.deepStrictEqual(result, { Core: 'major' })
+    fs.unlinkSync(testOverridesPath)
+  })
+
+  test('throws error for invalid JSON', () => {
+    fs.writeFileSync(testOverridesPath, '{ invalid json }')
+    assert.throws(
+      () => loadOverrides(),
+      /Failed to parse VERSION_OVERRIDES.json/
+    )
+    fs.unlinkSync(testOverridesPath)
+  })
+})
+
+describe('applyOverrides', () => {
+  test('applies override to existing bump', () => {
+    const calculatedBumps = new Map([['Core', 'minor']])
+    const overrides = { Core: 'major' }
+
+    const result = applyOverrides(calculatedBumps, overrides)
+
+    assert.strictEqual(result.bumps.get('Core'), 'major')
+    assert.strictEqual(result.warnings.length, 0)
+  })
+
+  test('generates warning for downgrade', () => {
+    const calculatedBumps = new Map([['Core', 'major']])
+    const overrides = { Core: 'minor' }
+
+    const result = applyOverrides(calculatedBumps, overrides)
+
+    assert.strictEqual(result.bumps.get('Core'), 'minor')
+    assert.strictEqual(result.warnings.length, 1)
+    assert.ok(result.warnings[0].includes('downgrades Core from major to minor'))
+  })
+
+  test('adds new bump for non-existent module', () => {
+    const calculatedBumps = new Map([['Core', 'minor']])
+    const overrides = { Lab: 'patch' }
+
+    const result = applyOverrides(calculatedBumps, overrides)
+
+    assert.strictEqual(result.bumps.get('Core'), 'minor')
+    assert.strictEqual(result.bumps.get('Lab'), 'patch')
+    assert.strictEqual(result.warnings.length, 0)
+  })
+
+  test('returns unchanged bumps for empty overrides', () => {
+    const calculatedBumps = new Map([['Core', 'minor']])
+    const overrides = {}
+
+    const result = applyOverrides(calculatedBumps, overrides)
+
+    assert.strictEqual(result.bumps.get('Core'), 'minor')
+    assert.strictEqual(result.bumps.size, 1)
+    assert.strictEqual(result.warnings.length, 0)
+  })
+})
+
+describe('calculateNewVersion', () => {
+  test('patch bump increments patch version', () => {
+    const result = calculateNewVersion('1.2.3', 'patch')
+    assert.strictEqual(result, '1.2.4')
+  })
+
+  test('minor bump increments minor version and resets patch', () => {
+    const result = calculateNewVersion('1.2.3', 'minor')
+    assert.strictEqual(result, '1.3.0')
+  })
+
+  test('major bump increments major version and resets minor and patch', () => {
+    const result = calculateNewVersion('1.2.3', 'major')
+    assert.strictEqual(result, '2.0.0')
+  })
+
+  test('returns null for invalid version', () => {
+    const result = calculateNewVersion('invalid', 'patch')
+    assert.strictEqual(result, null)
+  })
+
+  test('returns null for missing version', () => {
+    const result = calculateNewVersion(null, 'patch')
+    assert.strictEqual(result, null)
+  })
+
+  test('returns null for missing bump type', () => {
+    const result = calculateNewVersion('1.2.3', null)
+    assert.strictEqual(result, null)
   })
 })
