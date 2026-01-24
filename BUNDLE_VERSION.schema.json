@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://labki.org/schemas/bundle-version.schema.json",
+  "title": "Bundle Version Manifest",
+  "description": "A versioned manifest of module versions in a bundle",
+  "type": "object",
+  "required": ["$schema", "id", "version", "generated", "ontologyVersion", "modules"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "https://labki.org/schemas/bundle-version.schema.json"
+    },
+    "id": {
+      "type": "string",
+      "description": "Bundle identifier"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of this manifest",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+    },
+    "generated": {
+      "type": "string",
+      "description": "ISO 8601 timestamp when manifest was generated",
+      "format": "date-time"
+    },
+    "ontologyVersion": {
+      "type": "string",
+      "description": "Ontology VERSION at generation time",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+    },
+    "description": {
+      "type": "string",
+      "description": "Bundle description"
+    },
+    "modules": {
+      "type": "object",
+      "description": "Map of module IDs to their versions",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+      }
+    }
+  }
+}

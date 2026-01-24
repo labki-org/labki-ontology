@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://labki.org/schemas/module-version.schema.json",
+  "title": "Module Version Artifact",
+  "description": "A versioned snapshot of a module with all its entities",
+  "type": "object",
+  "required": ["$schema", "id", "version", "generated", "dependencies"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "https://labki.org/schemas/module-version.schema.json"
+    },
+    "id": {
+      "type": "string",
+      "description": "Module identifier"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of this artifact",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+    },
+    "generated": {
+      "type": "string",
+      "description": "ISO 8601 timestamp when artifact was generated",
+      "format": "date-time"
+    },
+    "dependencies": {
+      "type": "object",
+      "description": "Map of dependency module IDs to their versions",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "properties": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "subobjects": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "templates": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  }
+}
