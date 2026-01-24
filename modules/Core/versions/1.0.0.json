@@ -1,0 +1,123 @@
+{
+  "$schema": "https://labki.org/schemas/module-version.schema.json",
+  "id": "Core",
+  "version": "1.0.0",
+  "generated": "2026-01-24T16:46:17.890Z",
+  "dependencies": {},
+  "categories": [
+    {
+      "id": "Agent",
+      "label": "Agent",
+      "description": "An abstract entity that can perform actions - either a person or an organization",
+      "required_properties": [
+        "Has_name"
+      ],
+      "optional_properties": [
+        "Has_description"
+      ]
+    },
+    {
+      "id": "Person",
+      "label": "Person",
+      "description": "A human being",
+      "parents": [
+        "Agent"
+      ],
+      "optional_properties": [
+        "Has_email"
+      ],
+      "optional_subobjects": [
+        "Address"
+      ]
+    },
+    {
+      "id": "Organization",
+      "label": "Organization",
+      "description": "A social entity such as a company, institution, or group",
+      "parents": [
+        "Agent"
+      ],
+      "optional_properties": [
+        "Has_email",
+        "Has_website"
+      ],
+      "optional_subobjects": [
+        "Address"
+      ]
+    }
+  ],
+  "properties": [
+    {
+      "id": "Has_name",
+      "label": "Name",
+      "description": "The name of an entity",
+      "datatype": "Text",
+      "cardinality": "single"
+    },
+    {
+      "id": "Has_description",
+      "label": "Description",
+      "description": "A textual description of the entity",
+      "datatype": "Text",
+      "cardinality": "single"
+    },
+    {
+      "id": "Has_email",
+      "label": "Email",
+      "description": "Email address for contact",
+      "datatype": "Email",
+      "cardinality": "multiple"
+    },
+    {
+      "id": "Has_website",
+      "label": "Website",
+      "description": "URL of the entity's website",
+      "datatype": "URL",
+      "cardinality": "single"
+    },
+    {
+      "id": "Has_street",
+      "label": "Street",
+      "description": "Street address including number",
+      "datatype": "Text",
+      "cardinality": "single"
+    },
+    {
+      "id": "Has_city",
+      "label": "City",
+      "description": "City or locality name",
+      "datatype": "Text",
+      "cardinality": "single"
+    },
+    {
+      "id": "Has_country",
+      "label": "Country",
+      "description": "Country name",
+      "datatype": "Text",
+      "cardinality": "single"
+    },
+    {
+      "id": "Has_postal_code",
+      "label": "Postal Code",
+      "description": "Postal or ZIP code",
+      "datatype": "Text",
+      "cardinality": "single"
+    }
+  ],
+  "subobjects": [
+    {
+      "id": "Address",
+      "label": "Address",
+      "description": "A physical or mailing address",
+      "required_properties": [
+        "Has_street",
+        "Has_city",
+        "Has_country"
+      ],
+      "optional_properties": [
+        "Has_postal_code"
+      ]
+    }
+  ],
+  "templates": []
+}
