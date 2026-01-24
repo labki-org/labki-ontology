@@ -1,5 +1,7 @@
 import { DepGraph } from 'dependency-graph'
 import semver from 'semver'
+import fs from 'node:fs'
+import path from 'node:path'
 import { detectChanges } from './change-detector.js'
 
 /**
@@ -259,6 +261,79 @@ export function calculateOntologyBump(changes, moduleBumps, bundleBumps) {
 }
 
 /**
+ * Load VERSION_OVERRIDES.json from repository root
+ *
+ * @param {string} rootDir - Repository root directory (defaults to cwd)
+ * @returns {Object} Override object mapping entity IDs to bump types, or empty object if file doesn't exist
+ *
+ * @example
+ * const overrides = loadOverrides()
+ * // { Core: 'major', Lab: 'minor' }
+ */
+export function loadOverrides(rootDir = process.cwd()) {
+  const overridePath = path.join(rootDir, 'VERSION_OVERRIDES.json')
+
+  if (!fs.existsSync(overridePath)) {
+    return {}
+  }
+
+  try {
+    const content = fs.readFileSync(overridePath, 'utf8')
+    return JSON.parse(content)
+  } catch (err) {
+    throw new Error(`Failed to parse VERSION_OVERRIDES.json: ${err.message}`)
+  }
+}
+
+/**
+ * Apply version overrides with downgrade warnings
+ *
+ * @param {Map<string, string>} calculatedBumps - Calculated bumps from cascade
+ * @param {Object} overrides - Override object from VERSION_OVERRIDES.json
+ * @returns {{bumps: Map<string, string>, warnings: string[]}} Final bumps and warnings
+ *
+ * @example
+ * const result = applyOverrides(moduleBumps, { Core: 'major' })
+ * // { bumps: Map { 'Core' => 'major' }, warnings: ['Override downgrades Core from minor to patch'] }
+ */
+export function applyOverrides(calculatedBumps, overrides) {
+  const warnings = []
+  const finalBumps = new Map(calculatedBumps)
+
+  for (const [id, overrideBump] of Object.entries(overrides)) {
+    const calculated = calculatedBumps.get(id)
+    if (calculated && BUMP_PRIORITY[overrideBump] < BUMP_PRIORITY[calculated]) {
+      warnings.push(`Override downgrades ${id} from ${calculated} to ${overrideBump}`)
+    }
+    finalBumps.set(id, overrideBump)
+  }
+
+  return { bumps: finalBumps, warnings }
+}
+
+/**
+ * Calculate new semver version from current version and bump type
+ *
+ * @param {string} currentVersion - Current semver version
+ * @param {string} bumpType - Bump type ('major', 'minor', 'patch')
+ * @returns {string|null} New version string, or null if invalid
+ *
+ * @example
+ * calculateNewVersion('1.2.3', 'minor') // '1.3.0'
+ */
+export function calculateNewVersion(currentVersion, bumpType) {
+  if (!currentVersion || !bumpType) {
+    return null
+  }
+
+  try {
+    return semver.inc(currentVersion, bumpType)
+  } catch (err) {
+    return null
+  }
+}
+
+/**
  * Calculate complete version cascade from entity changes
  *
  * Main entry point that orchestrates the entire cascade calculation:
@@ -267,22 +342,29 @@ export function calculateOntologyBump(changes, moduleBumps, bundleBumps) {
  * 3. Propagate bumps through module dependencies
  * 4. Aggregate module bumps to bundles
  * 5. Calculate overall ontology bump
+ * 6. Apply overrides if requested
+ * 7. Calculate new versions for modules and bundles
  *
  * @param {Object} entityIndex - Entity index from buildEntityIndex
  * @param {string} baseBranch - Base branch reference (e.g., 'origin/main')
+ * @param {Object} options - Options: { applyOverrides: boolean, rootDir: string }
  * @returns {Object} Cascade result with bumps for all levels
  *
  * @example
- * const result = calculateVersionCascade(entityIndex, 'origin/main')
+ * const result = calculateVersionCascade(entityIndex, 'origin/main', { applyOverrides: true })
  * // {
  * //   changes: [...],
  * //   moduleBumps: Map<moduleId, bumpType>,
  * //   bundleBumps: Map<bundleId, bumpType>,
  * //   ontologyBump: 'major',
- * //   orphanChanges: [...]
+ * //   orphanChanges: [...],
+ * //   overrides: { Core: 'major' },
+ * //   overrideWarnings: ['Override downgrades Lab from major to minor'],
+ * //   moduleVersions: Map<moduleId, { current, new, bump }>,
+ * //   bundleVersions: Map<bundleId, { current, new, bump }>
  * // }
  */
-export function calculateVersionCascade(entityIndex, baseBranch = 'origin/main') {
+export function calculateVersionCascade(entityIndex, baseBranch = 'origin/main', options = {}) {
   // Detect all entity changes
   const { changes } = detectChanges(entityIndex, baseBranch)
 
@@ -323,11 +405,62 @@ export function calculateVersionCascade(entityIndex, baseBranch = 'origin/main')
     return !reverseIndex.has(key)
   })
 
+  // Apply overrides if requested
+  let overrides = {}
+  let overrideWarnings = []
+  let finalModuleBumps = moduleBumps
+  let finalBundleBumps = bundleBumps
+
+  if (options.applyOverrides) {
+    overrides = loadOverrides(options.rootDir)
+
+    // Apply overrides to modules
+    const moduleOverrideResult = applyOverrides(moduleBumps, overrides)
+    finalModuleBumps = moduleOverrideResult.bumps
+    overrideWarnings.push(...moduleOverrideResult.warnings)
+
+    // Apply overrides to bundles
+    const bundleOverrideResult = applyOverrides(bundleBumps, overrides)
+    finalBundleBumps = bundleOverrideResult.bumps
+    overrideWarnings.push(...bundleOverrideResult.warnings)
+  }
+
+  // Calculate new versions for modules and bundles
+  const moduleVersions = new Map()
+  for (const [moduleId, bump] of finalModuleBumps) {
+    const moduleEntity = entityIndex.modules.get(moduleId)
+    if (moduleEntity && moduleEntity.version) {
+      const newVersion = calculateNewVersion(moduleEntity.version, bump)
+      moduleVersions.set(moduleId, {
+        current: moduleEntity.version,
+        new: newVersion,
+        bump
+      })
+    }
+  }
+
+  const bundleVersions = new Map()
+  for (const [bundleId, bump] of finalBundleBumps) {
+    const bundleEntity = entityIndex.bundles.get(bundleId)
+    if (bundleEntity && bundleEntity.version) {
+      const newVersion = calculateNewVersion(bundleEntity.version, bump)
+      bundleVersions.set(bundleId, {
+        current: bundleEntity.version,
+        new: newVersion,
+        bump
+      })
+    }
+  }
+
   return {
     changes,
-    moduleBumps,
-    bundleBumps,
+    moduleBumps: finalModuleBumps,
+    bundleBumps: finalBundleBumps,
     ontologyBump,
-    orphanChanges
+    orphanChanges,
+    overrides,
+    overrideWarnings,
+    moduleVersions,
+    bundleVersions
   }
 }
