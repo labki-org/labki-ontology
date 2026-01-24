@@ -1,0 +1,183 @@
+name: Release Artifacts
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Generate and Commit Artifacts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Detect changed entity files
+        id: changes
+        run: |
+          set -e
+
+          # Use push event commit range for accurate diff
+          # Works correctly with queued workflows (each gets its own before/after)
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.event.after }}"
+
+          # Handle initial push (before is all zeros)
+          if [[ "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
+            echo "Initial push detected, generating all artifacts"
+            echo "initial=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Get changed files in entity directories
+          CHANGED_FILES=$(git diff --name-only "$BEFORE".."$AFTER" | \
+            grep -E '^(properties|categories|templates|subobjects|modules|bundles)/' | \
+            grep '\.json$' | \
+            grep -v '/versions/' || true)
+
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No entity files changed, skipping artifact generation"
+            echo "skip=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "Changed entity files:"
+          echo "$CHANGED_FILES"
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Detect affected modules and bundles
+        id: affected
+        if: steps.changes.outputs.skip != 'true'
+        run: |
+          set -e
+
+          if [ "${{ steps.changes.outputs.initial }}" == "true" ]; then
+            # Initial push - generate for all
+            MODULES=$(ls -1 modules/*.json 2>/dev/null | xargs -I{} basename {} .json | tr '\n' ',' | sed 's/,$//')
+            BUNDLES=$(ls -1 bundles/*.json 2>/dev/null | xargs -I{} basename {} .json | tr '\n' ',' | sed 's/,$//')
+          else
+            # Use detection script with changed files
+            RESULT=$(echo "${{ steps.changes.outputs.changed_files }}" | node scripts/ci-detect-affected.js)
+            MODULES=$(echo "$RESULT" | jq -r '.modules | join(",")')
+            BUNDLES=$(echo "$RESULT" | jq -r '.bundles | join(",")')
+          fi
+
+          echo "Affected modules: $MODULES"
+          echo "Affected bundles: $BUNDLES"
+
+          echo "modules=$MODULES" >> $GITHUB_OUTPUT
+          echo "bundles=$BUNDLES" >> $GITHUB_OUTPUT
+
+      - name: Generate artifacts
+        if: steps.changes.outputs.skip != 'true'
+        run: |
+          set -e
+
+          MODULES="${{ steps.affected.outputs.modules }}"
+          BUNDLES="${{ steps.affected.outputs.bundles }}"
+
+          if [ -n "$MODULES" ]; then
+            echo "Generating module artifacts for: $MODULES"
+            npm run generate-artifacts -- --modules="$MODULES"
+          fi
+
+          if [ -n "$BUNDLES" ]; then
+            echo "Generating bundle manifests for: $BUNDLES"
+            npm run generate-artifacts -- --bundles="$BUNDLES"
+          fi
+
+      - name: Commit generated artifacts
+        if: steps.changes.outputs.skip != 'true'
+        id: commit
+        run: |
+          set -e
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          # Stage version artifacts only (artifact-generator writes to versions/ subdirs)
+          git add modules/*/versions/*.json bundles/*/versions/*.json VERSION 2>/dev/null || true
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No new artifacts to commit"
+            echo "committed=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Build commit message
+          MODULES="${{ steps.affected.outputs.modules }}"
+          BUNDLES="${{ steps.affected.outputs.bundles }}"
+
+          if [ -n "$MODULES" ] && [ -n "$BUNDLES" ]; then
+            SUMMARY="modules: $MODULES; bundles: $BUNDLES"
+          elif [ -n "$MODULES" ]; then
+            SUMMARY="modules: $MODULES"
+          else
+            SUMMARY="bundles: $BUNDLES"
+          fi
+
+          git commit -m "release(artifacts): $SUMMARY"
+          git push
+
+          echo "committed=true" >> $GITHUB_OUTPUT
+
+      - name: Create ontology version tag
+        if: steps.commit.outputs.committed == 'true'
+        run: |
+          set -e
+
+          ONTOLOGY_VERSION=$(cat VERSION | tr -d '[:space:]')
+
+          if git rev-parse "v${ONTOLOGY_VERSION}" >/dev/null 2>&1; then
+            echo "Tag v${ONTOLOGY_VERSION} already exists, skipping"
+          else
+            git tag -a "v${ONTOLOGY_VERSION}" -m "Release ${ONTOLOGY_VERSION}"
+            git push origin "v${ONTOLOGY_VERSION}"
+            echo "Created tag v${ONTOLOGY_VERSION}"
+          fi
+
+      - name: Write job summary
+        if: always()
+        run: |
+          if [ "${{ steps.changes.outputs.skip }}" == "true" ]; then
+            echo "## Release Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "No entity files changed in this push." >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.commit.outputs.committed }}" == "true" ]; then
+            echo "## Release Summary" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            ONTOLOGY_VERSION=$(cat VERSION | tr -d '[:space:]')
+            echo "**Ontology Version:** ${ONTOLOGY_VERSION}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Modules" >> $GITHUB_STEP_SUMMARY
+            echo "${{ steps.affected.outputs.modules }}" | tr ',' '\n' | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Bundles" >> $GITHUB_STEP_SUMMARY
+            echo "${{ steps.affected.outputs.bundles }}" | tr ',' '\n' | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## Release Summary" >> $GITHUB_STEP_SUMMARY
+            echo "No new artifacts needed." >> $GITHUB_STEP_SUMMARY
+          fi
