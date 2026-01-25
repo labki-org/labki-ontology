@@ -1,0 +1,8 @@
+{
+  "id": "Lab_member",
+  "label": "Lab Member",
+  "description": "A person in a rlab.",
+  "parents": [
+    "Person"
+  ]
+}
