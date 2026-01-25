@@ -3,8 +3,22 @@ name: Validate Entity Schemas
 "on":
   pull_request:
     branches: [main]
+    paths:
+      - 'bundles/**'
+      - 'categories/**'
+      - 'modules/**'
+      - 'properties/**'
+      - 'subobjects/**'
+      - 'templates/**'
   push:
     branches: [main]
+    paths:
+      - 'bundles/**'
+      - 'categories/**'
+      - 'modules/**'
+      - 'properties/**'
+      - 'subobjects/**'
+      - 'templates/**'
 
 permissions:
   contents: read
