@@ -1,0 +1,5 @@
+{
+  "id": "CycleB",
+  "label": "Cycle B",
+  "parents": ["CycleA"]
+}

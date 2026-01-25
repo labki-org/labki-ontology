@@ -1,0 +1,5 @@
+{
+  "id": "BadRef",
+  "label": "Bad Reference",
+  "parents": ["NonExistent"]
+}

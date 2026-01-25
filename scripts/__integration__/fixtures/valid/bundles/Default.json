@@ -1,0 +1,5 @@
+{
+  "id": "Default",
+  "version": "1.0.0",
+  "modules": ["Core"]
+}

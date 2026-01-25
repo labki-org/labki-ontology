@@ -6,7 +6,11 @@
   "private": true,
   "scripts": {
     "validate": "node scripts/validate.js",
-    "generate-artifacts": "node scripts/generate-artifacts.js"
+    "generate-artifacts": "node scripts/generate-artifacts.js",
+    "test": "node --test scripts/lib/*.test.js",
+    "test:integration": "node --test scripts/__integration__/*.test.js",
+    "test:all": "node --test scripts/lib/*.test.js scripts/__integration__/*.test.js",
+    "test:watch": "node --test --watch scripts/lib/*.test.js scripts/__integration__/*.test.js"
   },
   "devDependencies": {
     "ajv": "^8.17.1",

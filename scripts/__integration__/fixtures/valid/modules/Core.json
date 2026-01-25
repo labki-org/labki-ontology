@@ -1,0 +1,9 @@
+{
+  "id": "Core",
+  "version": "1.0.0",
+  "categories": ["Agent"],
+  "properties": ["Name"],
+  "subobjects": [],
+  "templates": [],
+  "dependencies": []
+}

@@ -19,7 +19,8 @@ export const GLOB_IGNORE_PATTERNS = [
   '.planning/**',
   '.claude/**',
   '.**/**',
-  'VERSION_OVERRIDES.schema.json'
+  'VERSION_OVERRIDES.schema.json',
+  'scripts/**'
 ]
 
 /**
