@@ -1,4 +1,4 @@
-# Labki Schemas
+# Labki Ontology
 
 A community-developed ontology for structuring data across MediaWiki installations using the SemanticSchemas extension with [Semantic MediaWiki](https://www.semantic-mediawiki.org/).
 
@@ -9,7 +9,7 @@ This repository contains schema definitions for standardized entity types, prope
 ## Structure
 
 ```
-labki-schemas/
+labki-ontology/
 ├── bundles/        # Curated collections of modules for specific use cases
 ├── modules/        # Logical groupings of related entities
 ├── categories/     # Entity type definitions (e.g., Person, Organization)

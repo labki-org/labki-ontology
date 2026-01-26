@@ -1,5 +1,5 @@
 {
-  "name": "labki-schemas",
+  "name": "labki-ontology",
   "version": "1.0.0",
   "description": "Labki ontology schema definitions with CI validation",
   "type": "module",

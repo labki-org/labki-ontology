@@ -479,7 +479,7 @@ When a Bundle is installed:
 ## Directory Structure
 
 ```
-labki-schemas/
+labki-ontology/
 ├── SCHEMA.md           # This specification document
 ├── VERSION             # Version file
 ├── bundles/            # Bundle definitions
