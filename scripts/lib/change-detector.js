@@ -32,7 +32,11 @@ export function getChangedFiles(baseBranch = 'origin/main') {
       .filter(Boolean)
       .filter(filePath => {
         const firstSegment = filePath.split('/')[0]
-        return ENTITY_DIRECTORIES.has(firstSegment) && filePath.endsWith('.json')
+        const fileName = filePath.split('/').pop()
+        // Include only entity JSON files (not _schema.json)
+        return ENTITY_DIRECTORIES.has(firstSegment) &&
+               filePath.endsWith('.json') &&
+               fileName !== '_schema.json'
       })
   } catch (err) {
     // No changes or git error

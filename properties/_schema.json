@@ -23,17 +23,26 @@
     },
     "datatype": {
       "type": "string",
-      "description": "The Semantic MediaWiki data type",
+      "description": "The Semantic MediaWiki data type. Reference: https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes",
       "enum": [
-        "Text",
-        "Email",
-        "Date",
-        "URL",
-        "Page",
-        "Number",
+        "Annotation URI",
         "Boolean",
-        "Telephone",
-        "Geographic coordinate"
+        "Code",
+        "Date",
+        "Email",
+        "External identifier",
+        "Geographic coordinates",
+        "Keyword",
+        "Monolingual text",
+        "Number",
+        "Page",
+        "Quantity",
+        "Record",
+        "Reference",
+        "Telephone number",
+        "Temperature",
+        "Text",
+        "URL"
       ]
     },
     "cardinality": {
