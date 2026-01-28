@@ -6,8 +6,10 @@ name: Validate Entity Schemas
     paths:
       - 'bundles/**'
       - 'categories/**'
+      - 'dashboards/**'
       - 'modules/**'
       - 'properties/**'
+      - 'resources/**'
       - 'subobjects/**'
       - 'templates/**'
   push:
@@ -15,8 +17,10 @@ name: Validate Entity Schemas
     paths:
       - 'bundles/**'
       - 'categories/**'
+      - 'dashboards/**'
       - 'modules/**'
       - 'properties/**'
+      - 'resources/**'
       - 'subobjects/**'
       - 'templates/**'
 

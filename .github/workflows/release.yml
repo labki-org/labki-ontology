@@ -52,7 +52,7 @@ jobs:
 
           # Get changed files in entity directories
           CHANGED_FILES=$(git diff --name-only "$BEFORE".."$AFTER" | \
-            grep -E '^(properties|categories|templates|subobjects|modules|bundles)/' | \
+            grep -E '^(properties|categories|templates|subobjects|modules|bundles|dashboards|resources)/' | \
             grep '\.json$' | \
             grep -v '/versions/' | \
             grep -v '_schema\.json' || true)

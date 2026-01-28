@@ -20,7 +20,9 @@ export function createMockEntityIndex(overrides = {}) {
     subobjects: overrides.subobjects ?? new Map(),
     templates: overrides.templates ?? new Map(),
     modules: overrides.modules ?? new Map(),
-    bundles: overrides.bundles ?? new Map()
+    bundles: overrides.bundles ?? new Map(),
+    dashboards: overrides.dashboards ?? new Map(),
+    resources: overrides.resources ?? new Map()
   }
 }
 
@@ -64,6 +66,8 @@ export function createDependencyChainIndex() {
     ]),
     subobjects: new Map(),
     templates: new Map(),
+    dashboards: new Map(),
+    resources: new Map(),
     modules: new Map([
       ['Core', {
         id: 'Core',
@@ -72,6 +76,8 @@ export function createDependencyChainIndex() {
         properties: ['Name'],
         subobjects: [],
         templates: [],
+        dashboards: [],
+        resources: [],
         dependencies: []
       }],
       ['Lab', {
@@ -81,6 +87,8 @@ export function createDependencyChainIndex() {
         properties: ['SerialNumber'],
         subobjects: [],
         templates: [],
+        dashboards: [],
+        resources: [],
         dependencies: ['Core']
       }]
     ]),
