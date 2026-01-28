@@ -5,6 +5,9 @@
   "description": "Defines an attribute that can be assigned to Categories in the Labki ontology",
   "type": "object",
   "required": ["id", "label", "description", "datatype", "cardinality"],
+  "not": {
+    "required": ["allowed_values", "Allows_value_from_category"]
+  },
   "properties": {
     "id": {
       "type": "string",
@@ -51,13 +54,30 @@
       "enum": ["single", "multiple"]
     },
     "allowed_values": {
-      "type": "array",
-      "description": "Enumeration of permitted values",
-      "items": {
-        "type": "string"
-      },
-      "minItems": 1,
-      "uniqueItems": true
+      "oneOf": [
+        {
+          "type": "array",
+          "description": "Enumeration of permitted values",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        {
+          "type": "object",
+          "description": "Dynamic allowed values from a category",
+          "required": ["from_category"],
+          "additionalProperties": false,
+          "properties": {
+            "from_category": {
+              "type": "string",
+              "description": "Category ID to source allowed values from",
+              "pattern": "^[A-Z][a-z]*(_[a-z]+)*$"
+            }
+          }
+        }
+      ]
     },
     "allowed_pattern": {
       "type": "string",
@@ -91,6 +111,11 @@
       "type": "string",
       "description": "Reference to a Template for custom rendering",
       "minLength": 1
+    },
+    "Allows_value_from_category": {
+      "type": "string",
+      "description": "Category ID to source allowed values from. Mutually exclusive with allowed_values.",
+      "pattern": "^[A-Z][a-z]*(_[a-z]+)*$"
     }
   }
 }
