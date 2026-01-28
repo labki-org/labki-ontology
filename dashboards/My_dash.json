@@ -1,0 +1,11 @@
+{
+  "id": "My_dash",
+  "label": "My Dash",
+  "description": "My Dash Descr",
+  "pages": [
+    {
+      "name": "",
+      "wikitext": ""
+    }
+  ]
+}
