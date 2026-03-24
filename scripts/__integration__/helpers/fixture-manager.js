@@ -2,6 +2,24 @@ import fs from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import { createTempDir } from '../../__fixtures__/temp-dir.js'
 import { ENTITY_TYPES } from '../../lib/constants.js'
+import {
+  generateCategory,
+  generateProperty,
+  generateSubobject,
+  generateTemplate,
+  generateResource,
+  generateModuleVocab,
+  buildEntityPaths,
+} from '../../lib/wikitext-generator.js'
+
+/** Wikitext generators by entity type */
+const WIKITEXT_GENERATORS = {
+  categories: generateCategory,
+  properties: generateProperty,
+  subobjects: generateSubobject,
+  templates: generateTemplate,
+  resources: generateResource,
+}
 
 /**
  * Create a temporary fixture directory with entity structure
@@ -26,9 +44,33 @@ export function createTempFixture(name = 'test-fixture') {
     writeFile: tempDir.writeFile.bind(tempDir),
 
     /**
-     * Write a JSON file to the fixture
+     * Write a JSON file to the fixture.
+     * For entity types (categories, properties, etc.), auto-converts to wikitext format.
+     * For modules, auto-converts to vocab.json format.
+     * For bundles and non-entity files, writes JSON directly.
      */
-    writeJSON: tempDir.writeJSON.bind(tempDir),
+    writeJSON(relativePath, data) {
+      const parts = relativePath.split('/')
+      const dir = parts[0]
+
+      // Auto-convert entity JSON to wikitext format
+      if (WIKITEXT_GENERATORS[dir] && relativePath.endsWith('.json')) {
+        const wikitext = WIKITEXT_GENERATORS[dir](data)
+        const wikitextPath = relativePath.replace(/\.json$/, '.wikitext')
+        return tempDir.writeFile(wikitextPath, wikitext)
+      }
+
+      // Auto-convert module JSON to vocab.json format
+      if (dir === 'modules' && relativePath.endsWith('.json') && !relativePath.includes('versions')) {
+        const entityPaths = buildEntityPaths(data)
+        const vocab = generateModuleVocab(data, entityPaths, '0.0.0')
+        const vocabPath = relativePath.replace(/\.json$/, '.vocab.json')
+        return tempDir.writeJSON(vocabPath, vocab)
+      }
+
+      // Bundles and other files: write JSON directly
+      return tempDir.writeJSON(relativePath, data)
+    },
 
     /**
      * Read a file from the fixture
@@ -55,83 +97,31 @@ export function createTempFixture(name = 'test-fixture') {
     },
 
     /**
-     * Write entity schemas to fixture
+     * Write entity schemas to fixture (no-op — wikitext format doesn't use _schema.json)
      */
     writeSchemas() {
-      // Minimal schemas for testing
-      const schemas = {
-        categories: {
-          $schema: 'https://json-schema.org/draft/2020-12/schema',
-          type: 'object',
-          required: ['id'],
-          properties: {
-            id: { type: 'string' },
-            label: { type: 'string' },
-            parents: { type: 'array', items: { type: 'string' } },
-            required_properties: { type: 'array', items: { type: 'string' } },
-            optional_properties: { type: 'array', items: { type: 'string' } }
-          }
-        },
-        properties: {
-          $schema: 'https://json-schema.org/draft/2020-12/schema',
-          type: 'object',
-          required: ['id', 'datatype'],
-          properties: {
-            id: { type: 'string' },
-            label: { type: 'string' },
-            datatype: { type: 'string' },
-            cardinality: { type: 'string' },
-            parent_property: { type: 'string' }
-          }
-        },
-        subobjects: {
-          $schema: 'https://json-schema.org/draft/2020-12/schema',
-          type: 'object',
-          required: ['id'],
-          properties: {
-            id: { type: 'string' },
-            label: { type: 'string' },
-            required_properties: { type: 'array', items: { type: 'string' } },
-            optional_properties: { type: 'array', items: { type: 'string' } }
-          }
-        },
-        templates: {
-          $schema: 'https://json-schema.org/draft/2020-12/schema',
-          type: 'object',
-          required: ['id'],
-          properties: {
-            id: { type: 'string' },
-            label: { type: 'string' }
-          }
-        },
-        modules: {
-          $schema: 'https://json-schema.org/draft/2020-12/schema',
-          type: 'object',
-          required: ['id'],
-          properties: {
-            id: { type: 'string' },
-            version: { type: 'string' },
-            categories: { type: 'array', items: { type: 'string' } },
-            properties: { type: 'array', items: { type: 'string' } },
-            subobjects: { type: 'array', items: { type: 'string' } },
-            templates: { type: 'array', items: { type: 'string' } },
-            dependencies: { type: 'array', items: { type: 'string' } }
-          }
-        },
-        bundles: {
-          $schema: 'https://json-schema.org/draft/2020-12/schema',
-          type: 'object',
-          required: ['id'],
-          properties: {
-            id: { type: 'string' },
-            version: { type: 'string' },
-            modules: { type: 'array', items: { type: 'string' } }
-          }
-        }
-      }
+      // No-op: wikitext format doesn't use JSON Schema validation
+    },
 
-      for (const [type, schema] of Object.entries(schemas)) {
-        this.writeJSON(`${type}/_schema.json`, schema)
+    /**
+     * Write an entity file in the correct format for its type.
+     * Categories, properties, subobjects, templates, resources -> .wikitext
+     * Modules -> .vocab.json
+     * Bundles -> .json
+     *
+     * @param {string} entityType - e.g. 'categories', 'modules', 'bundles'
+     * @param {object} entity - Entity data with id field
+     */
+    writeEntity(entityType, entity) {
+      if (entityType === 'modules') {
+        const entityPaths = buildEntityPaths(entity)
+        const vocab = generateModuleVocab(entity, entityPaths, '0.0.0')
+        this.writeJSON(`modules/${entity.id}.vocab.json`, vocab)
+      } else if (entityType === 'bundles') {
+        this.writeJSON(`bundles/${entity.id}.json`, entity)
+      } else if (WIKITEXT_GENERATORS[entityType]) {
+        const wikitext = WIKITEXT_GENERATORS[entityType](entity)
+        this.writeFile(`${entityType}/${entity.id}.wikitext`, wikitext)
       }
     },
 
@@ -217,22 +207,14 @@ export function createGitFixture(name = 'git-fixture') {
       fixture.writeVersion('1.0.0')
 
       // Create initial structure
-      fixture.writeJSON('categories/Agent.json', { id: 'Agent', label: 'Agent' })
-      fixture.writeJSON('properties/Name.json', { id: 'Name', label: 'Name', datatype: 'Text' })
-      fixture.writeJSON('modules/Core.json', {
-        id: 'Core',
-        version: '1.0.0',
-        categories: ['Agent'],
-        properties: ['Name'],
-        subobjects: [],
-        templates: [],
-        dependencies: []
+      fixture.writeEntity('categories', { id: 'Agent', label: 'Agent', description: 'An agent' })
+      fixture.writeEntity('properties', { id: 'Has_name', label: 'Name', description: 'A name', datatype: 'Text', cardinality: 'single' })
+      fixture.writeEntity('modules', {
+        id: 'Core', version: '1.0.0', label: 'Core', description: 'Core module',
+        categories: ['Agent'], properties: ['Has_name'],
+        subobjects: [], templates: [], dependencies: []
       })
-      fixture.writeJSON('bundles/Default.json', {
-        id: 'Default',
-        version: '1.0.0',
-        modules: ['Core']
-      })
+      fixture.writeEntity('bundles', { id: 'Default', version: '1.0.0', label: 'Default', description: 'Default', modules: ['Core'] })
 
       this.commit('Initial commit')
     },
