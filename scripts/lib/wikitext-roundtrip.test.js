@@ -2,7 +2,8 @@
  * Round-trip tests: JSON -> wikitext (generator) -> JSON (parser) should produce
  * semantically identical results.
  */
-import { describe, it, expect } from 'vitest'
+import { describe, it } from 'node:test'
+import assert from 'node:assert'
 import {
   parseCategory,
   parseProperty,
@@ -34,14 +35,14 @@ describe('category round-trip', () => {
     const wikitext = generateCategory(original)
     const parsed = parseCategory(wikitext, 'Person')
 
-    expect(parsed.id).toBe(original.id)
-    expect(parsed.label).toBe(original.label)
-    expect(parsed.description).toBe(original.description)
-    expect(parsed.parents).toEqual(original.parents)
-    expect(parsed.required_properties).toEqual(original.required_properties)
-    expect(parsed.optional_properties).toEqual(original.optional_properties)
-    expect(parsed.required_subobjects).toEqual(original.required_subobjects)
-    expect(parsed.optional_subobjects).toEqual(original.optional_subobjects)
+    assert.strictEqual(parsed.id, original.id)
+    assert.strictEqual(parsed.label, original.label)
+    assert.strictEqual(parsed.description, original.description)
+    assert.deepStrictEqual(parsed.parents, original.parents)
+    assert.deepStrictEqual(parsed.required_properties, original.required_properties)
+    assert.deepStrictEqual(parsed.optional_properties, original.optional_properties)
+    assert.deepStrictEqual(parsed.required_subobjects, original.required_subobjects)
+    assert.deepStrictEqual(parsed.optional_subobjects, original.optional_subobjects)
   })
 
   it('handles category where label matches page name (label omitted in wikitext)', () => {
@@ -54,9 +55,8 @@ describe('category round-trip', () => {
     const wikitext = generateCategory(original)
     const parsed = parseCategory(wikitext, 'Person')
 
-    expect(parsed.label).toBe('Person')
-    // Label should be derived from entity key since it wasn't in the wikitext
-    expect(wikitext).not.toContain('Display label')
+    assert.strictEqual(parsed.label, 'Person')
+    assert.ok(!wikitext.includes('Display label'))
   })
 })
 
@@ -73,11 +73,11 @@ describe('property round-trip', () => {
     const wikitext = generateProperty(original)
     const parsed = parseProperty(wikitext, 'Has_name')
 
-    expect(parsed.id).toBe(original.id)
-    expect(parsed.label).toBe(original.label)
-    expect(parsed.description).toBe(original.description)
-    expect(parsed.datatype).toBe(original.datatype)
-    expect(parsed.cardinality).toBe(original.cardinality)
+    assert.strictEqual(parsed.id, original.id)
+    assert.strictEqual(parsed.label, original.label)
+    assert.strictEqual(parsed.description, original.description)
+    assert.strictEqual(parsed.datatype, original.datatype)
+    assert.strictEqual(parsed.cardinality, original.cardinality)
   })
 
   it('preserves multi-value property', () => {
@@ -92,7 +92,7 @@ describe('property round-trip', () => {
     const wikitext = generateProperty(original)
     const parsed = parseProperty(wikitext, 'Has_email')
 
-    expect(parsed.cardinality).toBe('multiple')
+    assert.strictEqual(parsed.cardinality, 'multiple')
   })
 
   it('preserves property with allowed values', () => {
@@ -108,7 +108,7 @@ describe('property round-trip', () => {
     const wikitext = generateProperty(original)
     const parsed = parseProperty(wikitext, 'Has_status')
 
-    expect(parsed.allowed_values).toEqual(original.allowed_values)
+    assert.deepStrictEqual(parsed.allowed_values, original.allowed_values)
   })
 
   it('preserves property with display template', () => {
@@ -124,7 +124,7 @@ describe('property round-trip', () => {
     const wikitext = generateProperty(original)
     const parsed = parseProperty(wikitext, 'Has_related')
 
-    expect(parsed.has_display_template).toBe('Property/Page')
+    assert.strictEqual(parsed.has_display_template, 'Property/Page')
   })
 })
 
@@ -141,10 +141,10 @@ describe('subobject round-trip', () => {
     const wikitext = generateSubobject(original)
     const parsed = parseSubobject(wikitext, 'Address')
 
-    expect(parsed.id).toBe(original.id)
-    expect(parsed.description).toBe(original.description)
-    expect(parsed.required_properties).toEqual(original.required_properties)
-    expect(parsed.optional_properties).toEqual(original.optional_properties)
+    assert.strictEqual(parsed.id, original.id)
+    assert.strictEqual(parsed.description, original.description)
+    assert.deepStrictEqual(parsed.required_properties, original.required_properties)
+    assert.deepStrictEqual(parsed.optional_properties, original.optional_properties)
   })
 })
 
@@ -160,7 +160,7 @@ describe('template round-trip', () => {
     const wikitext = generateTemplate(original)
     const parsed = parseTemplate(wikitext, 'Property/Page')
 
-    expect(parsed.wikitext).toBe(original.wikitext)
+    assert.strictEqual(parsed.wikitext, original.wikitext)
   })
 })
 
@@ -178,10 +178,10 @@ describe('resource round-trip', () => {
     const wikitext = generateResource(original)
     const parsed = parseResource(wikitext, 'Person/John_doe')
 
-    expect(parsed.id).toBe(original.id)
-    expect(parsed.label).toBe(original.label)
-    expect(parsed.category).toBe(original.category)
-    expect(parsed.Has_name).toBe(original.Has_name)
-    expect(parsed.Has_email).toBe(original.Has_email)
+    assert.strictEqual(parsed.id, original.id)
+    assert.strictEqual(parsed.label, original.label)
+    assert.strictEqual(parsed.category, original.category)
+    assert.strictEqual(parsed.Has_name, original.Has_name)
+    assert.strictEqual(parsed.Has_email, original.Has_email)
   })
 })
