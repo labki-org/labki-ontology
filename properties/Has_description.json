@@ -1,7 +1,0 @@
-{
-  "id": "Has_description",
-  "label": "Description",
-  "description": "A textual description of the entity",
-  "datatype": "Text",
-  "cardinality": "single"
-}

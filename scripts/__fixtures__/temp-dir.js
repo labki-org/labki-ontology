@@ -2,6 +2,15 @@ import fs from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
 import { ENTITY_TYPES } from '../lib/constants.js'
+import {
+  generateCategory,
+  generateProperty,
+  generateSubobject,
+  generateTemplate,
+  generateResource,
+  generateModuleVocab,
+  buildEntityPaths,
+} from '../lib/wikitext-generator.js'
 
 /**
  * Create a managed temporary directory for testing
@@ -139,13 +148,36 @@ export function createTempDir(prefix = 'test-') {
  *   properties: [{ id: 'Name', label: 'Name', datatype: 'Text' }]
  * })
  */
+/**
+ * Wikitext generators by entity type
+ */
+const WIKITEXT_GENERATORS = {
+  categories: generateCategory,
+  properties: generateProperty,
+  subobjects: generateSubobject,
+  templates: generateTemplate,
+  resources: generateResource,
+}
+
 export function createEntityTempDir(entities = {}) {
   const tempDir = createTempDir('entity-')
 
   for (const type of ENTITY_TYPES) {
     const typeEntities = entities[type] || []
     for (const entity of typeEntities) {
-      tempDir.writeJSON(`${type}/${entity.id}.json`, entity)
+      if (type === 'modules') {
+        // Modules use vocab.json format
+        const entityPaths = buildEntityPaths(entity)
+        const vocab = generateModuleVocab(entity, entityPaths, '0.0.0')
+        tempDir.writeJSON(`modules/${entity.id}.vocab.json`, vocab)
+      } else if (type === 'bundles') {
+        // Bundles stay as JSON
+        tempDir.writeJSON(`bundles/${entity.id}.json`, entity)
+      } else if (WIKITEXT_GENERATORS[type]) {
+        // All other entity types use wikitext
+        const wikitext = WIKITEXT_GENERATORS[type](entity)
+        tempDir.writeFile(`${type}/${entity.id}.wikitext`, wikitext)
+      }
     }
   }
 

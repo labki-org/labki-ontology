@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Street address including number]]
+[[Display label::Street]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

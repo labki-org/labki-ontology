@@ -1,7 +1,0 @@
-{
-  "id": "Has_email",
-  "label": "Email",
-  "description": "Email address for contact",
-  "datatype": "Email",
-  "cardinality": "multiple"
-}

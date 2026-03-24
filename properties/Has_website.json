@@ -1,7 +1,0 @@
-{
-  "id": "Has_website",
-  "label": "Website",
-  "description": "URL of the entity's website",
-  "datatype": "URL",
-  "cardinality": "single"
-}

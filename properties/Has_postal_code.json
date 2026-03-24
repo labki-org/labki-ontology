@@ -1,7 +1,0 @@
-{
-  "id": "Has_postal_code",
-  "label": "Postal Code",
-  "description": "Postal or ZIP code",
-  "datatype": "Text",
-  "cardinality": "single"
-}

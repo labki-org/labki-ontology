@@ -30,7 +30,7 @@ permissions:
 
 jobs:
   validate:
-    name: JSON Schema Validation
+    name: Entity Validation
     runs-on: ubuntu-latest
 
     steps:

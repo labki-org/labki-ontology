@@ -1,7 +1,0 @@
-{
-  "id": "Has_city",
-  "label": "City",
-  "description": "City or locality name",
-  "datatype": "Text",
-  "cardinality": "single"
-}

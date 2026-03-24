@@ -1,0 +1,173 @@
+{
+  "description": "Essential entities for any wiki - agents, people, and organizations",
+  "id": "Core",
+  "version": "1.0.0",
+  "label": "Core Module",
+  "dependencies": [],
+  "import": [
+    {
+      "page": "Agent",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Agent.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Person",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Person.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Organization",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Organization.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has name",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_name.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has description",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_description.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has email",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_email.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has website",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_website.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has street",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_street.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has city",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_city.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has country",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_country.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has postal code",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_postal_code.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Address",
+      "namespace": "NS_SUBOBJECT",
+      "contents": {
+        "importFrom": "subobjects/Address.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Property/Page",
+      "namespace": "NS_TEMPLATE",
+      "contents": {
+        "importFrom": "templates/Property/Page.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Core overview",
+      "namespace": "NS_ONTOLOGY_DASHBOARD",
+      "contents": {
+        "importFrom": "dashboards/Core_overview.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Person/John doe",
+      "namespace": "NS_ONTOLOGY_RESOURCE",
+      "contents": {
+        "importFrom": "resources/Person/John_doe.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Core overview/Setup",
+      "namespace": "NS_ONTOLOGY_DASHBOARD",
+      "contents": {
+        "importFrom": "dashboards/Core_overview/Setup.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    }
+  ],
+  "meta": {
+    "version": "1",
+    "ontologyVersion": "0.1.2"
+  }
+}

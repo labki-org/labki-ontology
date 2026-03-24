@@ -1,125 +1,272 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { MODULE_ENTITY_TYPES } from './constants.js'
+import { generateModuleVocab, generateBundleVocab, buildEntityPaths } from './wikitext-generator.js'
 
 /**
- * Generate a module version artifact
+ * Generate a module version artifact as a self-contained directory.
  *
- * @param {string} moduleId - Module ID to generate artifact for
- * @param {string} version - Version to assign to artifact
+ * The artifact directory contains:
+ * - {moduleid}.vocab.json (SMW-importable manifest + module metadata)
+ * - Entity wikitext files in subdirectories (categories/, properties/, etc.)
+ *
+ * @param {string} moduleId - Module ID
+ * @param {string} version - Version to assign
  * @param {Object} entityIndex - Entity index from buildEntityIndex()
- * @returns {Object} Module artifact object
- * @throws {Error} If module not found or dependency module not found
+ * @param {string} ontologyVersion - Current ontology version
+ * @param {string} rootDir - Root directory of the project (for reading source files)
+ * @returns {string} Output directory path
  */
-export function generateModuleArtifact(moduleId, version, entityIndex) {
+export function generateModuleArtifactDirectory(moduleId, version, entityIndex, ontologyVersion, rootDir = process.cwd()) {
   const moduleEntity = entityIndex.modules.get(moduleId)
   if (!moduleEntity) {
     throw new Error(`Module not found: ${moduleId}`)
   }
 
+  const outputDir = path.join(rootDir, 'modules', moduleId, 'versions', version)
+
+  // Clean and create output directory
+  if (fs.existsSync(outputDir)) {
+    fs.rmSync(outputDir, { recursive: true })
+  }
+  fs.mkdirSync(outputDir, { recursive: true })
+
+  // Collect all import entries for the vocab.json
+  const importEntries = []
+
+  // Copy entity wikitext files and build import entries
+  const entityArrays = {
+    categories: { dir: 'categories', namespace: 'NS_CATEGORY' },
+    properties: { dir: 'properties', namespace: 'SMW_NS_PROPERTY' },
+    subobjects: { dir: 'subobjects', namespace: 'NS_SUBOBJECT' },
+    templates: { dir: 'templates', namespace: 'NS_TEMPLATE' },
+  }
+
+  for (const [type, { dir, namespace }] of Object.entries(entityArrays)) {
+    for (const entityKey of moduleEntity[type] || []) {
+      const entity = entityIndex[type].get(entityKey)
+      if (!entity?._filePath) continue
+
+      // Copy wikitext file to artifact directory
+      const sourcePath = path.join(rootDir, entity._filePath)
+      const destRelative = `${dir}/${entityKey}.wikitext`
+      const destPath = path.join(outputDir, destRelative)
+
+      fs.mkdirSync(path.dirname(destPath), { recursive: true })
+      fs.copyFileSync(sourcePath, destPath)
+
+      // Add import entry
+      importEntries.push({
+        page: entityKey.replace(/_/g, ' '),
+        namespace,
+        contents: { importFrom: destRelative },
+        options: { replaceable: true },
+      })
+    }
+  }
+
+  // Handle dashboards (multi-page: copy all page files)
+  for (const dashboardId of moduleEntity.dashboards || []) {
+    const dashboard = entityIndex.dashboards.get(dashboardId)
+    if (!dashboard) continue
+
+    for (const page of dashboard.pages) {
+      const pageSuffix = page.name ? `/${page.name}` : ''
+      const fileKey = `${dashboardId}${pageSuffix}`
+      const destRelative = `dashboards/${fileKey}.wikitext`
+      const destPath = path.join(outputDir, destRelative)
+
+      fs.mkdirSync(path.dirname(destPath), { recursive: true })
+      fs.writeFileSync(destPath, page.wikitext + '\n', 'utf8')
+
+      importEntries.push({
+        page: fileKey.replace(/_/g, ' '),
+        namespace: 'NS_ONTOLOGY_DASHBOARD',
+        contents: { importFrom: destRelative },
+        options: { replaceable: true },
+      })
+    }
+  }
+
+  // Handle resources
+  for (const resourceKey of moduleEntity.resources || []) {
+    const resource = entityIndex.resources.get(resourceKey)
+    if (!resource?._filePath) continue
+
+    const sourcePath = path.join(rootDir, resource._filePath)
+    const destRelative = `resources/${resourceKey}.wikitext`
+    const destPath = path.join(outputDir, destRelative)
+
+    fs.mkdirSync(path.dirname(destPath), { recursive: true })
+    fs.copyFileSync(sourcePath, destPath)
+
+    importEntries.push({
+      page: resourceKey.replace(/_/g, ' '),
+      namespace: 'NS_ONTOLOGY_RESOURCE',
+      contents: { importFrom: destRelative },
+      options: { replaceable: true },
+    })
+  }
+
   // Resolve dependency versions
   const dependencies = {}
-  for (const depId of (moduleEntity.dependencies || [])) {
+  for (const depId of moduleEntity.dependencies || []) {
     const depModule = entityIndex.modules.get(depId)
-    if (!depModule) {
-      throw new Error(`Dependency module not found: ${depId}`)
+    if (depModule) {
+      dependencies[depId] = depModule.version
     }
-    dependencies[depId] = depModule.version
   }
 
-  // Build artifact structure
-  const artifact = {
-    $schema: 'https://labki.org/schemas/module-version.schema.json',
+  // Write vocab.json
+  const vocab = {
+    description: moduleEntity.description || '',
     id: moduleId,
-    version: version,
-    generated: new Date().toISOString(),
-    dependencies: dependencies
+    version,
+    label: moduleEntity.label || moduleId,
+    dependencies,
+    import: importEntries,
+    meta: {
+      version: '1',
+      ontologyVersion,
+      generated: new Date().toISOString(),
+    },
   }
 
-  // Add entities by type (full JSON content)
-  for (const entityType of MODULE_ENTITY_TYPES) {
-    const entityIds = moduleEntity[entityType] || []
-    const entities = []
+  const vocabPath = path.join(outputDir, `${moduleId.toLowerCase()}.vocab.json`)
+  fs.writeFileSync(vocabPath, JSON.stringify(vocab, null, 2) + '\n', 'utf8')
 
-    for (const entityId of entityIds) {
-      const entity = entityIndex[entityType].get(entityId)
-      if (entity) {
-        // Clone and remove internal fields
-        const cleanEntity = { ...entity }
-        delete cleanEntity._filePath
-        entities.push(cleanEntity)
-      }
-    }
-
-    artifact[entityType] = entities
-  }
-
-  return artifact
+  return outputDir
 }
 
 /**
- * Generate a bundle version manifest
+ * Generate a bundle version artifact by combining all constituent modules.
  *
- * @param {string} bundleId - Bundle ID to generate manifest for
- * @param {string} version - Version to assign to manifest
- * @param {Object} entityIndex - Entity index from buildEntityIndex()
- * @param {string} ontologyVersion - Current ontology VERSION
- * @returns {Object} Bundle manifest object
- * @throws {Error} If bundle not found or module not found
+ * The bundle directory contains a single vocab.json with all module entities
+ * merged, plus all wikitext files from all modules.
+ *
+ * @param {string} bundleId - Bundle ID
+ * @param {string} version - Version to assign
+ * @param {Object} entityIndex - Entity index
+ * @param {string} ontologyVersion - Ontology version
+ * @param {string} rootDir - Root directory
+ * @returns {string} Output directory path
  */
-export function generateBundleManifest(bundleId, version, entityIndex, ontologyVersion) {
+export function generateBundleArtifactDirectory(bundleId, version, entityIndex, ontologyVersion, rootDir = process.cwd()) {
   const bundleEntity = entityIndex.bundles.get(bundleId)
   if (!bundleEntity) {
     throw new Error(`Bundle not found: ${bundleId}`)
   }
 
-  // Build module version map
-  const modules = {}
+  const outputDir = path.join(rootDir, 'bundles', bundleId, 'versions', version)
+
+  if (fs.existsSync(outputDir)) {
+    fs.rmSync(outputDir, { recursive: true })
+  }
+  fs.mkdirSync(outputDir, { recursive: true })
+
+  // Collect all import entries from all modules
+  const allImportEntries = []
+  const moduleVersions = {}
+
   for (const moduleId of bundleEntity.modules) {
     const moduleEntity = entityIndex.modules.get(moduleId)
     if (!moduleEntity) {
       throw new Error(`Module not found in bundle: ${moduleId}`)
     }
-    modules[moduleId] = moduleEntity.version
+
+    moduleVersions[moduleId] = moduleEntity.version
+
+    // Generate module's artifact content into the bundle directory
+    // (same logic as module artifact but into bundle output dir)
+    const entityArrays = {
+      categories: { dir: 'categories', namespace: 'NS_CATEGORY' },
+      properties: { dir: 'properties', namespace: 'SMW_NS_PROPERTY' },
+      subobjects: { dir: 'subobjects', namespace: 'NS_SUBOBJECT' },
+      templates: { dir: 'templates', namespace: 'NS_TEMPLATE' },
+    }
+
+    for (const [type, { dir, namespace }] of Object.entries(entityArrays)) {
+      for (const entityKey of moduleEntity[type] || []) {
+        const entity = entityIndex[type].get(entityKey)
+        if (!entity?._filePath) continue
+
+        const sourcePath = path.join(rootDir, entity._filePath)
+        const destRelative = `${dir}/${entityKey}.wikitext`
+        const destPath = path.join(outputDir, destRelative)
+
+        fs.mkdirSync(path.dirname(destPath), { recursive: true })
+        fs.copyFileSync(sourcePath, destPath)
+
+        allImportEntries.push({
+          page: entityKey.replace(/_/g, ' '),
+          namespace,
+          contents: { importFrom: destRelative },
+          options: { replaceable: true },
+        })
+      }
+    }
+
+    // Dashboards
+    for (const dashboardId of moduleEntity.dashboards || []) {
+      const dashboard = entityIndex.dashboards.get(dashboardId)
+      if (!dashboard) continue
+
+      for (const page of dashboard.pages) {
+        const pageSuffix = page.name ? `/${page.name}` : ''
+        const fileKey = `${dashboardId}${pageSuffix}`
+        const destRelative = `dashboards/${fileKey}.wikitext`
+        const destPath = path.join(outputDir, destRelative)
+
+        fs.mkdirSync(path.dirname(destPath), { recursive: true })
+        fs.writeFileSync(destPath, page.wikitext + '\n', 'utf8')
+
+        allImportEntries.push({
+          page: fileKey.replace(/_/g, ' '),
+          namespace: 'NS_ONTOLOGY_DASHBOARD',
+          contents: { importFrom: destRelative },
+          options: { replaceable: true },
+        })
+      }
+    }
+
+    // Resources
+    for (const resourceKey of moduleEntity.resources || []) {
+      const resource = entityIndex.resources.get(resourceKey)
+      if (!resource?._filePath) continue
+
+      const sourcePath = path.join(rootDir, resource._filePath)
+      const destRelative = `resources/${resourceKey}.wikitext`
+      const destPath = path.join(outputDir, destRelative)
+
+      fs.mkdirSync(path.dirname(destPath), { recursive: true })
+      fs.copyFileSync(sourcePath, destPath)
+
+      allImportEntries.push({
+        page: resourceKey.replace(/_/g, ' '),
+        namespace: 'NS_ONTOLOGY_RESOURCE',
+        contents: { importFrom: destRelative },
+        options: { replaceable: true },
+      })
+    }
   }
 
-  // Build manifest structure
-  const manifest = {
-    $schema: 'https://labki.org/schemas/bundle-version.schema.json',
+  // Write combined vocab.json
+  const vocab = {
+    description: bundleEntity.description || '',
     id: bundleId,
-    version: version,
-    generated: new Date().toISOString(),
-    ontologyVersion: ontologyVersion,
-    modules: modules
+    version,
+    label: bundleEntity.label || bundleId,
+    modules: moduleVersions,
+    import: allImportEntries,
+    meta: {
+      version: '1',
+      ontologyVersion,
+      generated: new Date().toISOString(),
+    },
   }
 
-  // Add optional description if present
-  if (bundleEntity.description) {
-    manifest.description = bundleEntity.description
-  }
+  const vocabPath = path.join(outputDir, `${bundleId.toLowerCase()}.vocab.json`)
+  fs.writeFileSync(vocabPath, JSON.stringify(vocab, null, 2) + '\n', 'utf8')
 
-  return manifest
-}
-
-/**
- * Write artifact to versioned file path
- *
- * @param {string} baseDir - Base directory (e.g., 'modules' or 'bundles')
- * @param {string} entityId - Module or bundle ID
- * @param {string} version - Version string
- * @param {Object} artifact - Artifact object to write
- * @returns {string} Output path where artifact was written
- */
-export function writeVersionedArtifact(baseDir, entityId, version, artifact) {
-  const outputPath = path.join(baseDir, entityId, 'versions', `${version}.json`)
-  const outputDir = path.dirname(outputPath)
-
-  // Create directory if it doesn't exist
-  fs.mkdirSync(outputDir, { recursive: true })
-
-  // Write with consistent formatting (2-space indent, trailing newline)
-  const json = JSON.stringify(artifact, null, 2)
-  fs.writeFileSync(outputPath, json + '\n', 'utf8')
-
-  return outputPath
+  return outputDir
 }

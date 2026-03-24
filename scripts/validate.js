@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-import Ajv2020 from 'ajv/dist/2020.js'
-import betterAjvErrors from 'better-ajv-errors'
 import fg from 'fast-glob'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -20,44 +18,13 @@ import { validateVersionFormat, compareVersions, getBaseVersion } from './lib/ve
 import { detectChanges, getChangedFiles } from './lib/change-detector.js'
 import { calculateVersionCascade } from './lib/version-cascade.js'
 
-// Initialize Ajv with draft 2020-12 support
-// CRITICAL: Must use ajv/dist/2020.js (not default export)
-const ajv = new Ajv2020({
-  allErrors: true,   // Collect all errors, not just first
-  verbose: true,     // Include schema and data in errors
-  strict: false      // Allow valid schemas that strict mode rejects
-})
-
-// Schema cache: compile once, reuse validators
-const schemaCache = new Map()
-
 /**
- * Load and compile a schema, caching the compiled validator
- * @param {string} schemaPath - Path to _schema.json file
- * @returns {{schema: object, validate: Function}}
- */
-function loadSchema(schemaPath) {
-  if (!schemaCache.has(schemaPath)) {
-    const schemaContent = fs.readFileSync(schemaPath, 'utf8')
-    const schema = JSON.parse(schemaContent)
-    const validate = ajv.compile(schema)
-
-    schemaCache.set(schemaPath, {
-      schema,
-      validate
-    })
-  }
-
-  return schemaCache.get(schemaPath)
-}
-
-/**
- * Discover all entity JSON files
+ * Discover all entity files (.wikitext, .vocab.json, .json for bundles)
  * @returns {Promise<string[]>}
  */
 async function discoverFiles() {
   const files = await fg(
-    ['**/*.json'],
+    ['**/*.wikitext', 'modules/*.vocab.json', 'bundles/*.json'],
     {
       ignore: GLOB_IGNORE_PATTERNS,
       absolute: false,
@@ -69,107 +36,49 @@ async function discoverFiles() {
 }
 
 /**
- * Find the _schema.json file for an entity
- * Searches the immediate directory and parent directories
- * @param {string} filePath - Path to entity JSON file (can be relative or absolute)
- * @returns {string|null} Path to _schema.json or null if not found
+ * Validate entity files using the entity index (structural validation).
+ *
+ * With wikitext format, we no longer use JSON Schema. Instead, we validate
+ * the parsed entities from the entity index for required fields and
+ * correct structure.
+ *
+ * @param {Object} entityIndex - Entity index from buildEntityIndex()
+ * @returns {Array} Array of error objects
  */
-function findSchemaPath(filePath) {
-  // Resolve to absolute path
-  const absolutePath = path.resolve(filePath)
-  let currentDir = path.dirname(absolutePath)
-  const root = process.cwd()
-
-  // Search upward from entity directory, but don't go above project root
-  while (currentDir.startsWith(root) || currentDir === root) {
-    const schemaPath = path.join(currentDir, '_schema.json')
-    if (fs.existsSync(schemaPath)) {
-      return schemaPath
-    }
-
-    const parentDir = path.dirname(currentDir)
-    if (parentDir === currentDir) {
-      break  // Reached filesystem root
-    }
-    currentDir = parentDir
-  }
-
-  return null
-}
-
-/**
- * Validate a single entity file
- * @param {string} filePath - Path to entity JSON file
- * @returns {Array} Array of error objects (empty if valid)
- */
-function validateFile(filePath) {
+function validateEntities(entityIndex) {
   const errors = []
 
-  // Find schema path (searches upward from entity directory)
-  const schemaPath = findSchemaPath(filePath)
-
-  // Check schema exists
-  if (!schemaPath) {
-    errors.push({
-      file: filePath,
-      type: 'no-schema',
-      message: `No _schema.json found in ${path.dirname(filePath)} or parent directories`
-    })
-    return errors
+  // Validate properties have required fields
+  for (const [id, entity] of entityIndex.properties) {
+    if (!entity.datatype) {
+      errors.push({
+        file: entity._filePath,
+        type: 'missing-field',
+        message: `Property "${id}" is missing required field "datatype" (Has type annotation)`
+      })
+    }
   }
 
-  // Parse JSON (catch parse errors with context)
-  let data
-  let fileContent
-  try {
-    fileContent = fs.readFileSync(filePath, 'utf8')
-    data = JSON.parse(fileContent)
-  } catch (parseError) {
-    errors.push({
-      file: filePath,
-      type: 'parse',
-      message: `JSON parse error: ${parseError.message}`
-    })
-    return errors
+  // Validate modules have required fields
+  for (const [id, entity] of entityIndex.modules) {
+    if (!entity.version) {
+      errors.push({
+        file: entity._filePath,
+        type: 'missing-field',
+        message: `Module "${id}" is missing required field "version"`
+      })
+    }
   }
 
-  // Validate against schema
-  const { schema, validate } = loadSchema(schemaPath)
-  const valid = validate(data)
-
-  if (!valid) {
-    // CRITICAL: Copy errors immediately (validate.errors gets overwritten)
-    const validationErrors = [...validate.errors]
-
-    // Format with better-ajv-errors
-    const output = betterAjvErrors(
-      schema,
-      data,
-      validationErrors,
-      { format: 'cli', indent: 2 }
-    )
-
-    errors.push({
-      file: filePath,
-      type: 'schema',
-      message: 'Schema validation failed',
-      output: output || validationErrors.map(e => `  ${e.instancePath} ${e.message}`).join('\n')
-    })
-  }
-
-  // Check id matches filename (without .json)
-  // For nested files (e.g., templates/Property/Page.json),
-  // the id should be the relative path from the schema directory
-  const schemaDir = path.dirname(schemaPath)
-  const relativePath = path.relative(schemaDir, filePath)
-  const expectedId = relativePath.replace(/\.json$/, '').replace(/\\/g, '/')
-
-  if (data.id !== expectedId) {
-    errors.push({
-      file: filePath,
-      type: 'id-mismatch',
-      message: `ID "${data.id}" doesn't match expected "${expectedId}" (derived from file path relative to schema directory)`
-    })
+  // Validate bundles have required fields
+  for (const [id, entity] of entityIndex.bundles) {
+    if (!entity.modules || entity.modules.length === 0) {
+      errors.push({
+        file: entity._filePath,
+        type: 'missing-field',
+        message: `Bundle "${id}" must have at least one module`
+      })
+    }
   }
 
   return errors
@@ -352,7 +261,7 @@ function generatePRComment(schemaErrors, refErrors, cycleErrors, allWarnings, to
   const status = hasAnyError ? 'FAIL' : 'PASS'
   const emoji = hasAnyError ? '\u274C' : '\u2705'
 
-  let md = `## ${emoji} Schema Validation ${status}\n\n`
+  let md = `## ${emoji} Entity Validation ${status}\n\n`
   md += `Validated ${totalFiles} entities`
   if (validationMode && validationMode.mode === 'changed') {
     md += ` (${validationMode.changedCount} changed)`
@@ -361,7 +270,7 @@ function generatePRComment(schemaErrors, refErrors, cycleErrors, allWarnings, to
 
   // Schema validation section
   md += '<details>\n'
-  md += `<summary>Schema Validation ${schemaErrors.length === 0 ? '\u2705' : '\u274C'}</summary>\n\n`
+  md += `<summary>Entity Validation ${schemaErrors.length === 0 ? '\u2705' : '\u274C'}</summary>\n\n`
   if (schemaErrors.length === 0) {
     md += 'All files passed schema validation.\n'
   } else {
@@ -426,9 +335,7 @@ function generatePRComment(schemaErrors, refErrors, cycleErrors, allWarnings, to
  */
 function getErrorSuggestion(errorType) {
   const suggestions = {
-    'id-mismatch': 'Rename the file to match the id, or update the id field to match the filename.',
-    'no-schema': 'Create a _schema.json file in the same directory as this entity.',
-    'parse': 'Check for syntax errors (trailing commas, missing quotes, invalid escape sequences).',
+    'missing-field': 'Add the missing annotation to the wikitext file.',
     'missing-reference': 'Create the referenced entity or fix the reference.',
     'property-conflict': 'Remove the item from either required or optional list (not both).',
     'subobject-conflict': 'Remove the item from either required or optional list (not both).',
@@ -722,16 +629,11 @@ async function main() {
 
     console.log(`Validating ${filesToValidate.length} file(s)...\n`)
 
-    // Phase 1: Schema validation - collect all errors (uses selected files)
-    const schemaErrors = []
-    for (const file of filesToValidate) {
-      const fileErrors = validateFile(file)
-      schemaErrors.push(...fileErrors)
-    }
-
-    // Phase 2: Reference validation (only if schema validation passed for all files)
-    // Build entity index once for all reference checks
+    // Phase 1: Build entity index (parses all wikitext and vocab.json files)
     const entityIndex = await buildEntityIndex()
+
+    // Phase 1b: Structural validation (required fields, etc.)
+    const schemaErrors = validateEntities(entityIndex)
 
     // Run reference validation
     const { errors: referenceErrors, warnings: referenceWarnings } = validateReferences(entityIndex)
