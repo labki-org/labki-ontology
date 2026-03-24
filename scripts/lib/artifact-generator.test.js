@@ -4,376 +4,191 @@ import fs from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
 import {
-  generateModuleArtifact,
-  generateBundleManifest,
-  writeVersionedArtifact
+  generateModuleArtifactDirectory,
+  generateBundleArtifactDirectory,
 } from './artifact-generator.js'
+import { createEntityTempDir } from '../__fixtures__/temp-dir.js'
 
 /**
- * Create a mock entity index for isolated testing
+ * Create a temp dir with entities and write their source wikitext files
  */
-function createMockEntityIndex() {
-  return {
-    modules: new Map([
-      ['TestModule', {
-        id: 'TestModule',
-        version: '1.0.0',
-        dependencies: [],
-        categories: ['TestCategory'],
-        properties: ['TestProperty'],
-        subobjects: [],
-        templates: []
-      }],
-      ['DependentModule', {
-        id: 'DependentModule',
-        version: '2.0.0',
+function createTestProject() {
+  const tempDir = createEntityTempDir({
+    categories: [
+      { id: 'TestCategory', label: 'Test Category', description: 'A test category' },
+      { id: 'OtherCategory', label: 'Other', description: 'Another category' },
+    ],
+    properties: [
+      { id: 'Has_test', label: 'Test', description: 'A test property', datatype: 'Text', cardinality: 'single' },
+    ],
+    subobjects: [
+      { id: 'TestSubobject', label: 'Sub', description: 'A subobject', required_properties: ['Has_test'] },
+    ],
+    templates: [
+      { id: 'Property/Default', label: 'Default', description: '', wikitext: '{{{value}}}' },
+    ],
+    modules: [
+      {
+        id: 'TestModule', version: '1.0.0', label: 'Test Module', description: 'A test module',
+        categories: ['TestCategory'], properties: ['Has_test'], subobjects: ['TestSubobject'],
+        templates: ['Property/Default'], dependencies: [],
+      },
+      {
+        id: 'DepModule', version: '2.0.0', label: 'Dep Module', description: 'Dependent module',
+        categories: ['OtherCategory'], properties: [], subobjects: [], templates: [],
         dependencies: ['TestModule'],
-        categories: ['DependentCategory'],
-        properties: [],
-        subobjects: [],
-        templates: []
-      }]
-    ]),
-    bundles: new Map([
-      ['TestBundle', {
-        id: 'TestBundle',
-        version: '1.0.0',
-        description: 'Test bundle for unit testing',
-        modules: ['TestModule']
-      }],
-      ['MultiModuleBundle', {
-        id: 'MultiModuleBundle',
-        version: '1.5.0',
-        description: 'Bundle with multiple modules',
-        modules: ['TestModule', 'DependentModule']
-      }]
-    ]),
-    categories: new Map([
-      ['TestCategory', {
-        id: 'TestCategory',
-        label: 'Test Category',
-        description: 'A test category',
-        _filePath: 'categories/TestCategory.json'
-      }],
-      ['DependentCategory', {
-        id: 'DependentCategory',
-        label: 'Dependent Category',
-        _filePath: 'categories/DependentCategory.json'
-      }]
-    ]),
-    properties: new Map([
-      ['TestProperty', {
-        id: 'TestProperty',
-        label: 'Test Property',
-        datatype: 'Text',
-        _filePath: 'properties/TestProperty.json'
-      }]
-    ]),
-    subobjects: new Map([
-      ['TestSubobject', {
-        id: 'TestSubobject',
-        label: 'Test Subobject',
-        _filePath: 'subobjects/TestSubobject.json'
-      }]
-    ]),
-    templates: new Map([
-      ['TestTemplate', {
-        id: 'TestTemplate',
-        label: 'Test Template',
-        _filePath: 'templates/TestTemplate.json'
-      }]
-    ])
-  }
+      },
+    ],
+    bundles: [
+      { id: 'TestBundle', version: '1.0.0', label: 'Test Bundle', description: 'A test bundle', modules: ['TestModule'] },
+      { id: 'MultiBund', version: '1.5.0', label: 'Multi', description: 'Multi-module', modules: ['TestModule', 'DepModule'] },
+    ],
+  })
+
+  // Write VERSION file
+  tempDir.writeFile('VERSION', '0.1.0')
+
+  return tempDir
 }
 
-describe('generateModuleArtifact', () => {
-  it('returns correct structure with all required fields', () => {
-    const entityIndex = createMockEntityIndex()
-    const artifact = generateModuleArtifact('TestModule', '1.0.0', entityIndex)
+describe('generateModuleArtifactDirectory', () => {
+  let tempDir
+  let entityIndex
 
-    assert.equal(artifact.$schema, 'https://labki.org/schemas/module-version.schema.json')
-    assert.equal(artifact.id, 'TestModule')
-    assert.equal(artifact.version, '1.0.0')
-    assert.ok(artifact.generated)
-    assert.deepEqual(artifact.dependencies, {})
+  beforeEach(async () => {
+    tempDir = createTestProject()
+    const { buildEntityIndex } = await import('./entity-index.js')
+    entityIndex = await buildEntityIndex(tempDir.path)
   })
 
-  it('includes all entity types', () => {
-    const entityIndex = createMockEntityIndex()
-    const artifact = generateModuleArtifact('TestModule', '1.0.0', entityIndex)
-
-    assert.ok(Array.isArray(artifact.categories))
-    assert.ok(Array.isArray(artifact.properties))
-    assert.ok(Array.isArray(artifact.subobjects))
-    assert.ok(Array.isArray(artifact.templates))
+  afterEach(() => {
+    if (tempDir) tempDir.cleanup()
   })
 
-  it('includes entity content in arrays', () => {
-    const entityIndex = createMockEntityIndex()
-    const artifact = generateModuleArtifact('TestModule', '1.0.0', entityIndex)
+  it('creates output directory with vocab.json', () => {
+    const outputDir = generateModuleArtifactDirectory(
+      'TestModule', '1.0.0', entityIndex, '0.1.0', tempDir.path
+    )
 
-    assert.equal(artifact.categories.length, 1)
-    assert.equal(artifact.categories[0].id, 'TestCategory')
-    assert.equal(artifact.categories[0].label, 'Test Category')
-
-    assert.equal(artifact.properties.length, 1)
-    assert.equal(artifact.properties[0].id, 'TestProperty')
+    assert.ok(fs.existsSync(outputDir))
+    assert.ok(fs.existsSync(path.join(outputDir, 'testmodule.vocab.json')))
   })
 
-  it('removes _filePath from entities', () => {
-    const entityIndex = createMockEntityIndex()
-    const artifact = generateModuleArtifact('TestModule', '1.0.0', entityIndex)
+  it('vocab.json has correct structure', () => {
+    const outputDir = generateModuleArtifactDirectory(
+      'TestModule', '1.0.0', entityIndex, '0.1.0', tempDir.path
+    )
 
-    for (const category of artifact.categories) {
-      assert.equal(category._filePath, undefined)
-    }
-    for (const property of artifact.properties) {
-      assert.equal(property._filePath, undefined)
-    }
+    const vocab = JSON.parse(fs.readFileSync(path.join(outputDir, 'testmodule.vocab.json'), 'utf8'))
+    assert.equal(vocab.id, 'TestModule')
+    assert.equal(vocab.version, '1.0.0')
+    assert.ok(Array.isArray(vocab.import))
+    assert.ok(vocab.import.length > 0)
+    assert.equal(vocab.meta.ontologyVersion, '0.1.0')
   })
 
-  it('resolves dependency versions correctly', () => {
-    const entityIndex = createMockEntityIndex()
-    const artifact = generateModuleArtifact('DependentModule', '2.0.0', entityIndex)
+  it('copies wikitext files into artifact directory', () => {
+    const outputDir = generateModuleArtifactDirectory(
+      'TestModule', '1.0.0', entityIndex, '0.1.0', tempDir.path
+    )
 
-    assert.deepEqual(artifact.dependencies, { TestModule: '1.0.0' })
+    assert.ok(fs.existsSync(path.join(outputDir, 'categories', 'TestCategory.wikitext')))
+    assert.ok(fs.existsSync(path.join(outputDir, 'properties', 'Has_test.wikitext')))
+    assert.ok(fs.existsSync(path.join(outputDir, 'subobjects', 'TestSubobject.wikitext')))
+    assert.ok(fs.existsSync(path.join(outputDir, 'templates', 'Property', 'Default.wikitext')))
+  })
+
+  it('resolves dependency versions', () => {
+    const outputDir = generateModuleArtifactDirectory(
+      'DepModule', '2.0.0', entityIndex, '0.1.0', tempDir.path
+    )
+
+    const vocab = JSON.parse(fs.readFileSync(path.join(outputDir, 'depmodule.vocab.json'), 'utf8'))
+    assert.deepEqual(vocab.dependencies, { TestModule: '1.0.0' })
   })
 
   it('throws for missing module', () => {
-    const entityIndex = createMockEntityIndex()
-
     assert.throws(
-      () => generateModuleArtifact('NonExistentModule', '1.0.0', entityIndex),
-      /Module not found: NonExistentModule/
+      () => generateModuleArtifactDirectory('NonExistent', '1.0.0', entityIndex, '0.1.0', tempDir.path),
+      /Module not found: NonExistent/
     )
   })
 
-  it('throws for missing dependency module', () => {
-    const entityIndex = createMockEntityIndex()
-    // Add a module with a non-existent dependency
-    entityIndex.modules.set('BrokenModule', {
-      id: 'BrokenModule',
-      version: '1.0.0',
-      dependencies: ['NonExistent'],
-      categories: [],
-      properties: [],
-      subobjects: [],
-      templates: []
-    })
-
-    assert.throws(
-      () => generateModuleArtifact('BrokenModule', '1.0.0', entityIndex),
-      /Dependency module not found: NonExistent/
+  it('import entries have correct namespace constants', () => {
+    const outputDir = generateModuleArtifactDirectory(
+      'TestModule', '1.0.0', entityIndex, '0.1.0', tempDir.path
     )
-  })
 
-  it('generated timestamp is valid ISO 8601', () => {
-    const entityIndex = createMockEntityIndex()
-    const artifact = generateModuleArtifact('TestModule', '1.0.0', entityIndex)
+    const vocab = JSON.parse(fs.readFileSync(path.join(outputDir, 'testmodule.vocab.json'), 'utf8'))
+    const namespaces = vocab.import.map(e => e.namespace)
 
-    // Should parse without error
-    const date = new Date(artifact.generated)
-    assert.ok(!isNaN(date.getTime()))
-
-    // Should match ISO 8601 format
-    assert.match(artifact.generated, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/)
-  })
-
-  it('handles module with no entities', () => {
-    const entityIndex = createMockEntityIndex()
-    entityIndex.modules.set('EmptyModule', {
-      id: 'EmptyModule',
-      version: '1.0.0',
-      dependencies: [],
-      categories: [],
-      properties: [],
-      subobjects: [],
-      templates: []
-    })
-
-    const artifact = generateModuleArtifact('EmptyModule', '1.0.0', entityIndex)
-
-    assert.deepEqual(artifact.categories, [])
-    assert.deepEqual(artifact.properties, [])
-    assert.deepEqual(artifact.subobjects, [])
-    assert.deepEqual(artifact.templates, [])
+    assert.ok(namespaces.includes('NS_CATEGORY'))
+    assert.ok(namespaces.includes('SMW_NS_PROPERTY'))
+    assert.ok(namespaces.includes('NS_SUBOBJECT'))
+    assert.ok(namespaces.includes('NS_TEMPLATE'))
   })
 })
 
-describe('generateBundleManifest', () => {
-  it('returns correct structure with all required fields', () => {
-    const entityIndex = createMockEntityIndex()
-    const manifest = generateBundleManifest('TestBundle', '1.0.0', entityIndex, '0.1.0')
+describe('generateBundleArtifactDirectory', () => {
+  let tempDir
+  let entityIndex
 
-    assert.equal(manifest.$schema, 'https://labki.org/schemas/bundle-version.schema.json')
-    assert.equal(manifest.id, 'TestBundle')
-    assert.equal(manifest.version, '1.0.0')
-    assert.ok(manifest.generated)
-    assert.equal(manifest.ontologyVersion, '0.1.0')
-    assert.ok(manifest.modules)
+  beforeEach(async () => {
+    tempDir = createTestProject()
+    const { buildEntityIndex } = await import('./entity-index.js')
+    entityIndex = await buildEntityIndex(tempDir.path)
   })
 
-  it('includes description from bundle entity', () => {
-    const entityIndex = createMockEntityIndex()
-    const manifest = generateBundleManifest('TestBundle', '1.0.0', entityIndex, '0.1.0')
-
-    assert.equal(manifest.description, 'Test bundle for unit testing')
+  afterEach(() => {
+    if (tempDir) tempDir.cleanup()
   })
 
-  it('maps module IDs to their versions correctly', () => {
-    const entityIndex = createMockEntityIndex()
-    const manifest = generateBundleManifest('TestBundle', '1.0.0', entityIndex, '0.1.0')
+  it('creates output directory with vocab.json', () => {
+    const outputDir = generateBundleArtifactDirectory(
+      'TestBundle', '1.0.0', entityIndex, '0.1.0', tempDir.path
+    )
 
-    assert.deepEqual(manifest.modules, { TestModule: '1.0.0' })
+    assert.ok(fs.existsSync(outputDir))
+    assert.ok(fs.existsSync(path.join(outputDir, 'testbundle.vocab.json')))
   })
 
-  it('handles bundle with multiple modules', () => {
-    const entityIndex = createMockEntityIndex()
-    const manifest = generateBundleManifest('MultiModuleBundle', '1.5.0', entityIndex, '0.2.0')
+  it('vocab.json includes module version map', () => {
+    const outputDir = generateBundleArtifactDirectory(
+      'TestBundle', '1.0.0', entityIndex, '0.1.0', tempDir.path
+    )
 
-    assert.deepEqual(manifest.modules, {
-      TestModule: '1.0.0',
-      DependentModule: '2.0.0'
-    })
+    const vocab = JSON.parse(fs.readFileSync(path.join(outputDir, 'testbundle.vocab.json'), 'utf8'))
+    assert.deepEqual(vocab.modules, { TestModule: '1.0.0' })
+  })
+
+  it('merges entities from all modules', () => {
+    const outputDir = generateBundleArtifactDirectory(
+      'MultiBund', '1.5.0', entityIndex, '0.1.0', tempDir.path
+    )
+
+    const vocab = JSON.parse(fs.readFileSync(path.join(outputDir, 'multibund.vocab.json'), 'utf8'))
+    assert.deepEqual(vocab.modules, { TestModule: '1.0.0', DepModule: '2.0.0' })
+
+    // Should have entities from both modules
+    assert.ok(fs.existsSync(path.join(outputDir, 'categories', 'TestCategory.wikitext')))
+    assert.ok(fs.existsSync(path.join(outputDir, 'categories', 'OtherCategory.wikitext')))
   })
 
   it('throws for missing bundle', () => {
-    const entityIndex = createMockEntityIndex()
-
     assert.throws(
-      () => generateBundleManifest('NonExistentBundle', '1.0.0', entityIndex, '0.1.0'),
-      /Bundle not found: NonExistentBundle/
+      () => generateBundleArtifactDirectory('NonExistent', '1.0.0', entityIndex, '0.1.0', tempDir.path),
+      /Bundle not found: NonExistent/
     )
   })
 
   it('throws for missing module in bundle', () => {
-    const entityIndex = createMockEntityIndex()
-    // Add a bundle with a non-existent module
-    entityIndex.bundles.set('BrokenBundle', {
-      id: 'BrokenBundle',
-      version: '1.0.0',
-      modules: ['NonExistent']
+    entityIndex.bundles.set('Broken', {
+      id: 'Broken', version: '1.0.0', modules: ['NonExistent'],
     })
 
     assert.throws(
-      () => generateBundleManifest('BrokenBundle', '1.0.0', entityIndex, '0.1.0'),
+      () => generateBundleArtifactDirectory('Broken', '1.0.0', entityIndex, '0.1.0', tempDir.path),
       /Module not found in bundle: NonExistent/
     )
-  })
-
-  it('generated timestamp is valid ISO 8601', () => {
-    const entityIndex = createMockEntityIndex()
-    const manifest = generateBundleManifest('TestBundle', '1.0.0', entityIndex, '0.1.0')
-
-    const date = new Date(manifest.generated)
-    assert.ok(!isNaN(date.getTime()))
-    assert.match(manifest.generated, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/)
-  })
-
-  it('omits description if bundle has none', () => {
-    const entityIndex = createMockEntityIndex()
-    // Add a bundle without description
-    entityIndex.bundles.set('NoDescBundle', {
-      id: 'NoDescBundle',
-      version: '1.0.0',
-      modules: ['TestModule']
-    })
-
-    const manifest = generateBundleManifest('NoDescBundle', '1.0.0', entityIndex, '0.1.0')
-
-    assert.equal(manifest.description, undefined)
-  })
-})
-
-describe('writeVersionedArtifact', () => {
-  let tempDir
-
-  beforeEach(() => {
-    // Create unique temp directory for each test
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'artifact-test-'))
-  })
-
-  afterEach(() => {
-    // Clean up temp directory
-    fs.rmSync(tempDir, { recursive: true, force: true })
-  })
-
-  it('creates directory structure if not exists', () => {
-    const artifact = { id: 'Test', version: '1.0.0' }
-    const baseDir = path.join(tempDir, 'modules')
-
-    writeVersionedArtifact(baseDir, 'TestModule', '1.0.0', artifact)
-
-    const expectedDir = path.join(baseDir, 'TestModule', 'versions')
-    assert.ok(fs.existsSync(expectedDir))
-  })
-
-  it('writes JSON with 2-space indent', () => {
-    const artifact = { id: 'Test', version: '1.0.0', data: { nested: true } }
-    const baseDir = path.join(tempDir, 'modules')
-
-    writeVersionedArtifact(baseDir, 'TestModule', '1.0.0', artifact)
-
-    const content = fs.readFileSync(
-      path.join(baseDir, 'TestModule', 'versions', '1.0.0.json'),
-      'utf8'
-    )
-
-    // Check 2-space indent
-    assert.ok(content.includes('  "id"'))
-    assert.ok(content.includes('    "nested"'))
-  })
-
-  it('returns correct output path', () => {
-    const artifact = { id: 'Test' }
-    const baseDir = path.join(tempDir, 'bundles')
-
-    const result = writeVersionedArtifact(baseDir, 'MyBundle', '2.0.0', artifact)
-
-    assert.equal(result, path.join(baseDir, 'MyBundle', 'versions', '2.0.0.json'))
-  })
-
-  it('file ends with newline', () => {
-    const artifact = { id: 'Test' }
-    const baseDir = path.join(tempDir, 'modules')
-
-    writeVersionedArtifact(baseDir, 'TestModule', '1.0.0', artifact)
-
-    const content = fs.readFileSync(
-      path.join(baseDir, 'TestModule', 'versions', '1.0.0.json'),
-      'utf8'
-    )
-
-    assert.ok(content.endsWith('\n'))
-  })
-
-  it('overwrites existing file', () => {
-    const baseDir = path.join(tempDir, 'modules')
-    const artifact1 = { id: 'Test', value: 1 }
-    const artifact2 = { id: 'Test', value: 2 }
-
-    writeVersionedArtifact(baseDir, 'TestModule', '1.0.0', artifact1)
-    writeVersionedArtifact(baseDir, 'TestModule', '1.0.0', artifact2)
-
-    const content = fs.readFileSync(
-      path.join(baseDir, 'TestModule', 'versions', '1.0.0.json'),
-      'utf8'
-    )
-    const parsed = JSON.parse(content)
-
-    assert.equal(parsed.value, 2)
-  })
-
-  it('handles different version formats', () => {
-    const baseDir = path.join(tempDir, 'modules')
-    const artifact = { id: 'Test' }
-
-    const path1 = writeVersionedArtifact(baseDir, 'Module', '1.0.0', artifact)
-    const path2 = writeVersionedArtifact(baseDir, 'Module', '10.20.30', artifact)
-
-    assert.ok(fs.existsSync(path1))
-    assert.ok(fs.existsSync(path2))
-    assert.ok(path1.endsWith('1.0.0.json'))
-    assert.ok(path2.endsWith('10.20.30.json'))
   })
 })
