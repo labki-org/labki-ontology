@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+[[Has description::Example person resource demonstrating the Person category structure]]
+[[Display label::John Doe]]
+[[Has name::John Doe]]
+[[Has email::john.doe@example.com]]
+<!-- OntologySync End -->
+[[Category:Person]]
+[[Category:OntologySync-managed-resource]]

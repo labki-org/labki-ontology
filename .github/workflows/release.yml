@@ -50,12 +50,11 @@ jobs:
             exit 0
           fi
 
-          # Get changed files in entity directories
+          # Get changed files in entity directories (.wikitext, .vocab.json, .json for bundles)
           CHANGED_FILES=$(git diff --name-only "$BEFORE".."$AFTER" | \
             grep -E '^(properties|categories|templates|subobjects|modules|bundles|dashboards|resources)/' | \
-            grep '\.json$' | \
-            grep -v '/versions/' | \
-            grep -v '_schema\.json' || true)
+            grep -E '\.(wikitext|vocab\.json|json)$' | \
+            grep -v '/versions/' || true)
 
           if [ -z "$CHANGED_FILES" ]; then
             echo "No entity files changed, skipping artifact generation"
@@ -77,7 +76,7 @@ jobs:
 
           if [ "${{ steps.changes.outputs.initial }}" == "true" ]; then
             # Initial push - generate for all
-            MODULES=$(ls -1 modules/*.json 2>/dev/null | xargs -I{} basename {} .json | tr '\n' ',' | sed 's/,$//')
+            MODULES=$(ls -1 modules/*.vocab.json 2>/dev/null | xargs -I{} basename {} .vocab.json | tr '\n' ',' | sed 's/,$//')
             BUNDLES=$(ls -1 bundles/*.json 2>/dev/null | xargs -I{} basename {} .json | tr '\n' ',' | sed 's/,$//')
           else
             # Use detection script with changed files
@@ -139,9 +138,9 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-          # Stage source JSON version updates AND version artifacts
-          git add modules/*.json bundles/*.json VERSION 2>/dev/null || true
-          git add modules/*/versions/*.json bundles/*/versions/*.json 2>/dev/null || true
+          # Stage source version updates AND version artifact directories
+          git add modules/*.vocab.json bundles/*.json VERSION 2>/dev/null || true
+          git add modules/*/versions/ bundles/*/versions/ 2>/dev/null || true
 
           # Check if there are changes to commit
           if git diff --staged --quiet; then

@@ -2,28 +2,39 @@ import fg from 'fast-glob'
 import fs from 'node:fs'
 import path from 'node:path'
 import { ENTITY_TYPES_SET, GLOB_IGNORE_PATTERNS } from './constants.js'
+import {
+  parseCategory,
+  parseProperty,
+  parseSubobject,
+  parseTemplate,
+  parseDashboardPage,
+  parseResource,
+  parseModuleVocab,
+  parseFilePath,
+} from './wikitext-parser.js'
 
 /**
- * Build an index of all entities in the project
+ * Wikitext parser dispatch by entity type directory name
+ */
+const WIKITEXT_PARSERS = {
+  categories: parseCategory,
+  properties: parseProperty,
+  subobjects: parseSubobject,
+  templates: parseTemplate,
+  resources: parseResource,
+}
+
+/**
+ * Build an index of all entities in the project.
+ *
+ * Discovers .wikitext files for entity content, .vocab.json for modules,
+ * and .json for bundles. Parses wikitext into structured dicts matching
+ * the old JSON format so downstream validators work unchanged.
  *
  * @param {string} rootDir - Root directory to search from (defaults to cwd)
  * @returns {Promise<Object>} Entity index with Maps for each entity type
- *
- * @example
- * const index = await buildEntityIndex();
- * // {
- * //   categories: Map<id, entity>,
- * //   properties: Map<id, entity>,
- * //   subobjects: Map<id, entity>,
- * //   templates: Map<id, entity>,
- * //   modules: Map<id, entity>,
- * //   bundles: Map<id, entity>,
- * //   dashboards: Map<id, entity>,
- * //   resources: Map<id, entity>
- * // }
  */
 export async function buildEntityIndex(rootDir = process.cwd()) {
-  // Initialize Maps for each entity type
   const index = {
     categories: new Map(),
     properties: new Map(),
@@ -35,9 +46,9 @@ export async function buildEntityIndex(rootDir = process.cwd()) {
     resources: new Map()
   }
 
-  // Discover all JSON files
+  // Discover all entity files (.wikitext, .vocab.json, .json)
   const files = await fg(
-    ['**/*.json'],
+    ['**/*.wikitext', 'modules/*.vocab.json', 'bundles/*.json'],
     {
       ignore: GLOB_IGNORE_PATTERNS,
       cwd: rootDir,
@@ -46,41 +57,90 @@ export async function buildEntityIndex(rootDir = process.cwd()) {
     }
   )
 
-  // Process each file
-  for (const relativePath of files) {
-    // Determine entity type from first path segment
-    const firstSegment = relativePath.split('/')[0]
+  // Temporary storage for assembling multi-page dashboards
+  const dashboardPages = new Map() // dashboardId -> [{name, wikitext, filePath}]
 
-    // Skip files not in known entity type directories
-    if (!ENTITY_TYPES_SET.has(firstSegment)) {
-      continue
-    }
+  for (const relativePath of files) {
+    const parsed = parseFilePath(relativePath)
+    if (!parsed) continue
+
+    const { entityType, entityKey, fileType } = parsed
+
+    if (!ENTITY_TYPES_SET.has(entityType)) continue
 
     const absolutePath = path.join(rootDir, relativePath)
 
-    // Parse entity file
-    let data
     try {
-      const content = fs.readFileSync(absolutePath, 'utf8')
-      data = JSON.parse(content)
+      if (fileType === 'wikitext') {
+        const content = fs.readFileSync(absolutePath, 'utf8')
+
+        // Dashboards: collect pages for assembly
+        if (entityType === 'dashboards') {
+          const dashboardId = entityKey.split('/')[0]
+          const pageName = entityKey.includes('/') ? entityKey.split('/').slice(1).join('/') : ''
+
+          if (!dashboardPages.has(dashboardId)) {
+            dashboardPages.set(dashboardId, [])
+          }
+          const page = parseDashboardPage(content, pageName)
+          dashboardPages.get(dashboardId).push({
+            ...page,
+            _filePath: relativePath,
+          })
+          continue
+        }
+
+        // All other wikitext entity types
+        const parser = WIKITEXT_PARSERS[entityType]
+        if (!parser) continue
+
+        const data = parser(content, entityKey)
+        if (!data.id) continue
+
+        index[entityType].set(data.id, { ...data, _filePath: relativePath })
+      } else if (fileType === 'vocab.json') {
+        // Module vocab.json
+        const content = fs.readFileSync(absolutePath, 'utf8')
+        const vocabJson = JSON.parse(content)
+        const data = parseModuleVocab(vocabJson)
+        if (!data.id) continue
+
+        index.modules.set(data.id, { ...data, _filePath: relativePath })
+      } else if (fileType === 'json') {
+        // Bundle JSON (unchanged format)
+        const content = fs.readFileSync(absolutePath, 'utf8')
+        const data = JSON.parse(content)
+        if (!data.id) continue
+
+        index.bundles.set(data.id, { ...data, _filePath: relativePath })
+      }
     } catch (err) {
       // Skip files that can't be parsed (validate.js handles parse errors)
       continue
     }
+  }
 
-    // Entity must have an id field
-    if (!data.id) {
-      continue
+  // Assemble dashboard entities from collected pages
+  for (const [dashboardId, pages] of dashboardPages) {
+    // Sort: root page first, then subpages alphabetically
+    pages.sort((a, b) => {
+      if (a.name === '') return -1
+      if (b.name === '') return 1
+      return a.name.localeCompare(b.name)
+    })
+
+    const rootPage = pages.find(p => p.name === '')
+    const filePath = rootPage?._filePath || `dashboards/${dashboardId}.wikitext`
+
+    const dashboard = {
+      id: dashboardId,
+      label: dashboardId.replace(/_/g, ' '),
+      description: '',
+      pages: pages.map(({ name, wikitext }) => ({ name, wikitext })),
+      _filePath: filePath,
     }
 
-    // Store entity with metadata
-    const entity = {
-      ...data,
-      _filePath: relativePath
-    }
-
-    // Key by entity's id field (not filename)
-    index[firstSegment].set(data.id, entity)
+    index.dashboards.set(dashboardId, dashboard)
   }
 
   return index

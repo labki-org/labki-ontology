@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { detailedDiff } from 'deep-object-diff'
 import { ENTITY_TYPES_SET, BUMP_PRIORITY } from './constants.js'
+import { parseFilePath, parseCategory, parseProperty, parseSubobject, parseTemplate, parseResource, parseModuleVocab } from './wikitext-parser.js'
 
 /**
  * Get list of changed files between base branch and HEAD
@@ -27,11 +28,11 @@ export function getChangedFiles(baseBranch = 'origin/main') {
       .filter(Boolean)
       .filter(filePath => {
         const firstSegment = filePath.split('/')[0]
-        const fileName = filePath.split('/').pop()
-        // Include only entity JSON files (not _schema.json)
+        // Include entity files: .wikitext, .vocab.json, .json (bundles)
         return ENTITY_TYPES_SET.has(firstSegment) &&
-               filePath.endsWith('.json') &&
-               fileName !== '_schema.json'
+               (filePath.endsWith('.wikitext') ||
+                filePath.endsWith('.vocab.json') ||
+                (filePath.endsWith('.json') && firstSegment === 'bundles'))
       })
   } catch (err) {
     // No changes or git error
@@ -56,7 +57,7 @@ export function getBaseEntity(filePath, baseBranch = 'origin/main') {
       encoding: 'utf8',
       stdio: ['pipe', 'pipe', 'pipe']
     })
-    return JSON.parse(content)
+    return parseEntityContent(filePath, content)
   } catch (err) {
     // File doesn't exist on base
     return null
@@ -74,11 +75,40 @@ function getPrEntity(filePath, rootDir = process.cwd()) {
   try {
     const absolutePath = path.join(rootDir, filePath)
     const content = fs.readFileSync(absolutePath, 'utf8')
-    return JSON.parse(content)
+    return parseEntityContent(filePath, content)
   } catch (err) {
     // File doesn't exist in PR (deleted)
     return null
   }
+}
+
+/**
+ * Wikitext parsers by directory name
+ */
+const WIKITEXT_PARSERS = {
+  categories: parseCategory,
+  properties: parseProperty,
+  subobjects: parseSubobject,
+  templates: parseTemplate,
+  resources: parseResource,
+}
+
+/**
+ * Parse file content based on file path (wikitext, vocab.json, or JSON)
+ */
+function parseEntityContent(filePath, content) {
+  const parsed = parseFilePath(filePath)
+  if (!parsed) return JSON.parse(content)
+
+  if (parsed.fileType === 'wikitext') {
+    const parser = WIKITEXT_PARSERS[parsed.entityType]
+    return parser ? parser(content, parsed.entityKey) : null
+  }
+  if (parsed.fileType === 'vocab.json') {
+    return parseModuleVocab(JSON.parse(content))
+  }
+  // Plain JSON (bundles)
+  return JSON.parse(content)
 }
 
 /**

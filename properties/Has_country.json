@@ -1,7 +1,0 @@
-{
-  "id": "Has_country",
-  "label": "Country",
-  "description": "Country name",
-  "datatype": "Text",
-  "cardinality": "single"
-}

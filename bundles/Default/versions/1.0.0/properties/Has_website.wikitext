@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::URL]]
+[[Has description::URL of the entity's website]]
+[[Display label::Website]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,8 +1,0 @@
-{
-  "id": "Person/John_doe",
-  "label": "John Doe",
-  "description": "Example person resource demonstrating the Person category structure",
-  "category": "Person",
-  "Has_name": "John Doe",
-  "Has_email": "john.doe@example.com"
-}

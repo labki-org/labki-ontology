@@ -1,6 +1,0 @@
-{
-  "id": "Property/Page",
-  "label": "Page Link Template",
-  "description": "Renders page references as clickable wiki links",
-  "wikitext": "<includeonly>{{#if:{{{value|}}}|{{#arraymap:{{{value|}}}|,|@@item@@|[[:@@item@@]]|,&#32;}}|}}</includeonly>"
-}

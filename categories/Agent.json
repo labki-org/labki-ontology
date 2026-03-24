@@ -1,7 +1,0 @@
-{
-  "id": "Agent",
-  "label": "Agent",
-  "description": "An abstract entity that can perform actions - either a person or an organization",
-  "required_properties": ["Has_name"],
-  "optional_properties": ["Has_description"]
-}

@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has description::An abstract entity that can perform actions - either a person or an organization]]
+[[Has required property::Property:Has name]]
+[[Has optional property::Property:Has description]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

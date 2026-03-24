@@ -1,8 +1,0 @@
-{
-  "id": "Organization",
-  "label": "Organization",
-  "description": "A social entity such as a company, institution, or group",
-  "parents": ["Agent"],
-  "optional_properties": ["Has_email", "Has_website"],
-  "optional_subobjects": ["Address"]
-}

@@ -1,8 +1,0 @@
-{
-  "id": "Person",
-  "label": "Person",
-  "description": "A human being",
-  "parents": ["Agent"],
-  "optional_properties": ["Has_email"],
-  "optional_subobjects": ["Address"]
-}
