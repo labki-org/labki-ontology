@@ -108,7 +108,7 @@ describe('ci-apply-versions.js integration tests', () => {
     })
 
     test('module versions start at 1.0.0', async () => {
-      const moduleContent = fixture.readJSON('modules/Core.json')
+      const moduleContent = fixture.readJSON('modules/Core.vocab.json')
 
       assert.strictEqual(moduleContent.version, '1.0.0')
     })

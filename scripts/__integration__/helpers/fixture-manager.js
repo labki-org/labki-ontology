@@ -60,8 +60,8 @@ export function createTempFixture(name = 'test-fixture') {
         return tempDir.writeFile(wikitextPath, wikitext)
       }
 
-      // Auto-convert module JSON to vocab.json format
-      if (dir === 'modules' && relativePath.endsWith('.json') && !relativePath.includes('versions')) {
+      // Auto-convert module JSON to vocab.json format (only bare .json, not .vocab.json)
+      if (dir === 'modules' && relativePath.endsWith('.json') && !relativePath.endsWith('.vocab.json') && !relativePath.includes('versions')) {
         const entityPaths = buildEntityPaths(data)
         const vocab = generateModuleVocab(data, entityPaths, '0.0.0')
         const vocabPath = relativePath.replace(/\.json$/, '.vocab.json')

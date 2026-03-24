@@ -69,7 +69,9 @@ export function generateCategory(entity) {
 export function generateProperty(entity) {
   const lines = ['<!-- OntologySync Start -->']
 
-  lines.push(`[[Has type::${entity.datatype}]]`)
+  if (entity.datatype) {
+    lines.push(`[[Has type::${entity.datatype}]]`)
+  }
 
   if (entity.description) {
     lines.push(`[[Has description::${entity.description}]]`)
