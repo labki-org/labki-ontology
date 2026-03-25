@@ -6,3 +6,5 @@
 <!-- OntologySync End -->
 [[Category:Person]]
 [[Category:OntologySync-managed-resource]]
+
+This is wiki text.
