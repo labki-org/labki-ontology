@@ -1,6 +1,0 @@
-<!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Postal or ZIP code]]
-[[Display label::Postal Code]]
-<!-- OntologySync End -->
-[[Category:OntologySync-managed-property]]

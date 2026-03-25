@@ -1,7 +1,0 @@
-<!-- OntologySync Start -->
-[[Has description::A human being]]
-[[Has parent category::Category:Agent]]
-[[Has optional property::Property:Has email]]
-[[Has optional subobject::Subobject:Address]]
-<!-- OntologySync End -->
-[[Category:OntologySync-managed]]

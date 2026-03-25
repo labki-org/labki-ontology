@@ -1,7 +1,0 @@
-{
-  "id": "Default",
-  "version": "1.0.0",
-  "label": "Default Bundle",
-  "description": "Standard bundle with core entities",
-  "modules": ["Core"]
-}

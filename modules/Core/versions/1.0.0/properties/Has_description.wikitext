@@ -1,6 +1,0 @@
-<!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::A textual description of the entity]]
-[[Display label::Description]]
-<!-- OntologySync End -->
-[[Category:OntologySync-managed-property]]

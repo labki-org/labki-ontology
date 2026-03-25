@@ -1,379 +1,430 @@
-# Labki Schemas Specification
+# Labki Ontology Specification
 
-This document defines the schema and data structures for the Labki community ontology. These schemas are used with the SemanticSchemas MediaWiki extension in concert with Semantic MediaWiki.
+This document defines the entity types, wikitext format, and validation rules for the Labki community ontology. These definitions are used by [OntologySync](https://github.com/labki-org/OntologySync) to install ontology content into MediaWiki instances running [SemanticSchemas](https://github.com/labki-org/SemanticSchemas) with [Semantic MediaWiki](https://www.semantic-mediawiki.org/).
 
 ## Overview
 
-The ontology is organized into a hierarchy of concepts:
+The ontology is organized into a hierarchy:
 
 ```
 Bundle
   └── Module
-        └── Category
-              ├── Property
-              ├── Subobject
-              └── (inherits from parent Category)
+        ├── Category
+        │     ├── Property (required/optional)
+        │     ├── Subobject (required/optional)
+        │     └── (inherits from parent Categories)
+        ├── Property
+        ├── Subobject
+        ├── Template
+        ├── Dashboard
+        └── Resource
 ```
 
-| Concept | Purpose | Location |
-|---------|---------|----------|
-| **Bundle** | A curated collection of Modules for specific use cases | `bundles/` |
-| **Module** | A logical grouping of related Categories | `modules/` |
-| **Category** | An entity type (e.g., Person, Project) | `categories/` |
-| **Property** | An attribute that can be assigned to Categories | `properties/` |
-| **Subobject** | A nested structure embedded within a Category | `subobjects/` |
-| **Template** | A display template for rendering Property values | `templates/` |
+| Concept | Purpose | File Format | Location |
+|---------|---------|-------------|----------|
+| **Category** | Entity types with multiple inheritance | `.wikitext` | `categories/` |
+| **Property** | Typed attributes with constraints | `.wikitext` | `properties/` |
+| **Subobject** | Reusable nested structures | `.wikitext` | `subobjects/` |
+| **Template** | Display formatting for property values | `.wikitext` | `templates/` |
+| **Dashboard** | Wiki dashboard pages with SMW queries | `.wikitext` | `dashboards/` |
+| **Resource** | Pre-filled content pages (entity instances) | `.wikitext` | `resources/` |
+| **Module** | Logical entity groupings with dependencies | `.vocab.json` | `modules/` |
+| **Bundle** | Curated module collections for deployment | `.json` | `bundles/` |
+
+---
+
+## Wikitext Format
+
+Entity definitions (categories, properties, subobjects, resources) use MediaWiki semantic annotations inside OntologySync marker blocks:
+
+```wikitext
+<!-- OntologySync Start -->
+[[Annotation property::Value]]
+[[Another property::Another value]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]
+```
+
+Key rules:
+- Annotations go between the `<!-- OntologySync Start -->` and `<!-- OntologySync End -->` markers
+- Each annotation is a `[[Property::Value]]` pair on its own line
+- Multi-valued properties use repeated annotations (one per line)
+- References to other entities include the namespace prefix (e.g. `Property:Has name`, `Category:Agent`)
+- Page names in annotations use **spaces** (e.g. `Has name`), while filenames use **underscores** (e.g. `Has_name.wikitext`)
+- A management category appears outside the markers (e.g. `[[Category:OntologySync-managed]]`)
+
+Templates and dashboards are **raw wikitext** with no annotation block.
 
 ---
 
 ## Category
 
-A Category defines an entity type in the ontology. Categories support multiple inheritance and distinguish between required and optional properties/subobjects.
+A Category defines an entity type. Categories support multiple inheritance and distinguish between required and optional properties/subobjects.
 
 ### File Location
 
-`categories/{CategoryName}.json`
+`categories/{Category_name}.wikitext`
 
-### Schema
+### Annotations
 
-```json
-{
-  "id": "string (required)",
-  "label": "string (required)",
-  "description": "string (required)",
-  "parents": ["string"] (optional),
-  "required_properties": ["string"] (optional),
-  "optional_properties": ["string"] (optional),
-  "required_subobjects": ["string"] (optional),
-  "optional_subobjects": ["string"] (optional)
-}
-```
+| Annotation | Required | Description |
+|------------|----------|-------------|
+| `Has description` | Yes | What this Category represents |
+| `Display label` | No | Human-readable label (defaults to page name) |
+| `Has parent category` | No | Parent category reference (repeatable for multiple inheritance) |
+| `Has required property` | No | Property that must be provided (repeatable) |
+| `Has optional property` | No | Property that may be provided (repeatable) |
+| `Has required subobject` | No | Subobject that must be provided (repeatable) |
+| `Has optional subobject` | No | Subobject that may be provided (repeatable) |
 
-### Fields
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | string | Yes | Unique identifier matching the filename (without `.json`) |
-| `label` | string | Yes | Human-readable display name |
-| `description` | string | Yes | Explanation of what this Category represents |
-| `parents` | string[] | No | Array of parent Category IDs to inherit from (supports multiple inheritance) |
-| `required_properties` | string[] | No | Property IDs that must be provided for instances of this Category |
-| `optional_properties` | string[] | No | Property IDs that may optionally be provided |
-| `required_subobjects` | string[] | No | Subobject IDs that must be provided for instances of this Category |
-| `optional_subobjects` | string[] | No | Subobject IDs that may optionally be provided |
+Management category: `[[Category:OntologySync-managed]]`
 
 ### Inheritance
 
-Categories support multiple inheritance through the `parents` array:
+Categories support multiple inheritance through repeated `Has parent category` annotations:
 
 - A Category inherits all properties and subobjects from every parent
 - Inherited properties/subobjects retain their required/optional status from the parent
-- Child-defined properties/subobjects are merged with inherited ones
-- The inheritance chain can be multiple levels deep
-- When the same property is inherited from multiple parents, it is included only once
+- Child-defined properties/subobjects merge with inherited ones
+- Circular inheritance is not allowed
 
-**Constraint Narrowing (Future):** Child Categories will be able to further constrain inherited properties (e.g., making an optional property required), but cannot loosen constraints. This ensures a child instance is always valid as an instance of its parents.
+### Example: Root Category
 
-### Example: Single Parent
+```wikitext
+<!-- OntologySync Start -->
+[[Has description::An abstract entity that can perform actions - either a person or an organization]]
+[[Has required property::Property:Has name]]
+[[Has optional property::Property:Has description]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]
+```
 
-```json
-{
-  "id": "Person",
-  "label": "Person",
-  "description": "A human being",
-  "parents": ["Agent"],
-  "required_properties": ["Has_name"],
-  "optional_properties": ["Has_email", "Has_birthdate"],
-  "optional_subobjects": ["Address"]
-}
+### Example: Child with Inheritance
+
+```wikitext
+<!-- OntologySync Start -->
+[[Has description::A human being]]
+[[Has parent category::Category:Agent]]
+[[Has optional property::Property:Has email]]
+[[Has optional subobject::Subobject:Address]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]
 ```
 
 ### Example: Multiple Inheritance
 
-```json
-{
-  "id": "Research_student",
-  "label": "Research Student",
-  "description": "A student who also conducts research",
-  "parents": ["Student", "Researcher"],
-  "required_properties": ["Has_advisor"],
-  "optional_properties": ["Has_thesis_title"]
-}
+```wikitext
+<!-- OntologySync Start -->
+[[Has description::A student who also conducts research]]
+[[Has parent category::Category:Student]]
+[[Has parent category::Category:Researcher]]
+[[Has required property::Property:Has advisor]]
+[[Has optional property::Property:Has thesis title]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]
 ```
 
 ---
 
 ## Property
 
-A Property defines an attribute that can be assigned to Categories. Properties specify the data type, cardinality, and optional constraints.
+A Property defines a typed attribute that can be assigned to Categories and Subobjects. Properties specify the SMW data type, cardinality, and optional constraints.
 
 ### File Location
 
-`properties/{property_id}.json`
+`properties/{Property_id}.wikitext`
 
-### Schema
+### Annotations
 
-```json
-{
-  "id": "string (required)",
-  "label": "string (required)",
-  "description": "string (required)",
-  "datatype": "string (required)",
-  "cardinality": "string (required)",
-  "allowed_values": ["string"] (optional),
-  "allowed_pattern": "string (optional)",
-  "allowed_value_list": "string (optional)",
-  "display_units": ["string"] (optional),
-  "display_precision": "number (optional)",
-  "unique_values": "boolean (optional)",
-  "parent_property": "string (optional)",
-  "has_display_template": "string (optional)"
-}
-```
+| Annotation | Required | Description |
+|------------|----------|-------------|
+| `Has type` | Yes | Semantic MediaWiki data type |
+| `Has description` | Yes | What this Property represents |
+| `Display label` | No | Human-readable label (defaults to page name) |
+| `Allows multiple values` | No | Set to `true` for multi-valued properties (default: single) |
+| `Allows value` | No | Permitted value (repeatable for enumerated constraints) |
+| `Allows value from category` | No | Restrict values to pages in a category |
+| `Allows pattern` | No | Regex pattern for validation |
+| `Allows value list` | No | Reference to a wiki page of allowed values |
+| `Display units` | No | Unit for display (repeatable) |
+| `Display precision` | No | Decimal places for numeric display |
+| `Has unique values` | No | `true` if values must be globally unique |
+| `Has template` | No | Template reference for custom rendering |
+| `Subproperty of` | No | Parent property reference |
 
-### Fields
+Management category: `[[Category:OntologySync-managed-property]]`
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | string | Yes | Unique identifier matching the filename (without `.json`). Convention: `Has_*` or `Is_*` prefix |
-| `label` | string | Yes | Human-readable display name |
-| `description` | string | Yes | Explanation of what this Property represents |
-| `datatype` | string | Yes | The Semantic MediaWiki data type (see Datatypes below) |
-| `cardinality` | string | Yes | Either `"single"` or `"multiple"` |
-| `allowed_values` | string[] | No | Enumeration of permitted values (for constrained fields) |
-| `allowed_pattern` | string | No | Regex pattern for validating values (maps to SMW `Allows pattern`) |
-| `allowed_value_list` | string | No | Reference to a wiki page containing a list of allowed values |
-| `display_units` | string[] | No | Units or formats for display (e.g., `["km", "mi"]` for distances) |
-| `display_precision` | number | No | Number of decimal places for numeric display |
-| `unique_values` | boolean | No | If true, each value can only be assigned once across all pages |
-| `parent_property` | string | No | ID of a parent Property (creates property hierarchy via `Subproperty of`) |
-| `has_display_template` | string | No | Reference to a Template for custom rendering |
+### Data Types
 
-### Datatypes
-
-| Datatype | Description | Example Values |
-|----------|-------------|----------------|
-| `Text` | Plain text string | `"John Doe"` |
+| Datatype | Description | Example |
+|----------|-------------|---------|
+| `Text` | Plain text | `"John Doe"` |
 | `Email` | Email address | `"user@example.com"` |
 | `Date` | Calendar date | `"2024-01-15"` |
 | `URL` | Web address | `"https://example.com"` |
-| `Page` | Internal wiki page reference | `"Organization:Acme Corp"` |
+| `Page` | Internal wiki page | `"Person:John Doe"` |
 | `Number` | Numeric value | `42`, `3.14` |
-| `Boolean` | True/false value | `true`, `false` |
+| `Boolean` | True/false | `true`, `false` |
 | `Telephone` | Phone number | `"+1-555-123-4567"` |
-| `Geographic coordinate` | Lat/long coordinates | `"37.7749, -122.4194"` |
+| `Geographic coordinate` | Lat/long | `"37.7749, -122.4194"` |
 
 ### Cardinality
 
-- `"single"`: Property accepts exactly one value
-- `"multiple"`: Property accepts zero or more values (stored as a list)
+- **Single** (default): Property accepts exactly one value
+- **Multiple** (`[[Allows multiple values::true]]`): Property accepts zero or more values
 
-### Example
+### Example: Simple Property
 
-```json
-{
-  "id": "Has_email",
-  "label": "Email",
-  "description": "Contact email address",
-  "datatype": "Email",
-  "cardinality": "multiple"
-}
+```wikitext
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The name of an entity]]
+[[Display label::Name]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
 ```
 
-### Example with Constraints
+### Example: Multi-valued Property
 
-```json
-{
-  "id": "Has_status",
-  "label": "Status",
-  "description": "Current status of the entity",
-  "datatype": "Text",
-  "cardinality": "single",
-  "allowed_values": ["planned", "active", "completed", "cancelled"]
-}
+```wikitext
+<!-- OntologySync Start -->
+[[Has type::Email]]
+[[Has description::Email address for contact]]
+[[Display label::Email]]
+[[Allows multiple values::true]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
 ```
 
-### Example with Display Template
+### Example: Enumerated Values
 
-```json
-{
-  "id": "Has_related_page",
-  "label": "Related Page",
-  "description": "Link to a related wiki page",
-  "datatype": "Page",
-  "cardinality": "multiple",
-  "has_display_template": "Template:Property/Page"
-}
+```wikitext
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Current status of the entity]]
+[[Display label::Status]]
+[[Allows value::planned]]
+[[Allows value::active]]
+[[Allows value::completed]]
+[[Allows value::cancelled]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
 ```
 
-### Example with Units and Precision
+### Example: Pattern Validation with Uniqueness
 
-```json
-{
-  "id": "Has_distance",
-  "label": "Distance",
-  "description": "Distance measurement",
-  "datatype": "Number",
-  "cardinality": "single",
-  "display_units": ["km", "mi", "m"],
-  "display_precision": 2
-}
+```wikitext
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Open Researcher and Contributor ID]]
+[[Display label::ORCID]]
+[[Allows pattern::^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$]]
+[[Has unique values::true]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
 ```
 
-### Example with Pattern Validation
+### Example: Property with Display Template
 
-```json
-{
-  "id": "Has_orcid",
-  "label": "ORCID",
-  "description": "Open Researcher and Contributor ID",
-  "datatype": "Text",
-  "cardinality": "single",
-  "allowed_pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$",
-  "unique_values": true
-}
+```wikitext
+<!-- OntologySync Start -->
+[[Has type::Page]]
+[[Has description::Link to a related wiki page]]
+[[Display label::Related Page]]
+[[Allows multiple values::true]]
+[[Has template::Template:Property/Page]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
 ```
 
-### Example with Property Hierarchy
+### Example: Subproperty
 
-```json
-{
-  "id": "Has_work_email",
-  "label": "Work Email",
-  "description": "Professional email address",
-  "datatype": "Email",
-  "cardinality": "single",
-  "parent_property": "Has_email"
-}
+```wikitext
+<!-- OntologySync Start -->
+[[Has type::Email]]
+[[Has description::Professional email address]]
+[[Display label::Work Email]]
+[[Subproperty of::Property:Has email]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
 ```
 
 ---
 
 ## Subobject
 
-A Subobject defines a reusable nested structure that can be embedded within Categories. Like Categories, Subobjects reference existing Properties and distinguish between required and optional properties.
+A Subobject defines a reusable nested structure that can be embedded within Categories. Subobjects reference existing Properties.
 
 ### File Location
 
-`subobjects/{SubobjectName}.json`
+`subobjects/{Subobject_name}.wikitext`
 
-### Schema
+### Annotations
 
-```json
-{
-  "id": "string (required)",
-  "label": "string (required)",
-  "description": "string (required)",
-  "required_properties": ["string"] (optional),
-  "optional_properties": ["string"] (optional)
-}
-```
+| Annotation | Required | Description |
+|------------|----------|-------------|
+| `Has description` | Yes | What this Subobject represents |
+| `Display label` | No | Human-readable label (defaults to page name) |
+| `Has required property` | No | Property that must be provided (repeatable) |
+| `Has optional property` | No | Property that may be provided (repeatable) |
 
-### Fields
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | string | Yes | Unique identifier matching the filename (without `.json`) |
-| `label` | string | Yes | Human-readable display name |
-| `description` | string | Yes | Explanation of what this Subobject represents |
-| `required_properties` | string[] | No | Property IDs that must be provided when using this Subobject |
-| `optional_properties` | string[] | No | Property IDs that may optionally be provided |
+Management category: `[[Category:OntologySync-managed-subobject]]`
 
 ### Example
 
-```json
-{
-  "id": "Address",
-  "label": "Address",
-  "description": "A physical or mailing address",
-  "required_properties": ["Has_street", "Has_city", "Has_country"],
-  "optional_properties": ["Has_postal_code", "Has_state"]
-}
-```
-
-### Example: Display Section
-
-```json
-{
-  "id": "Display_section",
-  "label": "Display Section",
-  "description": "Defines a section for property grouping in display templates",
-  "required_properties": ["Has_display_section_name"],
-  "optional_properties": ["Has_display_section_property"]
-}
+```wikitext
+<!-- OntologySync Start -->
+[[Has description::A physical or mailing address]]
+[[Has required property::Property:Has street]]
+[[Has required property::Property:Has city]]
+[[Has required property::Property:Has country]]
+[[Has optional property::Property:Has postal code]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-subobject]]
 ```
 
 ---
 
 ## Template
 
-A Template defines how Property values are rendered in the wiki. Templates contain MediaWiki wikitext with placeholders.
+A Template defines how Property values are rendered in the wiki. Templates are **raw wikitext** with no annotation block.
 
 ### File Location
 
-`templates/{TemplatePath}.json`
+`templates/{Template/Path}.wikitext`
 
-Templates can use nested folders to create subpage hierarchies. The folder structure maps to `/` in the MediaWiki template name:
-- `templates/Property/Page.json` → `Template:Property/Page`
-- `templates/Display/Table.json` → `Template:Display/Table`
+Templates use nested directories to create MediaWiki subpage hierarchies:
+- `templates/Property/Page.wikitext` &rarr; `Template:Property/Page` in the wiki
 
-### Schema
+### Format
 
-```json
-{
-  "id": "string (required)",
-  "label": "string (required)",
-  "description": "string (required)",
-  "wikitext": "string (required)"
-}
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | string | Yes | Unique identifier matching the filename (without `.json`) |
-| `label` | string | Yes | Human-readable display name |
-| `description` | string | Yes | Explanation of what this Template does |
-| `wikitext` | string | Yes | The MediaWiki wikitext template content |
-
-### Placeholders
-
-Templates receive the property value via `{{{value|}}}` placeholder.
+Templates contain raw MediaWiki wikitext. The property value is available via the `{{{value|}}}` placeholder.
 
 ### Example
 
-```json
-{
-  "id": "Property/Page",
-  "label": "Page Link Template",
-  "description": "Renders page references as clickable wiki links",
-  "wikitext": "<includeonly>{{#if:{{{value|}}}|{{#arraymap:{{{value|}}}|,|@@item@@|[[:@@item@@]]|,&#32;}}|}}</includeonly>"
-}
+```wikitext
+<includeonly>{{#if:{{{value|}}}|{{#arraymap:{{{value|}}}|,|@@item@@|[[:@@item@@]]|,&#32;}}|}}</includeonly>
+```
+
+---
+
+## Dashboard
+
+A Dashboard is a wiki page (typically with SMW queries) that provides an overview or management interface. Dashboards support multi-page structures with subpages.
+
+### File Location
+
+```
+dashboards/{Dashboard_name}.wikitext           # Root page
+dashboards/{Dashboard_name}/{Subpage}.wikitext  # Subpages
+```
+
+### Format
+
+Dashboards contain raw MediaWiki wikitext (no annotation block). They can use SMW `#ask` queries, templates, and any other wikitext.
+
+All pages belonging to a dashboard are automatically collected by the tooling and included as separate import entries in the module's `vocab.json`.
+
+### Example: Root Page
+
+```wikitext
+== Core Entities Overview ==
+
+This dashboard provides an overview of the core ontology entities.
+
+=== People ===
+{{#ask:
+ [[Category:Person]]
+ |?Has_name
+ |?Has_email
+ |format=table
+}}
+
+=== Organizations ===
+{{#ask:
+ [[Category:Organization]]
+ |?Has_name
+ |format=table
+}}
+```
+
+---
+
+## Resource
+
+A Resource is a pre-filled content page — an instance of one or more Categories with property values already set. Resources are useful for example data or default content.
+
+### File Location
+
+`resources/{Category}/{Resource_name}.wikitext`
+
+### Annotations
+
+| Annotation | Required | Description |
+|------------|----------|-------------|
+| `Has description` | No | Description of this resource |
+| `Display label` | No | Human-readable label |
+| _(property annotations)_ | No | Any property values as `[[Property name::Value]]` |
+
+Category memberships appear outside the markers. Resources belong to both their content category and a management category:
+
+```
+[[Category:Person]]
+[[Category:OntologySync-managed-resource]]
+```
+
+### Example
+
+```wikitext
+<!-- OntologySync Start -->
+[[Has description::Example person resource demonstrating the Person category structure]]
+[[Display label::John Doe]]
+[[Has name::John Doe]]
+[[Has email::john.doe@example.com]]
+<!-- OntologySync End -->
+[[Category:Person]]
+[[Category:OntologySync-managed-resource]]
 ```
 
 ---
 
 ## Module
 
-A Module is a logical grouping of related schema entities. Modules explicitly declare all the Categories, Properties, Subobjects, and Templates they provide, and can depend on other Modules.
+A Module is a logical grouping of related entities. Modules declare which entities they contain and can depend on other modules.
 
 ### File Location
 
-`modules/{module_id}.json`
+`modules/{Module_id}.vocab.json`
 
-### Schema
+### Format
+
+Modules use a `vocab.json` format with an `import` array that lists each entity by namespace and path:
 
 ```json
 {
-  "id": "string (required)",
-  "label": "string (required)",
-  "description": "string (required)",
-  "categories": ["string"] (optional),
-  "properties": ["string"] (optional),
-  "subobjects": ["string"] (optional),
-  "templates": ["string"] (optional),
-  "dependencies": ["string"] (optional)
+  "description": "Essential entities for any wiki",
+  "id": "Core",
+  "version": "1.0.0",
+  "label": "Core Module",
+  "dependencies": [],
+  "import": [
+    {
+      "page": "Person",
+      "namespace": "NS_CATEGORY",
+      "contents": { "importFrom": "categories/Person.wikitext" },
+      "options": { "replaceable": true }
+    },
+    {
+      "page": "Has name",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": { "importFrom": "properties/Has_name.wikitext" },
+      "options": { "replaceable": true }
+    }
+  ],
+  "meta": {
+    "version": "1",
+    "ontologyVersion": "0.1.2"
+  }
 }
 ```
 
@@ -381,69 +432,62 @@ A Module is a logical grouping of related schema entities. Modules explicitly de
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `id` | string | Yes | Unique identifier matching the filename (without `.json`) |
-| `label` | string | Yes | Human-readable display name |
-| `description` | string | Yes | Explanation of what this Module provides |
-| `categories` | string[] | No | List of Category IDs included in this Module |
-| `properties` | string[] | No | List of Property IDs included in this Module |
-| `subobjects` | string[] | No | List of Subobject IDs included in this Module |
-| `templates` | string[] | No | List of Template IDs included in this Module |
-| `dependencies` | string[] | No | List of Module IDs that must be installed first |
+| `id` | string | Yes | Module identifier matching the filename |
+| `version` | string | Yes | Semantic version of this module |
+| `label` | string | No | Human-readable display name |
+| `description` | string | Yes | What this Module provides |
+| `dependencies` | string[] | No | Module IDs that must be installed first |
+| `import` | array | Yes | List of entity import entries |
+| `meta` | object | No | Metadata (format version, ontology version) |
 
-**Note:** At least one of `categories`, `properties`, `subobjects`, or `templates` must be present.
+### Import Entry Format
+
+Each entry in the `import` array specifies:
+
+| Field | Description |
+|-------|-------------|
+| `page` | Wiki page name (spaces, not underscores) |
+| `namespace` | SMW namespace constant |
+| `contents.importFrom` | Relative path to the `.wikitext` file |
+| `options.replaceable` | Whether the page can be overwritten on update |
+
+### Namespace Constants
+
+| Constant | Maps to |
+|----------|---------|
+| `NS_CATEGORY` | `categories/` |
+| `SMW_NS_PROPERTY` | `properties/` |
+| `NS_SUBOBJECT` | `subobjects/` |
+| `NS_TEMPLATE` | `templates/` |
+| `NS_ONTOLOGY_DASHBOARD` | `dashboards/` |
+| `NS_ONTOLOGY_RESOURCE` | `resources/` |
 
 ### Dependency Resolution
 
 When a Module is installed:
-1. All Modules in `dependencies` are installed first (recursively)
-2. All entities (Categories, Properties, Subobjects, Templates) declared in the Module are installed
-3. Duplicate entities from overlapping modules are installed only once
-
-### Example
-
-```json
-{
-  "id": "Research",
-  "label": "Research Module",
-  "description": "Categories for academic and research contexts",
-  "categories": ["Researcher", "Student"],
-  "properties": ["Has_orcid", "Has_affiliation", "Has_major"],
-  "subobjects": [],
-  "templates": [],
-  "dependencies": ["Core"]
-}
-```
-
-### Example: Properties-Only Module
-
-```json
-{
-  "id": "Contact_info",
-  "label": "Contact Info Module",
-  "description": "Common contact-related properties",
-  "properties": ["Has_email", "Has_phone", "Has_website"],
-  "templates": ["Property/Email", "Property/Phone"]
-}
-```
+1. All modules in `dependencies` are installed first (recursively)
+2. All entities in the `import` array are imported
+3. Duplicate entities from overlapping modules are imported only once
 
 ---
 
 ## Bundle
 
-A Bundle is a curated collection of Modules designed for a specific use case or deployment scenario.
+A Bundle is a curated collection of Modules designed for a specific deployment scenario.
 
 ### File Location
 
-`bundles/{bundle_id}.json`
+`bundles/{Bundle_id}.json`
 
-### Schema
+### Format
 
 ```json
 {
-  "id": "string (required)",
-  "label": "string (required)",
-  "description": "string (required)",
-  "modules": ["string"] (required)
+  "id": "Default",
+  "version": "1.0.0",
+  "label": "Default Bundle",
+  "description": "Standard bundle with core entities",
+  "modules": ["Core"]
 }
 ```
 
@@ -451,28 +495,54 @@ A Bundle is a curated collection of Modules designed for a specific use case or 
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `id` | string | Yes | Unique identifier matching the filename (without `.json`) |
-| `label` | string | Yes | Human-readable display name |
-| `description` | string | Yes | Explanation of what this Bundle is designed for |
-| `modules` | string[] | Yes | List of Module IDs to include |
+| `id` | string | Yes | Bundle identifier matching the filename |
+| `version` | string | Yes | Semantic version of this bundle |
+| `label` | string | No | Human-readable display name |
+| `description` | string | Yes | What this Bundle is for |
+| `modules` | string[] | Yes | Module IDs to include |
 
 ### Module Resolution
 
 When a Bundle is installed:
 1. Each Module in `modules` is resolved (including its dependencies)
-2. Duplicate Modules (from overlapping dependencies) are installed only once
-3. All Categories, Properties, Subobjects, and Templates are collected and installed
+2. Duplicate Modules from overlapping dependencies are installed only once
+3. All entities from all resolved Modules are collected and installed
 
-### Example
+---
 
-```json
-{
-  "id": "Full",
-  "label": "Full Bundle",
-  "description": "Complete installation with all available modules",
-  "modules": ["Core", "Research", "Projects"]
-}
+## Generated Artifacts
+
+The CI pipeline generates versioned artifact directories for each module and bundle. These are what OntologySync consumes.
+
+### Module Artifacts
+
 ```
+modules/{Module_id}/versions/{version}/
+├── {module_id}.vocab.json    # SMW-importable manifest
+├── categories/               # Entity wikitext files
+├── properties/
+├── subobjects/
+├── templates/
+├── dashboards/
+└── resources/
+```
+
+The artifact `vocab.json` is similar to the source but with:
+- `dependencies` as an object mapping module IDs to versions (not an array)
+- A `generated` timestamp in the `meta` block
+- `importFrom` paths relative to the artifact directory
+
+### Bundle Artifacts
+
+```
+bundles/{Bundle_id}/versions/{version}/
+├── {bundle_id}.vocab.json    # Merged manifest with all module entities
+├── categories/
+├── properties/
+└── ...
+```
+
+The bundle artifact merges all import entries from all constituent modules into a single manifest with a `modules` field mapping module IDs to their versions.
 
 ---
 
@@ -480,64 +550,64 @@ When a Bundle is installed:
 
 ```
 labki-ontology/
-├── SCHEMA.md           # This specification document
-├── VERSION             # Version file
-├── bundles/            # Bundle definitions
-│   ├── Default.json
-│   └── Full.json
-├── modules/            # Module definitions
-│   ├── Core.json
-│   ├── Research.json
-│   └── Projects.json
-├── categories/         # Category definitions
-│   ├── Agent.json
-│   ├── Person.json
-│   └── ...
-├── properties/         # Property definitions
-│   ├── Has_name.json
-│   ├── Has_email.json
-│   └── ...
-├── subobjects/         # Subobject definitions
-│   └── Address.json
-└── templates/          # Template definitions
-    └── Property/
-        └── Page.json
+├── categories/                    # Category .wikitext files
+├── properties/                    # Property .wikitext files
+├── subobjects/                    # Subobject .wikitext files
+├── templates/                     # Template .wikitext files (directory-based)
+│   └── Property/
+│       └── Page.wikitext
+├── dashboards/                    # Dashboard .wikitext files (supports subpages)
+│   ├── Core_overview.wikitext
+│   └── Core_overview/
+│       └── Setup.wikitext
+├── resources/                     # Resource .wikitext files (directory-based)
+│   └── Person/
+│       └── John_doe.wikitext
+├── modules/                       # Module definitions
+│   ├── Core.vocab.json            # Source definition
+│   └── Core/
+│       └── versions/
+│           └── 1.0.0/             # Generated artifact
+├── bundles/                       # Bundle definitions
+│   ├── Default.json               # Source definition
+│   └── Default/
+│       └── versions/
+│           └── 1.0.0/             # Generated artifact
+├── scripts/                       # Tooling
+├── .github/workflows/             # CI/CD
+├── VERSION                        # Ontology version
+├── SCHEMA.md                      # This specification
+└── docs/VERSIONING.md             # Versioning guide
 ```
 
 ---
 
 ## Naming Conventions
 
-### ID Format
+### Entity IDs
 
 All entity IDs follow MediaWiki page title conventions:
 - **First letter capitalized**
-- **Underscores between words**
-- **All other letters lowercase**
+- **Underscores between words** (in filenames and IDs)
+- **Spaces between words** (in wiki page names and `vocab.json` references)
 
-This ensures IDs can be used directly as MediaWiki page titles.
+### ID to Page Name Mapping
 
-### Examples by Type
-
-| Concept | File Name | ID | MediaWiki Page Title |
-|---------|-----------|----|-----------------------|
-| Category | `Person.json` | `Person` | `Category:Person` |
-| Category | `Research_student.json` | `Research_student` | `Category:Research_student` |
-| Property | `Has_name.json` | `Has_name` | `Property:Has_name` |
-| Property | `Has_university_id.json` | `Has_university_id` | `Property:Has_university_id` |
-| Subobject | `Address.json` | `Address` | `Subobject:Address` |
-| Subobject | `Display_section.json` | `Display_section` | `Subobject:Display_section` |
-| Module | `Core.json` | `Core` | N/A |
-| Module | `Lab_equipment.json` | `Lab_equipment` | N/A |
-| Bundle | `Full.json` | `Full` | N/A |
-| Bundle | `Lab_core.json` | `Lab_core` | N/A |
-| Template | `Property/Page.json` | `Property/Page` | `Template:Property/Page` |
+| Entity | Filename | ID | Wiki Page |
+|--------|----------|-----|-----------|
+| Category | `Person.wikitext` | `Person` | `Category:Person` |
+| Category | `Research_student.wikitext` | `Research_student` | `Category:Research student` |
+| Property | `Has_name.wikitext` | `Has_name` | `Property:Has name` |
+| Subobject | `Address.wikitext` | `Address` | `Subobject:Address` |
+| Template | `Property/Page.wikitext` | `Property/Page` | `Template:Property/Page` |
+| Dashboard | `Core_overview.wikitext` | `Core_overview` | `OntologyDashboard:Core overview` |
+| Resource | `Person/John_doe.wikitext` | `Person/John_doe` | `OntologyResource:Person/John doe` |
 
 ### Property ID Prefixes
 
 Properties should use semantic prefixes:
-- `Has_*` - indicates possession or association (e.g., `Has_name`, `Has_email`)
-- `Is_*` - indicates boolean state or classification (e.g., `Is_active`, `Is_verified`)
+- `Has_*` — possession or association (e.g. `Has_name`, `Has_email`)
+- `Is_*` — boolean state or classification (e.g. `Is_active`, `Is_verified`)
 
 ---
 
@@ -545,83 +615,46 @@ Properties should use semantic prefixes:
 
 ### General
 
-- All `id` fields must match the filename (without `.json`)
-- All required fields must be present and non-empty
+- All entity `.wikitext` files must have `<!-- OntologySync Start -->` and `<!-- OntologySync End -->` markers
+- All entities must have a `Has description` annotation
 - References to other entities must resolve to existing files
 
 ### Categories
 
-- All IDs in `parents` must reference existing Categories
-- Circular inheritance is not allowed (a Category cannot be its own ancestor)
-- All IDs in `required_properties` and `optional_properties` must reference existing Property IDs
-- A Property ID cannot appear in both `required_properties` and `optional_properties`
-- All IDs in `required_subobjects` and `optional_subobjects` must reference existing Subobject IDs
-- A Subobject ID cannot appear in both `required_subobjects` and `optional_subobjects`
+- All `Has parent category` values must reference existing Categories
+- Circular inheritance is not allowed
+- All `Has required property` and `Has optional property` values must reference existing Properties
+- A Property cannot appear in both required and optional
+- All `Has required subobject` and `Has optional subobject` values must reference existing Subobjects
+- A Subobject cannot appear in both required and optional
 
 ### Properties
 
-- `datatype` must be a valid Semantic MediaWiki datatype
-- `cardinality` must be either `"single"` or `"multiple"`
-- `allowed_values` (if present) must be a non-empty array of strings
-- `allowed_pattern` (if present) must be a valid regex pattern
-- `allowed_value_list` (if present) must reference a valid wiki page
-- `display_units` (if present) must be a non-empty array of strings
-- `display_precision` (if present) must be a non-negative integer
-- `parent_property` (if present) must reference an existing Property ID
-- `has_display_template` (if present) must reference an existing Template
-- Mutually exclusive: `allowed_values`, `allowed_pattern`, and `allowed_value_list` should not be combined
+- `Has type` is required and must be a valid SMW data type
+- `Allows value`, `Allows pattern`, and `Allows value list` should not be combined
+- `Subproperty of` must reference an existing Property
+- `Has template` must reference an existing Template
 
 ### Subobjects
 
-- All IDs in `required_properties` and `optional_properties` must reference existing Property IDs
-- A Property ID cannot appear in both `required_properties` and `optional_properties`
+- All property references must point to existing Properties
+- A Property cannot appear in both required and optional
 
 ### Modules
 
-- At least one of `categories`, `properties`, `subobjects`, or `templates` must be present
-- All IDs in `categories` must reference existing Category IDs
-- All IDs in `properties` must reference existing Property IDs
-- All IDs in `subobjects` must reference existing Subobject IDs
-- All IDs in `templates` must reference existing Template IDs
-- All IDs in `dependencies` must reference existing Module IDs
+- `import` array must be present with at least one entry
+- All referenced entity files must exist at the specified `importFrom` path
+- All `dependencies` must reference existing Module IDs
 - Circular dependencies are not allowed
 
 ### Bundles
 
 - `modules` must reference existing Module IDs
 
-### JSON Schema Validation
-
-Each entity type has a formal JSON Schema file for automated validation:
-
-| Entity Type | Schema Location |
-|-------------|-----------------|
-| Category | `categories/_schema.json` |
-| Property | `properties/_schema.json` |
-| Subobject | `subobjects/_schema.json` |
-| Module | `modules/_schema.json` |
-| Bundle | `bundles/_schema.json` |
-| Template | `templates/_schema.json` |
-
-These schemas enforce:
-- Required fields are present
-- Field types are correct
-- ID naming conventions are followed
-- Arrays contain unique items
-
-To validate a file against its schema:
-```bash
-# Using ajv-cli
-npx ajv validate -s categories/_schema.json -d categories/Person.json
-```
-
 ---
 
 ## Versioning
 
-Schema files should follow semantic versioning principles:
-- **Major**: Breaking changes to schema structure
-- **Minor**: New optional fields or concepts
-- **Patch**: Documentation and bug fixes
+See [docs/VERSIONING.md](docs/VERSIONING.md) for complete versioning rules.
 
-Version information is tracked via git tags and releases.
+In brief: the ontology uses semantic versioning. The CI pipeline automatically detects changes, calculates version bumps (cascading through the module dependency graph), generates artifacts, and tags releases.

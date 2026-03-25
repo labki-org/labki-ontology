@@ -1,8 +1,0 @@
-<!-- OntologySync Start -->
-[[Has description::A social entity such as a company, institution, or group]]
-[[Has parent category::Category:Agent]]
-[[Has optional property::Property:Has email]]
-[[Has optional property::Property:Has website]]
-[[Has optional subobject::Subobject:Address]]
-<!-- OntologySync End -->
-[[Category:OntologySync-managed]]

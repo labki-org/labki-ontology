@@ -1,8 +1,0 @@
-<!-- OntologySync Start -->
-[[Has description::A physical or mailing address]]
-[[Has required property::Property:Has street]]
-[[Has required property::Property:Has city]]
-[[Has required property::Property:Has country]]
-[[Has optional property::Property:Has postal code]]
-<!-- OntologySync End -->
-[[Category:OntologySync-managed-subobject]]

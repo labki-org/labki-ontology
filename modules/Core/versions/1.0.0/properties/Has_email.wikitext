@@ -1,7 +1,0 @@
-<!-- OntologySync Start -->
-[[Has type::Email]]
-[[Has description::Email address for contact]]
-[[Display label::Email]]
-[[Allows multiple values::true]]
-<!-- OntologySync End -->
-[[Category:OntologySync-managed-property]]

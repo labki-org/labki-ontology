@@ -1,6 +1,0 @@
-<!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::City or locality name]]
-[[Display label::City]]
-<!-- OntologySync End -->
-[[Category:OntologySync-managed-property]]

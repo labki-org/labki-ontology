@@ -1,9 +1,0 @@
-== Setup Guide ==
-
-To use the Core module:
-
-# Install the Core module from Ontology Hub
-# Configure your wiki settings
-# Start creating entities
-
-[[Special:FormEdit/Person|Create a Person]] | [[Special:FormEdit/Organization|Create an Organization]]

@@ -1,278 +1,154 @@
 # Versioning Guide
 
-This document explains how versioning works for the Labki Schemas ontology.
+This document explains how versioning works for the Labki ontology.
 
 ## Overview
 
-The ontology uses **semantic versioning** (SemVer) with a single `VERSION` file at the repository root. Every pull request must include an appropriately incremented version.
+The ontology uses **semantic versioning** (SemVer) at three levels:
 
-```
-VERSION
-```
+1. **Ontology version** — tracked in the `VERSION` file at the repo root
+2. **Module versions** — tracked in each `modules/*.vocab.json`
+3. **Bundle versions** — tracked in each `bundles/*.json`
 
-Contains a single line with the version number:
-```
-1.2.3
-```
+On every push to `main`, the CI pipeline automatically detects changes, calculates version bumps (cascading through the dependency graph), generates artifacts, commits the results, and tags the release.
 
 ## Semantic Versioning
 
-The version number follows the format `MAJOR.MINOR.PATCH`:
+Version numbers follow the format `MAJOR.MINOR.PATCH`:
 
 | Component | When to Increment | Example |
 |-----------|-------------------|---------|
-| **MAJOR** | Breaking changes | `1.0.0` → `2.0.0` |
-| **MINOR** | New features (backwards compatible) | `1.0.0` → `1.1.0` |
-| **PATCH** | Bug fixes, documentation | `1.0.0` → `1.0.1` |
+| **MAJOR** | Breaking changes | `1.0.0` &rarr; `2.0.0` |
+| **MINOR** | New features (backwards compatible) | `1.0.0` &rarr; `1.1.0` |
+| **PATCH** | Bug fixes, documentation | `1.0.0` &rarr; `1.0.1` |
 
 ## Breaking Changes (Major Version)
 
-A breaking change is any modification that could cause existing consumers (wikis, applications) to fail. The following changes require a **major version bump**:
+A breaking change is any modification that could cause existing consumers (wikis, applications) to fail:
 
 ### Entity Deletions
 
-Deleting any entity file:
-- Categories
-- Properties
-- Subobjects
-- Templates
-- Modules
-- Bundles
+Deleting any entity file (category, property, subobject, template, dashboard, resource).
 
 ### ID Changes
 
-Renaming an entity's `id` field is treated as a deletion followed by an addition:
-```json
-// Before
-{ "id": "Equipment" }
+Renaming an entity (equivalent to delete + add):
 
-// After (BREAKING)
-{ "id": "LabEquipment" }
+```diff
+- categories/Equipment.wikitext
++ categories/Lab_equipment.wikitext
 ```
 
 ### Property Changes
 
 | Change | Breaking? |
 |--------|-----------|
-| `datatype` changed | Yes |
-| `cardinality`: `multiple` → `single` | Yes |
-| `cardinality`: `single` → `multiple` | No |
-| Removing values from `allowed_values` | Yes |
-| Adding values to `allowed_values` | No |
+| `Has type` changed | Yes |
+| `Allows multiple values`: `true` &rarr; removed | Yes |
+| `Allows multiple values`: added `true` | No |
+| Removing an `Allows value` entry | Yes |
+| Adding an `Allows value` entry | No |
 
 ### Category Changes
 
 | Change | Breaking? |
 |--------|-----------|
-| Adding items to `required_properties` | Yes |
-| Removing items from `optional_properties` | Yes |
-| Adding items to `optional_properties` | No |
-| Removing items from `required_properties` | No |
+| Adding `Has required property` | Yes |
+| Removing `Has optional property` | Yes |
+| Adding `Has optional property` | No |
+| Removing `Has required property` | No |
 
 ## Non-Breaking Changes (Minor Version)
 
-The following require a **minor version bump**:
-
 - Adding new entities (properties, categories, modules, etc.)
 - Adding new optional fields to existing entities
-- Expanding `allowed_values` (adding new options)
-- Changing `cardinality` from `single` to `multiple`
-- Adding items to `optional_properties`
+- Expanding allowed values
+- Changing cardinality from single to multiple
+- Adding optional properties/subobjects to categories
 
 ## Patch Changes
 
-The following require only a **patch version bump**:
-
-- Updating `label` or `description` fields
+- Updating `Display label` or `Has description`
 - Fixing typos
-- Documentation changes
 - No structural or semantic changes
 
-## CI Validation
+## Version Cascade
 
-The CI pipeline validates versioning on every pull request:
+When an entity changes, the version bump cascades:
 
-### What CI Checks
+1. **Entity change detected** &rarr; determines bump type (major/minor/patch)
+2. **Containing module** gets at least that bump type
+3. **Dependent modules** (via `dependencies`) inherit the bump (propagated through the full dependency graph)
+4. **Containing bundles** get at least the highest bump from their modules
+5. **Ontology VERSION** gets at least the highest bump from all modules
 
-1. **Format Validation**: VERSION file must contain a valid semver string
-2. **Increment Validation**: VERSION must be greater than the base branch version
-3. **Change Detection**: CI analyzes the diff to determine required bump type
-4. **Bump Comparison**: CI reports if VERSION matches the expected bump
-
-### Error Messages
-
-| Error | Meaning |
-|-------|---------|
-| `missing-version` | No VERSION file in repository |
-| `invalid-version` | VERSION doesn't parse as valid semver |
-| `version-not-incremented` | VERSION not greater than base branch |
-
-### Warnings
-
-| Warning | Meaning |
-|---------|---------|
-| `version-bump-insufficient` | Detected changes require a higher version bump |
-
-Warnings are non-blocking but should be reviewed.
-
-### Example CI Output
+For example, if `Has_email.wikitext` changes its `Has type` (major change), and the `Core` module contains it, and the `Default` bundle includes `Core`:
 
 ```
-Version: 2.1.0 (base: 2.0.0)
-Required bump: major, Actual bump: minor
-Breaking changes detected: 1
+Has_email.wikitext  →  Core module (major)  →  Default bundle (major)  →  VERSION (major)
 ```
 
-This output indicates:
-- PR version is `2.1.0`, base is `2.0.0`
-- A breaking change was detected (requires major bump)
-- But only a minor bump was applied
-- CI will warn about this mismatch
+## Version Overrides
 
-## How to Version Your PR
+You can manually override the calculated bump type by creating a `VERSION_OVERRIDES.json` file at the repo root:
 
-### Step 1: Identify Your Changes
-
-Review what you're changing:
-- Are you deleting entities?
-- Are you changing property datatypes?
-- Are you adding new required fields to categories?
-
-### Step 2: Determine Required Bump
-
-Use this decision tree:
-
-```
-Any breaking change? → MAJOR
-├── Entity deletion
-├── ID change
-├── Datatype change
-├── Cardinality restriction (multiple → single)
-├── Allowed values removal
-├── Required properties addition
-└── Optional properties removal
-
-Only additions/expansions? → MINOR
-├── New entities
-├── New optional fields
-├── Allowed values expansion
-└── Cardinality expansion (single → multiple)
-
-Only cosmetic changes? → PATCH
-├── Label/description updates
-└── Documentation fixes
+```json
+{
+  "Core": "major",
+  "Default": "minor"
+}
 ```
 
-### Step 3: Update VERSION File
+Each key is a module or bundle ID, and the value is the desired bump type (`major`, `minor`, or `patch`). The override must be at least as high as the calculated bump — it can only escalate, not downgrade.
 
-Edit the VERSION file with the new version:
+The CI pipeline consumes and cleans up this file during the release process.
 
-```bash
-# View current version
-cat VERSION
+## CI Pipeline
 
-# Update version (example: 1.0.0 → 2.0.0)
-echo "2.0.0" > VERSION
-```
+### Validation (`validate.yml`)
 
-### Step 4: Commit
+Runs on PRs and pushes to `main` when entity files change:
+- Validates structural integrity, reference integrity, cycle detection, orphan detection
+- On PRs, runs with `--changed-only` for efficiency
+- Posts a sticky comment on the PR with validation results
 
-Include the VERSION file in your commit:
+### Release (`release.yml`)
 
-```bash
-git add VERSION
-git commit -m "feat: add new property with major version bump"
-```
+Runs on every push to `main`:
 
-## Examples
+1. **Detect changes** — identifies entity files that changed in the push
+2. **Detect affected modules/bundles** — traces which modules and bundles contain or depend on the changed entities
+3. **Apply version bumps** — calculates the version cascade, applies `VERSION_OVERRIDES` if present, writes new versions to source files and `VERSION`
+4. **Generate artifacts** — produces versioned artifact directories under `modules/*/versions/` and `bundles/*/versions/`
+5. **Commit** — stages and commits version updates + artifacts
+6. **Tag** — creates `v{ontologyVersion}` git tag if `VERSION` changed
 
-### Example 1: Adding a New Property
+### Tests (`test.yml`)
 
-```diff
-+ properties/SerialNumber.json (new file)
-```
+Runs on PRs and pushes to `main` when script files change:
+- Unit tests: `npm test`
+- Integration tests: `npm run test:integration`
 
-**Required bump**: Minor (new entity)
-```
-1.0.0 → 1.1.0
-```
+## How Versioning Works Automatically
 
-### Example 2: Changing a Datatype
+In the typical workflow, you don't manually version anything. Editing through Ontology Hub (or directly) and merging to `main` triggers the release pipeline, which handles all version management automatically.
 
-```diff
-  properties/Weight.json
-- "datatype": "Text"
-+ "datatype": "Number"
-```
+If you need manual control, you can:
+- Edit `VERSION` directly for the ontology version
+- Edit `version` in `modules/*.vocab.json` for module versions
+- Edit `version` in `bundles/*.json` for bundle versions
+- Use `VERSION_OVERRIDES.json` to escalate a bump type
 
-**Required bump**: Major (breaking change)
-```
-1.0.0 → 2.0.0
-```
+## Files Involved
 
-### Example 3: Adding Allowed Values
-
-```diff
-  properties/Status.json
-  "allowed_values": [
-    "Active",
-    "Inactive",
-+   "Pending"
-  ]
-```
-
-**Required bump**: Minor (expansion)
-```
-1.0.0 → 1.1.0
-```
-
-### Example 4: Fixing a Label Typo
-
-```diff
-  properties/Name.json
-- "label": "Nmae"
-+ "label": "Name"
-```
-
-**Required bump**: Patch (cosmetic)
-```
-1.0.0 → 1.0.1
-```
-
-## Consumer Guidance
-
-Consumers of this ontology can pin to version ranges:
-
-```
-# Accept any 2.x version (safe for minor/patch updates)
-ontology >= 2.0.0 < 3.0.0
-
-# Accept only patch updates
-ontology >= 2.1.0 < 2.2.0
-```
-
-This ensures:
-- Patch updates: Always safe, no action needed
-- Minor updates: Safe, may include new features to adopt
-- Major updates: Review breaking changes before upgrading
-
-## Technical Details
-
-### How Change Detection Works
-
-1. CI fetches the VERSION file from the base branch using `git show origin/main:VERSION`
-2. CI compares changed entity files between base and PR using `git diff --name-only`
-3. For each changed file, CI retrieves both versions and analyzes the diff
-4. Breaking changes are detected using `deep-object-diff` to identify field-level changes
-5. The highest required bump (major > minor > patch) determines the expected version
-
-### Files Involved
-
-- `scripts/lib/version-validator.js` - Version format and comparison
-- `scripts/lib/change-detector.js` - Breaking change detection
-- `scripts/validate.js` - Integration into validation pipeline
-- `.github/workflows/validate.yml` - CI workflow with git history access
-
----
-
-*Last updated: 2026-01-23*
+| File | Purpose |
+|------|---------|
+| `VERSION` | Ontology-level version |
+| `modules/*.vocab.json` | Module versions (in `version` field) |
+| `bundles/*.json` | Bundle versions (in `version` field) |
+| `VERSION_OVERRIDES.json` | Optional manual bump overrides (consumed by CI) |
+| `scripts/lib/change-detector.js` | Breaking change detection |
+| `scripts/lib/version-cascade.js` | Version cascade calculation |
+| `scripts/ci-apply-versions.js` | Applies calculated versions to source files |
+| `scripts/ci-detect-affected.js` | Maps changed files to affected modules/bundles |
+| `.github/workflows/release.yml` | Release pipeline |
