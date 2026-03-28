@@ -1,0 +1,13 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The status of a grant proposal]]
+[[Display label::Proposal Status]]
+[[Allows value::Concept]]
+[[Allows value::Drafting]]
+[[Allows value::Internal Review]]
+[[Allows value::Submitted]]
+[[Allows value::In Review]]
+[[Allows value::Awarded]]
+[[Allows value::Declined]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

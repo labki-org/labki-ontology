@@ -1,0 +1,15 @@
+<!-- OntologySync Start -->
+[[Has description::A grant or funding proposal being prepared or under review]]
+[[Has parent category::Category:Activity]]
+[[Has required property::Property:Has proposal status]]
+[[Has required property::Property:Has PI]]
+[[Has optional property::Property:Has co PI]]
+[[Has optional property::Property:Has funding program]]
+[[Has optional property::Property:Has funder]]
+[[Has optional property::Property:Has submission deadline]]
+[[Has optional property::Property:Has funding amount]]
+[[Has optional property::Property:Has attachment]]
+[[Has optional property::Property:Has participant]]
+[[Has optional property::Property:Has awarded funding]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Date]]
+[[Has description::The submission deadline]]
+[[Display label::Submission Deadline]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
