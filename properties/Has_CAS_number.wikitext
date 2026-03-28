@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Chemical Abstracts Service registry number]]
+[[Display label::CAS Number]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Number]]
+[[Has description::Quantity amount]]
+[[Display label::Quantity]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

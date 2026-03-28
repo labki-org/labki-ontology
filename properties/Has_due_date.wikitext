@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Date]]
+[[Has description::The due date]]
+[[Display label::Due Date]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

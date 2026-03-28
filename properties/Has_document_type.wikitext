@@ -1,0 +1,11 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Type of document]]
+[[Display label::Document Type]]
+[[Allows value::Protocol]]
+[[Allows value::Publication]]
+[[Allows value::Dataset]]
+[[Allows value::Report]]
+[[Allows value::SOP]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

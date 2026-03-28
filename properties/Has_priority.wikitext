@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Priority level]]
+[[Display label::Priority]]
+[[Allows value::Low]]
+[[Allows value::Medium]]
+[[Allows value::High]]
+[[Allows value::Urgent]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

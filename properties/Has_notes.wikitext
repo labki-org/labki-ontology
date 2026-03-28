@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Additional notes]]
+[[Display label::Notes]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

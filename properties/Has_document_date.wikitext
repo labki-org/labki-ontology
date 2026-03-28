@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Date]]
+[[Has description::Date of the document]]
+[[Display label::Date]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

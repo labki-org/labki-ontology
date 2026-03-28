@@ -1,0 +1,11 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Currency code]]
+[[Display label::Currency]]
+[[Allows value::USD]]
+[[Allows value::EUR]]
+[[Allows value::GBP]]
+[[Allows value::CAD]]
+[[Allows value::JPY]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

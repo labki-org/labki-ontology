@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Serial number of equipment]]
+[[Display label::Serial Number]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

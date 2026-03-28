@@ -1,0 +1,13 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Type of role in a project]]
+[[Display label::Role]]
+[[Allows value::PI]]
+[[Allows value::Co-PI]]
+[[Allows value::Co-Investigator]]
+[[Allows value::Postdoc]]
+[[Allows value::Graduate Student]]
+[[Allows value::Technician]]
+[[Allows value::Collaborator]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

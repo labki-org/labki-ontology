@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Grant or award number]]
+[[Display label::Grant Number]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

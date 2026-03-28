@@ -1,0 +1,7 @@
+<!-- OntologySync Start -->
+[[Has type::Page]]
+[[Has description::The funding program this grant belongs to]]
+[[Display label::Funding Program]]
+[[Allows value from category::Category:Funding_Program]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -2,7 +2,7 @@
 [[Has description::Abstract base for anything with a lifecycle.]]
 [[Has required property::Property:Has description]]
 [[Has required property::Property:Has activity status]]
-[[Has optional property::Property:Has state date]]
+[[Has optional property::Property:Has start date]]
 [[Has optional property::Property:Has end date]]
 [[Has optional property::Property:Has responsible party]]
 <!-- OntologySync End -->

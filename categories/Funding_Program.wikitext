@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+[[Has description::A funding mechanism or program]]
+[[Has required property::Property:Has name]]
+[[Has required property::Property:Has administering organization]]
+[[Has optional property::Property:Has funding program type]]
+[[Has optional property::Property:Has website]]
+[[Has optional property::Property:Has description]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

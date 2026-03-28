@@ -1,0 +1,17 @@
+<!-- OntologySync Start -->
+[[Has description::Trackable physical equipment or instrument]]
+[[Has optional property::Property:Has description]]
+[[Has optional property::Property:Has model]]
+[[Has optional property::Property:Has manufacturer]]
+[[Has optional property::Property:Has serial number]]
+[[Has required property::Property:Has location]]
+[[Has required property::Property:Has responsible party]]
+[[Has required property::Property:Has equipment status]]
+[[Has optional property::Property:Has purchase date]]
+[[Has optional property::Property:Has next maintenance date]]
+[[Has optional property::Property:Has manual URL]]
+[[Has optional property::Property:Has technique]]
+[[Has optional property::Property:Has RRID]]
+[[Has optional subobject::Subobject:Has maintenance record]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

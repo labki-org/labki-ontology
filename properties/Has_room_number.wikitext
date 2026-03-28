@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Room number]]
+[[Display label::Room Number]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,8 +1,7 @@
 <!-- OntologySync Start -->
 [[Has type::Page]]
-[[Has description::The person or org responsible for a thing]]
-[[Display label::Responsible Party]]
-[[Allows multiple values::true]]
+[[Has description::Who performed this action]]
+[[Display label::Performed By]]
 [[Allows value from category::Category:Agent]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

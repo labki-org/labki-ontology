@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Date]]
+[[Has description::Date this was received]]
+[[Display label::Received Date]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Number]]
+[[Has description::Percentage of effort allocated]]
+[[Display label::Effort %]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

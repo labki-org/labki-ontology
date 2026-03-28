@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Model name or number]]
+[[Display label::Model]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,7 +1,7 @@
 <!-- OntologySync Start -->
 [[Has type::Page]]
-[[Has description::The person or org responsible for a thing]]
-[[Display label::Responsible Party]]
+[[Has description::Author of a document]]
+[[Display label::Author]]
 [[Allows multiple values::true]]
 [[Allows value from category::Category:Agent]]
 <!-- OntologySync End -->

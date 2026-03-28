@@ -1,7 +1,7 @@
 <!-- OntologySync Start -->
 [[Has type::Page]]
-[[Has description::The person or org responsible for a thing]]
-[[Display label::Responsible Party]]
+[[Has description::A participant in this activity]]
+[[Display label::Participant]]
 [[Allows multiple values::true]]
 [[Allows value from category::Category:Agent]]
 <!-- OntologySync End -->

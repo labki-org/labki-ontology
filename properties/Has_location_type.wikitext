@@ -1,0 +1,11 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Type of location]]
+[[Display label::Location Type]]
+[[Allows value::Lab]]
+[[Allows value::Office]]
+[[Allows value::Storage]]
+[[Allows value::Clean Room]]
+[[Allows value::Building]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

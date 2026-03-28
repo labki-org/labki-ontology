@@ -1,0 +1,7 @@
+<!-- OntologySync Start -->
+[[Has type::Page]]
+[[Has description::Where this material is stored]]
+[[Display label::Storage Location]]
+[[Allows value from category::Category:Location]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

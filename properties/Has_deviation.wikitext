@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Deviations from the protocol]]
+[[Display label::Deviation]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,0 +1,16 @@
+<!-- OntologySync Start -->
+[[Has description::A grant, award, or contract]]
+[[Has required property::Property:Has funder]]
+[[Has required property::Property:Has PI]]
+[[Has required property::Property:Has grant number]]
+[[Has required property::Property:Has funding status]]
+[[Has required property::Property:Has funding type]]
+[[Has required property::Property:Has start date]]
+[[Has optional property::Property:Has co PI]]
+[[Has optional property::Property:Has funding amount]]
+[[Has optional property::Property:Has currency]]
+[[Has optional property::Property:Has end date]]
+[[Has optional property::Property:Has funding program]]
+[[Has optional property::Property:Has description]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

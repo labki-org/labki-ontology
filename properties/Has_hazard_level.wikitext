@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Hazard classification level]]
+[[Display label::Hazard Level]]
+[[Allows value::None]]
+[[Allows value::Low]]
+[[Allows value::Moderate]]
+[[Allows value::High]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

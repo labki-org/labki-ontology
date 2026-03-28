@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Number]]
+[[Has description::Total funding amount]]
+[[Display label::Funding Amount]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

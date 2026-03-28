@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+[[Has description::A physical space]]
+[[Has required property::Property:Has location type]]
+[[Has optional property::Property:Has building]]
+[[Has optional property::Property:Has room number]]
+[[Has optional property::Property:Has floor]]
+[[Has optional property::Property:Has capacity]]
+[[Has optional property::Property:Has parent location]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]
