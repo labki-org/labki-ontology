@@ -11,5 +11,6 @@
 [[Allows value::Hospital]]
 [[Allows value::Non-Profit]]
 [[Allows value::Core Facility]]
+[[Allows value::Community Organization]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

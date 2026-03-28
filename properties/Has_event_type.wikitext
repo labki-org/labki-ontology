@@ -1,0 +1,15 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The type of event]]
+[[Display label::Event Type]]
+[[Allows value::Lab Meeting]]
+[[Allows value::Seminar]]
+[[Allows value::Workshop]]
+[[Allows value::Symposium]]
+[[Allows value::Conference]]
+[[Allows value::Community Meeting]]
+[[Allows value::Training]]
+[[Allows value::Defense]]
+[[Allows value::Social]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
