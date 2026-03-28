@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The journal a publication appeared in]]
+[[Display label::Journal]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

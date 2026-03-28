@@ -1,0 +1,11 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The publication status]]
+[[Display label::Publication Status]]
+[[Allows value::Preprint]]
+[[Allows value::Submitted]]
+[[Allows value::In Review]]
+[[Allows value::Accepted]]
+[[Allows value::Published]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

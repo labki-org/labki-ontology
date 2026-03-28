@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+[[Has description::An author entry for a publication with role flags]]
+[[Display label::Publication Author]]
+[[Has required property::Property:Has person]]
+[[Has optional property::Property:Is first author]]
+[[Has optional property::Property:Is corresponding author]]
+[[Has optional property::Property:Has organization]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-subobject]]
