@@ -1,0 +1,7 @@
+<!-- OntologySync Start -->
+[[Has type::Page]]
+[[Has description::The person or org responsible for a thing]]
+[[Display label::Responsible Party]]
+[[Allows multiple values::true]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
