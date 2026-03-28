@@ -1,0 +1,16 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The role as a researcher]]
+[[Display label::Research Role]]
+[[Allows multiple values::true]]
+[[Allows value::Principal Investigator]]
+[[Allows value::Postdoc]]
+[[Allows value::Graduate Student]]
+[[Allows value::Undergraduate Student]]
+[[Allows value::Research Scientist]]
+[[Allows value::Lab Tech]]
+[[Allows value::Lab Manager]]
+[[Allows value::Visiting Researcher]]
+[[Allows value::Staff]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
