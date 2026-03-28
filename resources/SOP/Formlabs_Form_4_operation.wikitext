@@ -1,0 +1,68 @@
+<!-- OntologySync Start -->
+[[Has description::Operating procedures for the Formlabs Form 4 resin 3D printer]]
+[[Has document type::SOP]]
+[[Has SOP type::Equipment Operation]]
+[[Has purpose::Covers setup, print preparation, operation, and maintenance of the Formlabs Form 4. For resin safety, PPE, and waste disposal, refer to the Resin 3D Printing Safety SOP.]]
+[[Has safety precautions::Review the Resin 3D Printing Safety SOP before first use. Wear nitrile gloves whenever the printer enclosure is open or when handling the build platform, resin tank, or resin cartridge. The Form 4 uses a high-powered UV light engine — do not bypass the lid interlock.]]
+[[Has technique::SLA 3D printing]]
+[[Has technique::MSLA 3D printing]]
+<!-- OntologySync End -->
+[[Category:SOP]]
+[[Category:OntologySync-managed-resource]]
+
+== Materials Required ==
+* Formlabs resin cartridge (compatible with Form 4)
+* Formlabs resin tank (check compatibility with resin type)
+* Build platform
+* IPA or Formlabs Wash solution
+* Nitrile gloves
+
+== Procedure ==
+
+=== Print Preparation ===
+# Design or import your model in Formlabs PreForm software.
+# Orient the part and generate supports. Use auto-orient as a starting point, then adjust to minimize support contact on critical surfaces.
+# Select the correct printer, resin type, and layer thickness.
+# Review the printability analysis for any flagged issues (cupping, unsupported minima).
+# Upload the job to the printer via network or USB.
+
+=== Printer Setup ===
+# Shake the resin cartridge gently before inserting.
+# Insert the resin cartridge into the cartridge bay. Verify the cartridge type matches the job.
+# Insert a compatible resin tank. Inspect the film for damage before use.
+# Attach the build platform and ensure it seats fully with an audible click.
+# Close the printer lid.
+
+=== Printing ===
+# Select the queued print job on the touchscreen.
+# Confirm the resin type and tank status prompts.
+# The printer will dispense resin automatically and begin printing.
+# Do not open the lid during printing — UV exposure will be interrupted and the print may fail.
+# Monitor the first few layers remotely via Formlabs Dashboard if available.
+
+=== Print Removal ===
+# When the print completes, allow it to sit for a few minutes to let excess resin drip back into the tank.
+# Put on nitrile gloves.
+# Remove the build platform by pressing the release lever.
+# Use the part removal tool or a flush cutter to detach prints from the platform.
+# Proceed to washing and post-curing per the Resin 3D Printing Safety SOP.
+
+== Maintenance ==
+
+=== After Each Print ===
+* Inspect the resin tank film for clouding or damage.
+* Wipe any resin drips from the printer body with IPA and a lint-free wipe.
+
+=== Monthly ===
+* Clean the optical window inside the printer with the Formlabs cleaning kit.
+* Check the resin tank bite valve for clogs.
+* Update printer firmware when prompted via Dashboard.
+
+=== Tank and Cartridge Replacement ===
+* Replace the resin tank when the film shows visible wear, hazing, or after the manufacturer-recommended number of prints.
+* Dispose of empty cartridges per the Resin 3D Printing Safety SOP waste guidelines.
+
+== Troubleshooting ==
+* '''Print not adhering to build platform:''' Clean the build platform surface with IPA. Ensure it is fully seated. Check that the resin tank film is not damaged.
+* '''Incomplete or deformed layers:''' The resin tank film may be worn. Try a new tank. Ensure the optical window is clean.
+* '''Resin not dispensing:''' Check that the cartridge vent cap is open and the bite valve is not clogged. Try reseating the cartridge.

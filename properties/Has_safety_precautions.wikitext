@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Safety precautions including PPE requirements and hazard warnings]]
+[[Display label::Safety Precautions]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

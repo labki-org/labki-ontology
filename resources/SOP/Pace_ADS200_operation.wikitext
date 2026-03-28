@@ -1,0 +1,111 @@
+<!-- OntologySync Start -->
+[[Has description::Operating procedures for the Pace ADS200 AccuDrive soldering station]]
+[[Has document type::SOP]]
+[[Has SOP type::Equipment Operation]]
+[[Has purpose::Covers operation, temperature presets, tip cartridge management, and maintenance of the Pace ADS200 AccuDrive production soldering station with TD-200 tip-heater cartridge iron. For general soldering safety, PPE, and technique guidance, refer to the Soldering Iron Safety SOP.]]
+[[Has safety precautions::Review the Soldering Iron Safety SOP before first use. The TD-200 iron delivers up to 120W and heats rapidly — the tip reaches operating temperature within seconds of power-on. Always return the iron to the tool stand when not actively soldering. The aluminum Cool Touch handle stays cool during use, but the tip cartridge and barrel are extremely hot. Do not pull or twist the tip cartridge while hot without heat-resistant protection.]]
+[[Has technique::Soldering]]
+[[Has technique::SMD assembly]]
+[[Has technique::Through-hole soldering]]
+<!-- OntologySync End -->
+[[Category:SOP]]
+[[Category:OntologySync-managed-resource]]
+
+== Equipment Overview ==
+* '''Station:''' Pace ADS200 with AccuDrive temperature control technology — closed-loop, load-sensing power delivery up to 120W
+* '''Iron:''' TD-200 tip-heater cartridge iron with aluminum Cool Touch handle
+* '''Tip-to-grip distance:''' 1.9" (48 mm) — short for precision work under magnification
+* '''Temperature stability:''' +/-1.1C (2F) at idle
+* '''Tip-to-ground resistance:''' Less than 2 ohms (meets ANSI/J-STD-001)
+* '''Tip system:''' Blue Series tip-heater cartridges — integrated sensor and heater in each cartridge, no separate calibration needed per tip
+
+== Tip Cartridges ==
+The ADS200 uses Blue Series tip-heater cartridges. Each cartridge contains its own heater and temperature sensor, so swapping tips does not require recalibration.
+
+Common cartridges to keep on hand:
+{| class="wikitable"
+|-
+! Cartridge !! Tip Shape !! Use Case
+|-
+| 1131-0053 || Chisel 1/16" (1.6 mm) || General through-hole and SMD
+|-
+| 1131-0054 || Chisel 3/32" (2.4 mm) || Larger pads, connectors, ground planes
+|-
+| 1131-0050 || Conical 0.4 mm || Fine-pitch SMD, tight spaces
+|-
+| 1131-0052 || Bevel 1/64" (0.4 mm) || Drag soldering fine-pitch QFP/SOIC
+|-
+| 1131-0051 || Conical sharp || Very fine work, rework
+|}
+
+To change a tip cartridge:
+# Place the iron in the tool stand.
+# Grip the cartridge (use heat-resistant gloves if the iron was recently in use).
+# Pull the cartridge straight out of the handle.
+# Insert the new cartridge until it seats fully. The station automatically recognizes it.
+
+== Temperature Presets (PS1 / PS2) ==
+The ADS200 has two programmable temperature presets:
+
+* '''PS1 (Setback / Idle):''' Program to 177C (350F). This is a low-temperature idle state that protects the tip from oxidation when the iron is in the stand.
+* '''PS2 (Operating):''' Program to your working temperature (e.g., 345C / 650F for lead-free, 315C / 600F for leaded).
+
+=== Programming Presets ===
+# Press the '''Program''' key on the station front panel.
+# Use the '''arrow keys''' to set the PS1 temperature (recommended: 177C / 350F).
+# Press '''Program''' again to move to PS2.
+# Use the arrow keys to set the PS2 operating temperature.
+# Press '''Program''' again to confirm and exit programming mode.
+
+=== Manual Setback ===
+When stepping away from the station:
+# Press the '''Program''' key once to drop the iron to the PS1 setback temperature. This extends tip life significantly.
+# When ready to resume, press the '''Program''' key twice to return to the PS2 operating temperature. Recovery is rapid due to the 120W heater.
+
+== Procedure ==
+
+=== Startup ===
+# Ensure the correct tip cartridge is installed for your work.
+# Power on the station using the rear power switch.
+# The display shows the current temperature, which ramps to the PS2 preset.
+# The iron is ready within seconds — the AccuDrive system heats the cartridge extremely quickly.
+# Tin the tip before beginning work.
+
+=== During Use ===
+# Solder using standard techniques (see Soldering Iron Safety SOP for joint technique).
+# The AccuDrive system automatically senses thermal load and delivers power on demand — you should not need to increase temperature for brief high-demand joints (connectors, ground planes) as the system compensates dynamically.
+# If you find the iron struggling with a large thermal mass, increase PS2 temperature by 10-20C rather than jumping to a much higher setting.
+# Clean the tip frequently with the brass wool cleaner on the tool stand.
+
+=== Idle Periods ===
+# Return the iron to the tool stand.
+# Press the '''Program''' key for manual setback to PS1 if stepping away for more than a few minutes.
+# For the Instant SetBack (ISB) tool stand model: the station automatically drops to PS1 when the iron is placed in the stand and returns to PS2 when picked up.
+
+=== Shutdown ===
+# Tin the tip generously with fresh solder.
+# Place the iron in the tool stand.
+# Power off the station using the rear switch.
+
+== Maintenance ==
+
+=== After Each Session ===
+* Tin the tip before shutdown.
+* Clean the brass wool tip cleaner — tap out solder debris.
+* Wipe down the iron handle and stand if flux has splattered on them.
+
+=== Weekly ===
+* Inspect the tip cartridge for wear. Replace if the plating is visibly damaged, the tip is pitted, or it no longer wets properly after applying tip tinner.
+* Verify tip-to-ground resistance with a multimeter (should be less than 2 ohms). This is especially important for ESD-sensitive work.
+
+=== Periodically ===
+* Check the iron cord for heat damage or kinks near the handle connection.
+* Verify temperature accuracy with a tip thermometer. The Blue Series cartridges should not drift, but the tip thermometer confirms the system is within spec.
+* Clean the tool stand to remove accumulated solder and flux residue.
+
+== Troubleshooting ==
+* '''Iron not heating:''' Verify the station is powered on and the tip cartridge is fully seated. Try a different cartridge to rule out a cartridge failure.
+* '''Temperature reading erratic:''' The tip cartridge sensor may be damaged. Replace the cartridge.
+* '''Tip won't accept solder (black, oxidized):''' Apply Pace tip tinner/activator. If the tip doesn't recover, replace the cartridge. Ensure you are using the setback feature to prevent oxidation during idle.
+* '''Weak thermal performance on large joints:''' Increase PS2 temperature by 10-20C. Use a larger chisel tip for better thermal transfer. Ensure the tip is clean and well-tinned.
+* '''Display shows error:''' Power cycle the station. If the error persists, consult the Pace ADS200 operation manual.

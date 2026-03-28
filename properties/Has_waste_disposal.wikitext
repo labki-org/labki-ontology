@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Waste disposal and cleanup instructions]]
+[[Display label::Waste Disposal]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

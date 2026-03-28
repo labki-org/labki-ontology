@@ -1,0 +1,73 @@
+<!-- OntologySync Start -->
+[[Has description::Operating procedures for the Bambu Lab X1 Carbon FDM 3D printer]]
+[[Has document type::SOP]]
+[[Has SOP type::Equipment Operation]]
+[[Has purpose::Covers setup, print preparation, operation, and maintenance of the Bambu Lab X1 Carbon with AMS (Automatic Material System). Applicable to standard and engineering-grade filaments.]]
+[[Has safety precautions::Review the FDM 3D Printing Safety SOP before first use. The heated bed reaches up to 120C and the nozzle up to 300C — do not touch during or immediately after printing. Keep the enclosure closed when printing ABS, ASA, or engineering materials. Ensure the activated carbon filter is installed. Keep fingers clear of the AMS filament drive gears.]]
+[[Has technique::FDM 3D printing]]
+<!-- OntologySync End -->
+[[Category:SOP]]
+[[Category:OntologySync-managed-resource]]
+
+== Materials Required ==
+* Filament spools (1.75 mm diameter)
+* Bambu Lab build plate (cool plate, engineering plate, or high-temp plate depending on material)
+* IPA and lint-free cloth for bed cleaning
+* Flush cutters for support removal
+* Glue stick (for materials with poor bed adhesion)
+
+== Procedure ==
+
+=== Print Preparation ===
+# Import your model into Bambu Studio or OrcaSlicer.
+# Select the printer profile (X1 Carbon) and the correct filament profile for your material.
+# Orient the part to minimize support material and optimize surface quality.
+# Slice the model and review the layer preview for issues (stringing paths, excessive bridging, support placement).
+# Send the job to the printer via LAN, cloud, or SD card.
+
+=== Filament Loading (AMS) ===
+# Open the AMS top cover.
+# Place the spool in one of the four AMS slots with the filament unwinding from the top.
+# Feed the filament end into the AMS feeder until it grips and pulls the filament in.
+# Close the AMS cover.
+# In Bambu Studio, assign each filament slot to the correct material profile so temperature and flow settings are accurate.
+
+=== Filament Loading (External Spool) ===
+# Mount the spool on the rear spool holder.
+# Feed the filament through the external feed port on the back of the printer and into the direct-drive extruder.
+# Use the touchscreen to trigger a filament load.
+
+=== Printing ===
+# Select the print job on the touchscreen or start it remotely via Bambu Studio.
+# The printer will home, auto-level, and run the first-layer calibration automatically.
+# Monitor the first layer via the built-in camera (Bambu Handy app or Bambu Studio).
+# Do not open the enclosure during printing if using ABS/ASA — temperature stability is critical.
+
+=== Print Removal ===
+# Wait for the bed to cool to room temperature — parts release more easily when cool.
+# Flex the build plate gently to pop parts free (for flex plates).
+# Use a scraper for parts on the cool plate or engineering plate if needed.
+# Remove supports with flush cutters.
+
+== Maintenance ==
+
+=== After Each Print ===
+* Remove any filament debris or purge material from the build area.
+* Wipe the build plate with IPA to remove oils and adhesive residue.
+
+=== Weekly (or Every ~100 Print Hours) ===
+* Clean the nozzle exterior with a brass brush while hot.
+* Inspect the PTFE tube inside the AMS for wear or filament dust buildup.
+* Check the carbon rods and linear rails for debris. Wipe with a dry lint-free cloth.
+* Lubricate the Z-axis lead screw with a small amount of PTFE-based grease if needed.
+
+=== As Needed ===
+* Replace the nozzle when print quality degrades (stringing, inconsistent extrusion) despite calibration.
+* Replace the PEI sheet or build plate surface when adhesion becomes unreliable.
+* Replace the activated carbon filter in the enclosure every 3-6 months depending on usage.
+
+== Troubleshooting ==
+* '''First layer not adhering:''' Clean the build plate with IPA. Re-run the automatic bed leveling. Apply glue stick for PETG or nylon.
+* '''Stringing between parts:''' Enable retraction tuning in the slicer. Reduce nozzle temperature by 5-10C. Verify the filament is dry.
+* '''AMS filament jams:''' Open the AMS cover, pull the filament out, trim the end cleanly, and reload. Check the PTFE tube for kinks.
+* '''Layer shifts:''' Check that the carbon rods are clean and the belt tension is correct. Ensure the printer is on a stable, level surface.

@@ -7,6 +7,7 @@
 [[Has optional property::Property:Has CAS number]]
 [[Has optional property::Property:Has hazard level]]
 [[Has optional property::Property:Has RRID]]
+[[Has optional property::Property:Has SOP]]
 [[Has optional subobject::Subobject:Has stock entry]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

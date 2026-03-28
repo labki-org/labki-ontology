@@ -12,6 +12,7 @@
 [[Has optional property::Property:Has manual URL]]
 [[Has optional property::Property:Has technique]]
 [[Has optional property::Property:Has RRID]]
+[[Has optional property::Property:Has SOP]]
 [[Has optional subobject::Subobject:Has maintenance record]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]
