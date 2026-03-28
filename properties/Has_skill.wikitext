@@ -1,0 +1,7 @@
+<!-- OntologySync Start -->
+[[Has type::Page]]
+[[Has description::The skills of a person]]
+[[Display label::Skill]]
+[[Allows multiple values::true]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

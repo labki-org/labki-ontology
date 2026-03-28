@@ -1,0 +1,5 @@
+<!-- OntologySync Start -->
+[[Has description::A role within an organization]]
+[[Display label::Organizational Role]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-subobject]]
