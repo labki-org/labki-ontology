@@ -1,0 +1,7 @@
+<!-- OntologySync Start -->
+[[Has type::Telephone number]]
+[[Has description::Contact phone number]]
+[[Display label::Phone Number]]
+[[Allows multiple values::true]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

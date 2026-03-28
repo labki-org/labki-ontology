@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The name of a thing]]
+[[Display label::Name]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

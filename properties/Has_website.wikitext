@@ -1,0 +1,7 @@
+<!-- OntologySync Start -->
+[[Has type::URL]]
+[[Has description::Website]]
+[[Display label::Website]]
+[[Allows multiple values::true]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

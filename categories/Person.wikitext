@@ -1,9 +1,9 @@
 <!-- OntologySync Start -->
 [[Has description::A human person]]
+[[Has parent category::Category:Agent]]
 [[Has required property::Property:Has first name]]
 [[Has required property::Property:Has last name]]
-[[Has optional property::Property:Has middle name]]
-[[Has optional property::Property:Has email]]
 [[Has optional property::Property:Has birthday]]
+[[Has optional property::Property:Has middle name]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

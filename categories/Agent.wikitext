@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+[[Has description::Shared identity/contact for people and organizations]]
+[[Has optional property::Property:Has email]]
+[[Has optional property::Property:Has phone number]]
+[[Has optional property::Property:Has website]]
+[[Has optional property::Property:Has description]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

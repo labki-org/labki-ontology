@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+[[Has description::A researcher]]
+[[Has parent category::Category:Person]]
+[[Has optional property::Property:Has orcid]]
+[[Has optional property::Property:Has skill]]
+[[Has optional subobject::Subobject:Has organizational role]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]
