@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Page]]
+[[Has description::Status state of thing]]
+[[Display label::Status]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
