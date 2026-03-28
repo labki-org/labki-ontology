@@ -12,5 +12,7 @@
 [[Allows value::Lab Manager]]
 [[Allows value::Visiting Researcher]]
 [[Allows value::Staff]]
+[[Allows value::Fellow]]
+[[Allows value::Community Partner]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]
