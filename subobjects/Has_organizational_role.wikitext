@@ -3,7 +3,7 @@
 [[Display label::Organizational Role]]
 [[Has required property::Property:Has organization]]
 [[Has required property::Property:Has research role]]
-[[Has required property::Property:Has state date]]
+[[Has required property::Property:Has start date]]
 [[Has optional property::Property:Has end date]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-subobject]]

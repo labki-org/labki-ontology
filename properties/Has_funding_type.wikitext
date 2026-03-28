@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Type of funding]]
+[[Display label::Funding Type]]
+[[Allows value::Grant]]
+[[Allows value::Award]]
+[[Allows value::Contract]]
+[[Allows value::Fellowship]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

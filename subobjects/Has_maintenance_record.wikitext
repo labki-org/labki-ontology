@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+[[Has description::A maintenance or service record for equipment]]
+[[Display label::Maintenance Record]]
+[[Has required property::Property:Has date]]
+[[Has required property::Property:Has performed by]]
+[[Has required property::Property:Has maintenance type]]
+[[Has optional property::Property:Has notes]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-subobject]]

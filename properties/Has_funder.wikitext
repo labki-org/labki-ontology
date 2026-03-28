@@ -1,7 +1,7 @@
 <!-- OntologySync Start -->
 [[Has type::Page]]
-[[Has description::The parent organization]]
-[[Display label::Parent Organization]]
+[[Has description::The funding organization]]
+[[Display label::Funder]]
 [[Allows value from category::Category:Organization]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Lot or batch number]]
+[[Display label::Lot Number]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

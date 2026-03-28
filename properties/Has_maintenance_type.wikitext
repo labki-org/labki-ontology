@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Type of maintenance performed]]
+[[Display label::Maintenance Type]]
+[[Allows value::Calibration]]
+[[Allows value::Repair]]
+[[Allows value::Routine Service]]
+[[Allows value::Inspection]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

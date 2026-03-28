@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+[[Has description::A role within a project with effort allocation]]
+[[Display label::Project Role]]
+[[Has required property::Property:Has person]]
+[[Has required property::Property:Has role type]]
+[[Has optional property::Property:Has effort fraction]]
+[[Has optional property::Property:Has start date]]
+[[Has optional property::Property:Has end date]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-subobject]]

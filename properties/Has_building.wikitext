@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Building name or number]]
+[[Display label::Building]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

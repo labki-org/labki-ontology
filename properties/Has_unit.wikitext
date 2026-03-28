@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Unit of measurement]]
+[[Display label::Unit]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,8 +1,8 @@
 <!-- OntologySync Start -->
 [[Has type::Page]]
-[[Has description::The person or org responsible for a thing]]
-[[Display label::Responsible Party]]
+[[Has description::Funding source for a project]]
+[[Display label::Funding]]
 [[Allows multiple values::true]]
-[[Allows value from category::Category:Agent]]
+[[Allows value from category::Category:Funding]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

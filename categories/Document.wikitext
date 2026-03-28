@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+[[Has description::An authored information artifact]]
+[[Has required property::Property:Has author]]
+[[Has required property::Property:Has document date]]
+[[Has required property::Property:Has document type]]
+[[Has optional property::Property:Has version]]
+[[Has optional property::Property:Has DOI]]
+[[Has optional property::Property:Has description]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

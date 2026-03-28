@@ -1,8 +1,8 @@
 <!-- OntologySync Start -->
 [[Has type::Page]]
-[[Has description::The person or org responsible for a thing]]
-[[Display label::Responsible Party]]
+[[Has description::Equipment used in this activity]]
+[[Display label::Equipment Used]]
 [[Allows multiple values::true]]
-[[Allows value from category::Category:Agent]]
+[[Allows value from category::Category:Equipment]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

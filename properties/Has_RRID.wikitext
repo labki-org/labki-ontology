@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Research Resource Identifier]]
+[[Display label::RRID]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

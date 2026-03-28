@@ -1,0 +1,7 @@
+<!-- OntologySync Start -->
+[[Has type::Page]]
+[[Has description::A person associated with this]]
+[[Display label::Person]]
+[[Allows value from category::Category:Person]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

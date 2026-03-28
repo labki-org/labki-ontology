@@ -1,0 +1,7 @@
+<!-- OntologySync Start -->
+[[Has type::Page]]
+[[Has description::Physical location]]
+[[Display label::Location]]
+[[Allows value from category::Category:Location]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

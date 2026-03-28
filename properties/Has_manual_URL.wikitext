@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::URL]]
+[[Has description::Link to equipment manual or documentation]]
+[[Display label::Manual]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

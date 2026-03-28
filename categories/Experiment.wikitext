@@ -1,0 +1,12 @@
+<!-- OntologySync Start -->
+[[Has description::A specific experimental run]]
+[[Has parent category::Category:Activity]]
+[[Has required property::Property:Has project]]
+[[Has required property::Property:Has operator]]
+[[Has optional property::Property:Has protocol]]
+[[Has optional property::Property:Has equipment used]]
+[[Has optional property::Property:Has material used]]
+[[Has optional property::Property:Has result]]
+[[Has optional property::Property:Has deviation]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

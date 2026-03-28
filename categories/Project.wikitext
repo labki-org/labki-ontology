@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+[[Has description::A research project]]
+[[Has parent category::Category:Activity]]
+[[Has required property::Property:Has PI]]
+[[Has optional property::Property:Has funding]]
+[[Has optional property::Property:Has goal]]
+[[Has optional property::Property:Has participant]]
+[[Has optional subobject::Subobject:Has project role]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

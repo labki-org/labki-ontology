@@ -1,0 +1,12 @@
+<!-- OntologySync Start -->
+[[Has description::Consumable material, reagent, or sample]]
+[[Has optional property::Property:Has description]]
+[[Has required property::Property:Has storage location]]
+[[Has optional property::Property:Has supplier]]
+[[Has optional property::Property:Has catalog number]]
+[[Has optional property::Property:Has CAS number]]
+[[Has optional property::Property:Has hazard level]]
+[[Has optional property::Property:Has RRID]]
+[[Has optional subobject::Subobject:Has stock entry]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

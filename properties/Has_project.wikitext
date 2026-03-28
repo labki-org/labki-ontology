@@ -1,0 +1,7 @@
+<!-- OntologySync Start -->
+[[Has type::Page]]
+[[Has description::The project this belongs to]]
+[[Display label::Project]]
+[[Allows value from category::Category:Project]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

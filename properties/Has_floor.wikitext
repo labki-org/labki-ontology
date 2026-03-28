@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::Floor number or name]]
+[[Display label::Floor]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

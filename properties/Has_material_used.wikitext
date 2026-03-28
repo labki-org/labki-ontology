@@ -1,8 +1,8 @@
 <!-- OntologySync Start -->
 [[Has type::Page]]
-[[Has description::The person or org responsible for a thing]]
-[[Display label::Responsible Party]]
+[[Has description::Material consumed in this activity]]
+[[Display label::Material Used]]
 [[Allows multiple values::true]]
-[[Allows value from category::Category:Agent]]
+[[Allows value from category::Category:Material]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]
