@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Boolean]]
+[[Has description::Whether this person is a first author]]
+[[Display label::First Author]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

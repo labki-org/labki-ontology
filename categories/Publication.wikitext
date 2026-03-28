@@ -1,0 +1,11 @@
+<!-- OntologySync Start -->
+[[Has description::A scholarly publication such as a journal article, preprint, or conference paper]]
+[[Has parent category::Category:Document]]
+[[Has required property::Property:Has publication status]]
+[[Has optional property::Property:Has journal]]
+[[Has optional property::Property:Has PubMed ID]]
+[[Has optional property::Property:Has DOI]]
+[[Has optional property::Property:Has project]]
+[[Has optional subobject::Subobject:Has publication author]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]
