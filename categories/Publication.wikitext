@@ -6,6 +6,8 @@
 [[Has optional property::Property:Has PubMed ID]]
 [[Has optional property::Property:Has DOI]]
 [[Has optional property::Property:Has project]]
+[[Has optional property::Property:Has attachment]]
+[[Has optional property::Property:Has website]]
 [[Has optional subobject::Subobject:Has publication author]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]
