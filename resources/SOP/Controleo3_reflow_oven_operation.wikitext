@@ -1,0 +1,122 @@
+<!-- OntologySync Start -->
+[[Has description::Operating procedures for the DIY Controleo3-based toaster oven reflow oven]]
+[[Has document type::SOP]]
+[[Has SOP type::Equipment Operation]]
+[[Has purpose::Covers setup, profile selection, operation, and maintenance of the lab's DIY reflow oven built from a modified toaster oven with a Controleo3 controller from Whizoo Electronics. For general reflow safety, PPE, and waste disposal, refer to the Solder Reflow Oven Safety SOP.]]
+[[Has safety precautions::Review the Solder Reflow Oven Safety SOP before first use. This is a modified consumer toaster oven — the enclosure gets extremely hot during operation. Do not touch any exterior surface during or after a cycle without heat-resistant gloves. The door servo opens automatically during cooling — keep hands and objects clear of the door path. The oven is not UL-listed; do not leave it unattended during operation. Ensure the oven is plugged into a GFCI-protected outlet.]]
+[[Has technique::Reflow soldering]]
+[[Has technique::SMD assembly]]
+<!-- OntologySync End -->
+[[Category:SOP]]
+[[Category:OntologySync-managed-resource]]
+
+== Equipment Overview ==
+The lab reflow oven is a modified toaster oven controlled by a Controleo3 board from Whizoo Electronics. Key components:
+* '''Controller:''' Controleo3 with color touchscreen — manages heating elements, fan, and door servo via 6 relay outputs
+* '''Heating elements:''' Top, bottom, and boost elements (wired to separate relays for independent control)
+* '''Thermocouple:''' K-type thermocouple positioned in the oven chamber for closed-loop temperature feedback
+* '''Door servo:''' Automatically opens the oven door during the cooling phase for rapid cooldown
+* '''Convection fan:''' Circulates air for even heating across the PCB
+
+== Initial Setup (First Use or After Modification) ==
+
+=== Learning Mode ===
+The Controleo3 must run its learning mode before the first reflow. This is a one-time calibration:
+# Ensure the oven is empty (no PCBs inside).
+# From the touchscreen main menu, select '''Learning Mode'''.
+# The controller will spend approximately 30 minutes testing each heating element and the fan, measuring how the oven responds to different power levels.
+# After learning mode completes, the controller provides feedback on oven performance. Follow any recommendations (e.g., adding insulation, adjusting element wiring).
+# Learning mode only needs to be re-run if the oven hardware is modified (new elements, insulation changes, etc.).
+
+=== Thermocouple Placement ===
+* The thermocouple tip should be positioned at board height in the center of the oven.
+* Secure the thermocouple so it does not shift during door opening/closing.
+* For best accuracy, the thermocouple can be clipped to a bare PCB at the same height as the production board.
+
+== Profiles ==
+The Controleo3 uses a simple profile language stored on its SD card. Common profiles:
+
+{| class="wikitable"
+|-
+! Profile !! Paste Type !! Peak Temp !! Use Case
+|-
+| Lead-free (SAC305) || Lead-free || ~245C || Standard lead-free assembly
+|-
+| Leaded (Sn63/Pb37) || Leaded || ~215C || Leaded paste assembly
+|-
+| Low-temp (Sn42/Bi58) || Bismuth low-temp || ~165C || Temperature-sensitive components
+|}
+
+Profiles are editable text files on the SD card. Each profile specifies target temperatures, ramp rates, soak times, and commands for the door servo and fan.
+
+== Procedure ==
+
+=== Before Reflow ===
+# Verify your PCB is stenciled and populated (see Solder Reflow Oven Safety SOP).
+# Power on the oven at the wall switch.
+# The Controleo3 touchscreen will display the main menu.
+
+=== Selecting a Profile ===
+# Tap '''Reflow''' on the touchscreen.
+# Select the appropriate profile for your solder paste type.
+# The screen will show the target temperature curve.
+
+=== Loading the PCB ===
+# Open the oven door (manually or via the touchscreen door control).
+# Place the PCB in the center of the oven rack. Ensure it sits flat and is not touching the thermocouple.
+# Close the door.
+
+=== Running Reflow ===
+# Tap '''Start''' on the touchscreen to begin the reflow cycle.
+# The touchscreen displays a real-time temperature graph showing the actual temperature vs. the target profile.
+# '''Do not open the door during the heating phases''' — the controller manages door position automatically.
+# During the reflow cycle:
+#* '''Preheat phase:''' Elements ramp the oven temperature gradually.
+#* '''Soak phase:''' Temperature stabilizes to equalize heat across the board.
+#* '''Reflow phase:''' Temperature rises to peak. Watch the display to confirm peak temperature is reached.
+#* '''Cooling phase:''' The door servo automatically opens the door. The fan activates to accelerate cooling.
+# The controller plays an audible tone when the cycle is complete.
+
+=== Unloading ===
+# Wait for the temperature display to show below 50C before handling the board without gloves.
+# Remove the PCB. Inspect solder joints per the Solder Reflow Oven Safety SOP.
+# Close the oven door after removal.
+
+== Bake Mode ==
+The Controleo3 supports a bake mode for:
+* Pre-baking moisture-sensitive components (typically 125C for 24 hours per IPC/JEDEC J-STD-033)
+* Curing conformal coatings or adhesives
+
+To use:
+# Select '''Bake''' from the main menu.
+# Set the target temperature and duration (supports up to 168 hours).
+# The controller maintains the set temperature with closed-loop control.
+
+== Maintenance ==
+
+=== After Each Use ===
+* Allow the oven to cool completely.
+* Wipe flux residue from the oven interior and rack with IPA and lint-free wipes.
+* Clean the thermocouple tip with IPA if flux has splattered on it.
+
+=== Monthly ===
+* Inspect the heating element connections and relay wiring for signs of heat damage or loosening.
+* Check the door servo operation — run the door open/close from the touchscreen menu to verify smooth movement.
+* Inspect the thermocouple wire for damage, especially near the oven entry point where heat exposure is highest.
+* Verify temperature accuracy: attach a second thermocouple to a test board and compare the reading against the Controleo3 display during a test run.
+
+=== SD Card ===
+* Keep a backup of your profiles on a computer.
+* If the touchscreen becomes unresponsive or profiles are lost, re-flash the SD card with the backup profiles and Controleo3 firmware from the Whizoo website.
+
+=== As Needed ===
+* Re-run learning mode if heating elements are replaced, insulation is added, or temperature tracking has degraded.
+* Replace the thermocouple if readings become erratic or drift significantly from a reference thermometer.
+* Check and tighten the door servo arm if the door no longer opens to the correct position.
+
+== Troubleshooting ==
+* '''Profile not reaching peak temperature:''' The oven may be losing heat. Check door seal, add insulation to the oven exterior (kapton tape + ceramic fiber blanket). Re-run learning mode after insulation changes.
+* '''Temperature overshoots peak:''' Re-run learning mode to re-tune the PID algorithm. Ensure the thermocouple is positioned correctly at board height, not near an element.
+* '''Door servo not opening during cooling:''' Check the servo connection to the Controleo3 board. Verify the profile includes a door-open command. Test the servo from the touchscreen menu.
+* '''Uneven soldering across the board:''' The convection fan may not be running — check the fan relay. Reposition the board to the center of the oven. Consider rotating the board 180 degrees and re-running if hot spots are persistent.
+* '''Touchscreen unresponsive:''' Power cycle the oven. If the issue persists, check the ribbon cable connection between the Controleo3 and the display.

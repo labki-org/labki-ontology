@@ -1,0 +1,38 @@
+<!-- OntologySync Start -->
+[[Has description::Standard procedure for safe use of chemical fume hoods]]
+[[Has document type::SOP]]
+[[Has SOP type::Safety]]
+[[Has purpose::Establishes safe operating practices for chemical fume hoods to protect personnel from exposure to hazardous vapors, fumes, and aerosols.]]
+[[Has safety precautions::Always verify airflow before beginning work. The sash should be at or below the indicated safe operating height. Wear appropriate PPE: lab coat, safety glasses, and chemical-resistant gloves. Do not use the fume hood for perchloric acid or radioisotope work unless it is specifically designated for that purpose.]]
+[[Has emergency procedures::If the fume hood alarm sounds, immediately lower the sash, stop work, and evacuate if instructed. For chemical spills inside the hood, lower the sash and follow the lab-specific spill response plan. Contact EHS for large or hazardous spills.]]
+[[Has waste disposal::Collect liquid waste in appropriate labeled containers inside the hood. Do not pour chemicals down the hood drain. Segregate waste by compatibility (acids, bases, organics, halogenated organics). Request waste pickup through EHS when containers are 80% full.]]
+<!-- OntologySync End -->
+[[Category:SOP]]
+[[Category:OntologySync-managed-resource]]
+
+== Procedure ==
+
+=== Before Use ===
+# Confirm the hood has a current inspection sticker.
+# Verify airflow by checking the face velocity monitor or holding a tissue at the sash edge to observe inward airflow.
+# Ensure the sash moves freely and the sash stop is set at the correct height.
+# Remove any unnecessary materials from the hood — keep the work area uncluttered.
+
+=== During Use ===
+# Keep the sash at or below the safe operating height at all times.
+# Work at least 6 inches (15 cm) back from the sash opening.
+# Do not place your head inside the hood.
+# Keep large equipment toward the back of the hood to avoid disrupting airflow.
+# Elevate large items on blocks to allow airflow underneath.
+# Avoid rapid movements near the hood face — they create turbulence that can pull vapors out.
+
+=== After Use ===
+# Remove all chemicals and materials, or move them to the back of the hood.
+# Lower the sash to the fully closed position when the hood is not in use.
+# Wipe down the work surface with appropriate cleaning solution.
+# Dispose of waste according to EHS guidelines.
+
+== Maintenance and Inspection ==
+* Fume hoods are inspected annually by EHS. Do not use a hood with an expired inspection sticker.
+* Report any unusual noise, reduced airflow, or alarm conditions to facilities management immediately.
+* Do not attempt to repair or modify the hood yourself.

@@ -1,0 +1,62 @@
+<!-- OntologySync Start -->
+[[Has description::Safety and handling procedures for FDM (fused deposition modeling) 3D printing]]
+[[Has document type::SOP]]
+[[Has SOP type::Safety]]
+[[Has purpose::Establishes safe operating, material handling, and post-processing practices for FDM 3D printers. Applies to all FDM/FFF printers regardless of manufacturer.]]
+[[Has safety precautions::The nozzle and heated bed are severe burn hazards — do not touch during or after printing until fully cooled. Print ABS, ASA, nylon, and polycarbonate only in an enclosed printer with activated carbon filtration or in a ventilated area. Even PLA and PETG emit ultrafine particles (UFPs) — ensure the room has adequate general ventilation. Use heat-resistant gloves when handling the build plate immediately after printing. Wear safety glasses when removing supports with flush cutters to protect against flying fragments.]]
+[[Has emergency procedures::For thermal burns from the nozzle or bed, cool under running water for at least 10 minutes. If fumes cause respiratory irritation, ventilate the room immediately and move to fresh air. Power off the printer using the main switch if smoke, burning smell, or abnormal behavior occurs and contact facilities.]]
+[[Has waste disposal::Failed prints and support material from PLA are not readily recyclable in most municipal streams — collect for general solid waste. ABS, ASA, and nylon waste should be collected separately and disposed of per local plastic waste guidelines. Do not burn filament waste. Spent nozzles and worn printer components go in general waste.]]
+[[Has technique::FDM 3D printing]]
+[[Has technique::FFF 3D printing]]
+<!-- OntologySync End -->
+[[Category:SOP]]
+[[Category:OntologySync-managed-resource]]
+
+== Required PPE ==
+* Heat-resistant gloves (when handling hot bed or parts immediately after printing)
+* Safety glasses (during support removal)
+* Respiratory protection if printing high-emission materials (ABS, ASA) without enclosure filtration
+
+== Filament Handling and Storage ==
+# Store hygroscopic filaments (nylon, PETG, TPU, PVA) in sealed containers with desiccant.
+# Dry filament before use if it has been exposed to humidity — symptoms of wet filament include popping/crackling during extrusion, excessive stringing, and poor surface quality.
+# Recommended drying temperatures vary by material. Consult the filament manufacturer's datasheet.
+# Do not leave filament loaded in the printer for extended periods if the environment is humid.
+
+== Material Safety by Filament Type ==
+
+=== PLA ===
+* Low fume emission but produces UFPs. General room ventilation is sufficient.
+* Low warping, no enclosure required.
+* Safe for general lab use.
+
+=== PETG ===
+* Moderate UFP emission. General ventilation recommended.
+* Adheres strongly to some build surfaces — use a release agent to avoid damaging the build plate.
+* Stringing-prone — keep filament dry.
+
+=== ABS / ASA ===
+* Emits styrene fumes — '''enclosure with activated carbon filter required''', or use in a ventilated area.
+* High warping tendency — keep the enclosure closed during printing.
+* Do not leave running unattended without a smoke detector nearby.
+
+=== Nylon / Polycarbonate ===
+* High print temperatures. Nozzle and bed are extreme burn hazards.
+* Nylon absorbs moisture aggressively — use a dry box or active filament dryer during printing.
+* Polycarbonate requires high bed and enclosure temperatures. Use heat-resistant gloves.
+
+=== Composite Filaments (Carbon Fiber, Glass Fiber) ===
+* Abrasive to brass nozzles — use hardened steel or ruby-tipped nozzles.
+* Dust from post-processing can be irritating — wear a dust mask when sanding.
+
+== Post-Processing Safety ==
+* Allow parts to cool fully before handling. PLA becomes rigid quickly but PETG and ABS retain heat longer.
+* Wear safety glasses when using flush cutters, pliers, or rotary tools for support removal.
+* If sanding or drilling printed parts, wear a dust mask and work in a ventilated area.
+* ABS can be vapor-smoothed with acetone — perform only in a fume hood due to flammability and inhalation risk.
+
+== Printer Placement ==
+* Place FDM printers on a stable, level, non-flammable surface.
+* Ensure adequate clearance around the printer for ventilation and access.
+* Do not place printers near flammable materials, solvents, or open chemical containers.
+* A smoke detector should be present in any room with unattended printing.

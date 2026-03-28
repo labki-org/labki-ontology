@@ -1,0 +1,107 @@
+<!-- OntologySync Start -->
+[[Has description::Operating procedures for the Pixel Pump manual SMD pick-and-place tool by Robin's Tools]]
+[[Has document type::SOP]]
+[[Has SOP type::Equipment Operation]]
+[[Has purpose::Covers setup, nozzle selection, operation, and maintenance of the Pixel Pump vacuum pick-and-place tool for manual SMD (surface-mount device) assembly. Suitable for prototype builds and small production runs.]]
+[[Has safety precautions::The Pixel Pump operates at 12V DC and poses no significant electrical hazard. Use ESD precautions when handling sensitive components — wear an ESD wrist strap and work on a grounded ESD mat. Use tweezers or the vacuum nozzle to handle components; avoid touching small SMD parts with bare fingers as skin oils can affect solderability. If using the Pixel Pump alongside a reflow oven or hot plate, observe standard thermal safety precautions for those tools.]]
+[[Has technique::SMD assembly]]
+[[Has technique::Pick and place]]
+<!-- OntologySync End -->
+[[Category:SOP]]
+[[Category:OntologySync-managed-resource]]
+
+== Kit Contents ==
+* Pixel Pump unit (RP2040-based controller with integrated vacuum pump)
+* Foot pedal (primary vacuum control)
+* 12V DC power supply with barrel jack
+* USB Type-C cable (for firmware updates)
+* Stainless steel nozzle set — five sizes with five of each:
+** 0.3 mm OD — 0201, 0402 passives
+** 0.5 mm OD — 0603, 0805 passives
+** 0.8 mm OD — 1206 passives, small ICs (SOT-23, SOT-223)
+** 1.3 mm OD — QFN, QFP, SOIC packages
+** 1.8 mm OD — larger ICs, connectors, shielding cans
+* Nozzles use a Luer lock slip fitting for quick changes and third-party nozzle compatibility
+
+== Setup ==
+# Place the Pixel Pump on a clean, ESD-safe workstation.
+# Connect the 12V DC power supply to the barrel jack on the unit.
+# Connect the foot pedal to the foot pedal port.
+# (Optional) Connect a second foot pedal for Interactive BOM stepping if using the KiCad Interactive HTML BOM workflow.
+# Power on the unit. The RGB backlit buttons will illuminate to confirm startup.
+
+== Nozzle Selection ==
+Select the smallest nozzle that reliably picks up your target component. Using a nozzle that is too large risks picking up adjacent components or swallowing very small parts.
+
+{| class="wikitable"
+|-
+! Nozzle OD !! Best For !! Notes
+|-
+| 0.3 mm || 0201, 0402 || Smallest parts; position nozzle carefully
+|-
+| 0.5 mm || 0603, 0805 || Most common passive sizes
+|-
+| 0.8 mm || 1206, SOT-23, SOT-223 || Good general-purpose size
+|-
+| 1.3 mm || QFN, QFP, SOIC || Medium ICs
+|-
+| 1.8 mm || Large ICs, connectors || Caution: can swallow 0201/0402 parts
+|}
+
+To change nozzles, pull the current nozzle straight out of the Luer lock fitting and press the new one in until it seats.
+
+== Operation ==
+
+=== Picking Components ===
+# Load your SMD component tape strips into the SMD magazines or magazine rail if available.
+# Select the appropriate nozzle for the component size.
+# Position the nozzle tip directly over the component in the tape pocket or tray.
+# Press the foot pedal to activate the vacuum — the component will be picked up onto the nozzle tip.
+# Hold the pedal down to maintain suction while moving the component to the PCB.
+
+=== Placing Components ===
+# With the component held on the nozzle, position it over the target pad(s) on the PCB. Use magnification (stereo microscope or magnifying lamp) for fine-pitch parts.
+# Lower the nozzle until the component contacts the solder paste on the pads.
+# Release the foot pedal to deactivate the vacuum and release the component.
+# Placing accurately takes practice — developing a feel for the release timing is normal.
+
+=== Adjusting Vacuum Power ===
+* Use the silicone pushbuttons on the unit to switch between high and low vacuum power modes.
+* '''Low power:''' for very small, lightweight parts (0201, 0402) where too much suction could damage the component or make precise placement difficult.
+* '''High power:''' for larger, heavier components (ICs, connectors) that need stronger suction to hold securely.
+
+=== LED Brightness ===
+* The built-in RGB LEDs illuminate the work area around the nozzle tip.
+* Adjust brightness using the pushbuttons. Reduce brightness if it causes glare under magnification.
+
+=== Reverse (Blow) Mode ===
+* Activate reverse mode via the pushbuttons to blow air outward through the nozzle.
+* Use this to clear a clogged nozzle (solder paste or flux residue) without removing it from the unit.
+
+== Interactive BOM Workflow (Optional) ==
+If using the KiCad Interactive HTML BOM plugin:
+# Open the Interactive BOM in a browser on a nearby screen.
+# Connect the second foot pedal.
+# Use the second pedal to step through the component list, highlighting the next component to place.
+# Pick and place each component as the BOM advances — this keeps the workflow hands-free and sequential.
+
+== Maintenance ==
+
+=== After Each Session ===
+* Remove the nozzle and inspect it for solder paste or flux residue. Clean with IPA and a lint-free wipe.
+* Wipe down the unit exterior if solder paste or flux has contacted it.
+
+=== Periodically ===
+* Check and clean the internal user-serviceable filter to prevent particles from reaching the vacuum pump. Remove the filter, brush off debris, and replace.
+* Inspect the foot pedal cable for damage or fraying.
+* Check that nozzles are not bent or deformed — bent nozzles cause off-center picks.
+
+=== Firmware Updates ===
+* Connect the Pixel Pump via USB Type-C to a computer.
+* Follow the instructions on the Robin's Tools website to flash updated firmware via the RP2040 bootloader (hold BOOT button while connecting USB).
+
+== Troubleshooting ==
+* '''Component not picking up:''' Verify the nozzle size is appropriate (not too large or too small for the part). Check that the nozzle is not clogged — use reverse mode to clear it. Ensure the foot pedal is fully depressed.
+* '''Component drops during transit:''' Switch to high power mode. Check the nozzle for cracks or damage that could cause air leaks. Verify the filter is not clogged.
+* '''Component lands off-center:''' Use a smaller nozzle for better centering. Ensure the nozzle is straight and not bent. Work under magnification for fine-pitch parts.
+* '''Weak vacuum:''' Clean or replace the internal filter. Check the nozzle for a proper Luer lock seal.

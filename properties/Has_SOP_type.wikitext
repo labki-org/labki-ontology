@@ -1,0 +1,12 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The type of standard operating procedure]]
+[[Display label::SOP Type]]
+[[Allows value::Equipment Operation]]
+[[Allows value::Chemical Handling]]
+[[Allows value::Biosafety]]
+[[Allows value::Analytical Method]]
+[[Allows value::General Procedure]]
+[[Allows value::Safety]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

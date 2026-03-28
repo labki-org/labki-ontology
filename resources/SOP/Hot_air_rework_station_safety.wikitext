@@ -1,0 +1,120 @@
+<!-- OntologySync Start -->
+[[Has description::Safety and operating procedures for hot air rework stations used in SMD soldering and desoldering]]
+[[Has document type::SOP]]
+[[Has SOP type::Safety]]
+[[Has purpose::Establishes safe operating practices for hot air rework stations used to solder, desolder, and rework surface-mount components on PCBs. Applies to all hot air rework stations regardless of manufacturer.]]
+[[Has safety precautions::The hot air nozzle and airflow reach temperatures of 100-480C (212-900F) and cause severe burns. Never touch the nozzle during or after use — it remains hot for several minutes after shutdown while the station runs its cool-down cycle. Do not point the hot air stream at anything other than the target work area. Work on a heat-resistant surface (silicone mat, ceramic tile, or fire-resistant board). Flux fumes are generated during rework — use a fume extractor or work in a ventilated area. Wear safety glasses to protect against flux splashes and small components that can be blown off the board by the airstream. Use an ESD wrist strap when handling ESD-sensitive boards and components. Keep flammable materials, solvents, and loose papers away from the work area. Never leave a hot air station running unattended.]]
+[[Has emergency procedures::For burns, cool under running water for at least 10 minutes. If flux fumes cause respiratory irritation, move to fresh air. If a component or board ignites (rare, but possible with excessive temperature), power off the station and smother with a fire-resistant cloth or use a Class C fire extinguisher. Do not blow on a burning board — the flux is the fuel.]]
+[[Has waste disposal::Flux-contaminated cleaning materials and used solder wick are hazardous waste if leaded solder is involved. Desoldered components that will not be reused go in electronic waste. IPA wash solution contaminated with flux residue should be collected in labeled waste containers.]]
+[[Has technique::SMD rework]]
+[[Has technique::SMD desoldering]]
+[[Has technique::SMD assembly]]
+<!-- OntologySync End -->
+[[Category:SOP]]
+[[Category:OntologySync-managed-resource]]
+
+== Required PPE and Tools ==
+* Safety glasses
+* ESD wrist strap and grounded ESD mat
+* Fume extractor
+* Heat-resistant work surface (silicone mat or ceramic tile)
+* Fine-tip tweezers (ESD-safe)
+* Flux pen or liquid flux
+* Kapton (polyimide) tape
+* Solder wick and/or solder paste for rework
+* PCB holder or vise
+
+== Nozzle Selection ==
+Most stations include interchangeable nozzles. Select a nozzle that focuses the airflow on the target component without heating adjacent parts excessively.
+
+{| class="wikitable"
+|-
+! Nozzle Type !! Best For !! Notes
+|-
+| Round, small (3-5 mm) || Individual passives (0402-1206), SOT packages || Focused heat for single components
+|-
+| Round, medium (8-10 mm) || SOIC, QFN, small QFP || General-purpose rework
+|-
+| Round, large (12+ mm) || Large QFP, BGA, shielding cans || Broad coverage for large packages
+|-
+| Square/rectangular || QFP with specific body sizes || Matches package footprint for even heating
+|}
+
+Attach nozzles securely before powering on. On most stations, nozzles are held by a setscrew or friction fit.
+
+== Temperature and Airflow Guidelines ==
+Start with moderate settings and increase only if needed. Excessive temperature or airflow causes more damage than insufficient heat.
+
+{| class="wikitable"
+|-
+! Task !! Temperature !! Airflow !! Notes
+|-
+| Small passives (0402-0805) || 280-320C || Low || Low air prevents blowing parts off the board
+|-
+| SOIC, QFP, SOT packages || 320-360C || Medium || Keep nozzle moving in circular pattern
+|-
+| QFN, DFN (thermal pad) || 340-380C || Medium-high || Thermal pad needs significant heat to reflow
+|-
+| BGA || 350-400C || Medium || Requires even heating; consider preheating the board
+|-
+| Lead-free solder || Add 20-30C to leaded settings || Same || Higher liquidus temperature
+|-
+| Large ground planes || 360-400C || High || Thermal mass absorbs heat; preheat board if available
+|}
+
+== Procedure ==
+
+=== Removing an SMD Component ===
+# Secure the PCB in a holder or vise.
+# Select the appropriate nozzle and attach it to the hot air handpiece.
+# Apply flux generously to all solder joints of the target component. Flux lowers the solder melting point and improves heat transfer.
+# Protect nearby components: apply kapton tape over adjacent small parts that could be displaced by airflow or accidentally reflowed.
+# Set temperature and airflow to the recommended settings for the component type.
+# Power on the station and allow it to reach temperature.
+# Position the nozzle 1-2 cm above the component. '''Keep the nozzle moving''' in slow circular motions to distribute heat evenly. Do not hold the nozzle stationary over one spot.
+# Watch the solder joints — when the solder becomes shiny and molten (typically 30-90 seconds depending on component size), gently lift the component with tweezers.
+# '''Do not force the component.''' If it resists, the solder is not fully molten. Continue heating. Forcing removal tears pads off the PCB.
+# Once removed, set the component aside on a heat-resistant surface.
+# Clean the pads with solder wick and flux to prepare for the replacement component.
+
+=== Placing / Soldering an SMD Component ===
+# Clean and prepare the pads (remove old solder with wick if needed, clean with IPA).
+# Apply solder paste to the pads using a syringe, or tin the pads with a soldering iron.
+# Apply flux to the pads.
+# Place the new component on the pads using tweezers. Align carefully under magnification.
+# Heat with the hot air station using the same technique as removal — nozzle 1-2 cm above, slow circular motion.
+# When the solder reflows, the component will self-align slightly due to surface tension. Do not nudge it once the solder is molten unless it is clearly misaligned.
+# Remove the heat and allow the joint to cool undisturbed.
+# Inspect all joints under magnification.
+
+=== Board Preheating (For Large or Multi-Layer Boards) ===
+Thick or multi-layer PCBs act as heat sinks and make rework difficult. Preheating raises the entire board temperature to reduce the thermal gradient:
+# Use a PCB preheater (hot plate or IR preheater) set to 100-150C.
+# Allow the board to soak for 2-3 minutes.
+# Then apply hot air to the target component as normal. The reduced thermal gradient means lower hot air temperatures and shorter heating times are needed.
+
+== Avoiding Common Damage ==
+
+* '''Lifted pads:''' Caused by pulling a component before all joints are fully molten. Always verify all pins are free before lifting.
+* '''Adjacent component displacement:''' Caused by excessive airflow blowing small nearby parts. Reduce airflow and use kapton tape to hold neighbors in place.
+* '''Board delamination / browning:''' Caused by excessive temperature or heating one area too long. Keep the nozzle moving. If the board turns brown, reduce temperature.
+* '''Component cracking (especially ceramics):''' Caused by thermal shock. Preheat the board for sensitive components. Ramp heat gradually rather than blasting at full temperature.
+
+== Shutdown ==
+# Power off the station from the switch or controls.
+# '''Do not unplug or remove the nozzle during cool-down.''' Most stations run the blower fan for several minutes after shutdown to cool the heating element. Interrupting this can damage the element.
+# Wait for the cool-down cycle to complete before storing the handpiece.
+# Remove the kapton tape from the board and clean flux residue with IPA.
+
+== Maintenance ==
+
+=== After Each Session ===
+* Allow full cool-down before handling the handpiece or nozzles.
+* Wipe flux residue from nozzles with IPA once cool.
+* Clean the work surface.
+
+=== Periodically ===
+* Inspect nozzles for flux buildup that could obstruct airflow. Soak in IPA if clogged.
+* Check the air filter (if equipped) and clean or replace as needed.
+* Inspect the handpiece cord and hose for heat damage.
+* Verify temperature accuracy with a thermocouple or tip thermometer.

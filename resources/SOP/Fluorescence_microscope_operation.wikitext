@@ -1,0 +1,50 @@
+<!-- OntologySync Start -->
+[[Has description::Standard procedure for operating a fluorescence microscope]]
+[[Has document type::SOP]]
+[[Has SOP type::Equipment Operation]]
+[[Has purpose::Describes safe startup, imaging, and shutdown procedures for fluorescence microscopes. Covers epifluorescence and basic confocal operation.]]
+[[Has safety precautions::Wear laser safety goggles when using confocal laser lines. Never look directly into the beam path. Ensure the interlock is engaged before powering on laser modules. Avoid prolonged UV exposure from mercury arc lamps.]]
+[[Has emergency procedures::If laser exposure to eyes occurs, flush with water for 15 minutes and seek immediate medical attention. For mercury lamp breakage, evacuate the room and contact EHS for mercury spill cleanup.]]
+[[Has technique::Fluorescence microscopy]]
+[[Has technique::Confocal microscopy]]
+<!-- OntologySync End -->
+[[Category:SOP]]
+[[Category:OntologySync-managed-resource]]
+
+== Materials Required ==
+* Laser safety goggles (appropriate OD for system wavelengths)
+* Immersion oil (Type F, if using oil-immersion objectives)
+* Lens paper and lens cleaning solution
+* Kimwipes
+
+== Procedure ==
+
+=== Startup ===
+# Sign into the instrument booking log.
+# Power on the system controller, then the light source (arc lamp or laser module).
+# Allow the light source to warm up for the recommended time (typically 15 minutes for arc lamps).
+# Launch the imaging software.
+# Select the appropriate objective and filter set for your fluorophore.
+
+=== Sample Loading ===
+# If using an oil-immersion objective, apply a small drop of immersion oil to the coverslip.
+# Secure the slide on the stage using the stage clips.
+# Use the coarse focus knob to bring the sample into approximate focus under brightfield.
+# Switch to the fluorescence channel and fine-focus.
+
+=== Imaging ===
+# Set exposure time to minimize photobleaching. Start with the lowest intensity that gives adequate signal.
+# Acquire images using the software's capture function.
+# Record metadata: objective, filter set, exposure time, and any relevant notes.
+
+=== Shutdown ===
+# Remove the sample from the stage.
+# Clean any immersion oil from the objective using lens paper with a small amount of lens cleaning solution.
+# Return the objective turret to the lowest magnification.
+# Turn off the light source first, then the controller.
+# Log out of the booking system and note any issues encountered.
+
+== Troubleshooting ==
+* '''No fluorescence signal:''' Check that the correct filter cube is in place. Verify the shutter is open. Confirm the light source is on and warmed up.
+* '''Dim or uneven illumination:''' The arc lamp may need alignment or replacement. Check the lamp hours in the software.
+* '''Focus drift:''' Allow the system to thermally equilibrate for 30 minutes before time-lapse experiments. Use hardware autofocus if available.

@@ -5,5 +5,6 @@
 [[Has optional property::Property:Has start date]]
 [[Has optional property::Property:Has end date]]
 [[Has optional property::Property:Has responsible party]]
+[[Has optional property::Property:Has SOP]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

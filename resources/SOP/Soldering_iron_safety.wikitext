@@ -1,0 +1,121 @@
+<!-- OntologySync Start -->
+[[Has description::Safety and operating procedures for soldering irons and soldering stations]]
+[[Has document type::SOP]]
+[[Has SOP type::Safety]]
+[[Has purpose::Establishes safe operating, tip care, and workspace practices for soldering irons and temperature-controlled soldering stations. Applies to all soldering irons regardless of manufacturer. Covers hand soldering of through-hole and SMD components.]]
+[[Has safety precautions::The soldering iron tip reaches temperatures of 200-450C (390-840F) and causes severe burns on contact. Never touch the tip or metal barrel of the iron. Always return the iron to its stand when not actively soldering — never set it down on the workbench. Work in a ventilated area or with a fume extractor; solder flux fumes irritate the respiratory system and eyes. Wear safety glasses to protect against solder splashes. Use an ESD wrist strap and grounded ESD mat when soldering ESD-sensitive components. Do not use a soldering iron near flammable materials, solvents, or open chemical containers. Inspect the power cord and iron for damage before each use — do not use equipment with frayed cords or cracked housings. Wash hands after soldering, especially if using leaded solder.]]
+[[Has emergency procedures::For burns, cool under running water for at least 10 minutes. For eye contact with flux or solder splash, flush with water for 15 minutes and seek medical attention. If fumes cause respiratory irritation, move to fresh air and ventilate the area. If the iron or station malfunctions (sparks, burning smell, smoke from the handle), unplug it immediately.]]
+[[Has waste disposal::Leaded solder waste (dross, solder wick, used sponge tips saturated with leaded solder) should be collected and disposed of as hazardous waste. Lead-free solder waste can go in general waste but check local regulations. Used flux and flux-contaminated cleaning materials should be disposed of per EHS guidelines. Spent soldering tips can go in general waste.]]
+[[Has technique::Soldering]]
+[[Has technique::SMD assembly]]
+[[Has technique::Through-hole soldering]]
+<!-- OntologySync End -->
+[[Category:SOP]]
+[[Category:OntologySync-managed-resource]]
+
+== Required PPE ==
+* Safety glasses
+* ESD wrist strap (for ESD-sensitive work)
+* Fume extractor or adequate ventilation
+* Heat-resistant surface or silicone mat
+
+== Soldering Iron Tip Selection ==
+Select the tip shape and size based on the work:
+
+{| class="wikitable"
+|-
+! Tip Type !! Best For !! Notes
+|-
+| Chisel (screwdriver) || General through-hole, large SMD pads || Most versatile; good thermal transfer
+|-
+| Conical (pointed) || Fine-pitch SMD, tight spaces || Less thermal mass; slower heat transfer
+|-
+| Bevel || Drag soldering fine-pitch ICs || Flat face drags across pins evenly
+|-
+| Knife || Drag soldering, bridge cleanup || Angled edge for precision
+|-
+| Hoof (concave) || Drag soldering QFP/SOIC || Holds a small bead of solder in the concavity
+|}
+
+Use the largest tip that fits the work — larger tips transfer heat more efficiently and require lower temperatures.
+
+== Temperature Guidelines ==
+Use the lowest temperature that produces good joints efficiently. Excessive temperature accelerates tip oxidation and can damage components and pads.
+
+{| class="wikitable"
+|-
+! Solder Type !! Recommended Range !! Notes
+|-
+| Leaded (Sn63/Pb37) || 315-345C (600-650F) || Lower melting point; easier to work with
+|-
+| Lead-free (SAC305) || 345-385C (650-725F) || Higher melting point; use active flux
+|-
+| Fine-pitch SMD || 315-330C (600-625F) || Lower temp with good flux to avoid bridges
+|-
+| Large ground planes / connectors || 370-400C (700-750F) || Increase temp to overcome thermal mass
+|}
+
+== Procedure ==
+
+=== Setup ===
+# Power on the soldering station and set the desired temperature.
+# Allow the iron to reach operating temperature (typically 30-60 seconds for cartridge-type irons).
+# Tin the tip: apply a small amount of solder to the hot tip to create a shiny, wetted surface. This is essential for good heat transfer.
+# Prepare your workspace: secure the PCB in a holder or vise, arrange components, and have solder, flux, and cleaning tools within reach.
+
+=== Soldering a Through-Hole Joint ===
+# Insert the component lead through the PCB hole.
+# Touch the iron tip simultaneously to the pad and the component lead — heat both.
+# After 1-2 seconds, feed solder into the joint (not onto the iron tip). The solder should flow and wick around the lead and pad.
+# Remove the solder wire, then remove the iron. The joint should be shiny and concave (volcano-shaped).
+# Trim the excess lead with flush cutters. Wear safety glasses — cut leads can fly.
+
+=== Soldering SMD Components ===
+# Apply flux to the pads.
+# Tin one pad with a small amount of solder.
+# Hold the component with tweezers, position it on the pads, and reflow the tinned pad to tack the component.
+# Solder the remaining pad(s).
+# Inspect under magnification for bridges, cold joints, or insufficient wetting.
+
+=== Drag Soldering Fine-Pitch ICs ===
+# Apply generous flux across all pads.
+# Tack one corner pin to align the IC.
+# Tack the diagonal corner pin to lock alignment.
+# Apply solder to the tip and drag slowly across the pins. Flux prevents bridges.
+# Inspect all pins under magnification. Use solder wick to remove any bridges.
+
+=== Desoldering ===
+# Apply flux to the joint.
+# Heat the joint and use either:
+#* '''Solder wick (braid):''' Press the wick onto the heated joint; it absorbs the molten solder via capillary action.
+#* '''Solder sucker (desoldering pump):''' Heat the joint, then trigger the pump to vacuum up the molten solder.
+# For SMD components, a hot air rework station is often more effective than an iron for desoldering.
+
+== Tip Care ==
+Tip life depends directly on maintenance. A well-maintained tip lasts significantly longer.
+
+* '''Always keep the tip tinned.''' Before putting the iron in the stand, apply a fresh coat of solder to the tip. This prevents oxidation.
+* '''Clean the tip frequently''' during use. Use a brass wool tip cleaner (preferred) or a damp cellulose sponge. Brass wool is less thermally shocking to the tip.
+* '''Use the lowest effective temperature.''' High temperatures accelerate tip wear.
+* '''Never file, sand, or scrape the tip.''' This destroys the iron plating and exposes the copper core.
+* '''If a tip becomes black and won't accept solder:''' Apply tip tinner/activator (a flux-heavy paste) to restore wettability. If unrecoverable, replace the tip.
+* '''Use setback/sleep features''' on your station to reduce tip temperature during idle periods.
+
+== Workspace Setup ==
+* Use a heat-resistant silicone mat or dedicated soldering surface.
+* Secure PCBs in a PCB holder, helping-hands tool, or vise.
+* Position a fume extractor 4-8 inches from the work area to capture flux fumes without disrupting the solder joint.
+* Keep the soldering station away from the edge of the bench to prevent cord-pull accidents.
+* Ensure a clear area around the iron stand — no papers, wires, or components that could contact the hot iron.
+
+== Maintenance ==
+
+=== After Each Session ===
+* Tin the tip generously before powering off.
+* Wipe down the iron stand and clean out any solder dross.
+* Empty and clean the sponge or brass wool cleaner.
+
+=== Periodically ===
+* Inspect the iron cord and handle for heat damage.
+* Verify tip-to-ground resistance is within spec (typically less than 2-5 ohms) using a multimeter. This protects ESD-sensitive components.
+* Calibrate station temperature with a tip thermometer if available.
