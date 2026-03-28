@@ -1,7 +1,15 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
+[[Has type::Text]]
 [[Has description::The type of thing this is]]
 [[Display label::Institution Type]]
 [[Allows multiple values::true]]
+[[Allows value::University]]
+[[Allows value::Company]]
+[[Allows value::Government Agency]]
+[[Allows value::Funding Agency]]
+[[Allows value::Research Institute]]
+[[Allows value::Hospital]]
+[[Allows value::Non-Profit]]
+[[Allows value::Core Facility]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

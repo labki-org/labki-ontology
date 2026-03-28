@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The status of a piece of equipment]]
+[[Display label::Status]]
+[[Allows value::Available]]
+[[Allows value::In Use]]
+[[Allows value::Maintenance]]
+[[Allows value::Retired]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

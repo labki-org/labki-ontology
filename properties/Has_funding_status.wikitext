@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The status of a funding source]]
+[[Display label::Status]]
+[[Allows value::Applied]]
+[[Allows value::Active]]
+[[Allows value::No-Cost Extension]]
+[[Allows value::Closed]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

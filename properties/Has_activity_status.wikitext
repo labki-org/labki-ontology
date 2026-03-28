@@ -1,0 +1,11 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The status of an activity]]
+[[Display label::Status]]
+[[Allows value::Planning]]
+[[Allows value::Active]]
+[[Allows value::Completed]]
+[[Allows value::On Hold]]
+[[Allows value::Cancelled]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

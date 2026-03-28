@@ -1,5 +1,5 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
+[[Has type::Text]]
 [[Has description::Status state of thing]]
 [[Display label::Status]]
 <!-- OntologySync End -->
