@@ -1,0 +1,13 @@
+<!-- OntologySync Start -->
+[[Has location type::UCLA Medical Campus]]
+[[Has building::CHS]]
+[[Has capacity::10]]
+[[Has floor::7]]
+[[Has room number::74-134]]
+<!-- OntologySync End -->
+[[Category:Location]]
+[[Category:OntologySync-managed-resource]]
+
+This is our wikitext section.
+
+In here we place all the rest of the info for a resource page.
