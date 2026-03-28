@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Date]]
+[[Has description::The birthday of a person]]
+[[Display label::Birthday]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
