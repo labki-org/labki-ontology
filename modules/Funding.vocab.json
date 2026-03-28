@@ -1,0 +1,193 @@
+{
+  "description": "Grant and award lifecycle tracking",
+  "id": "Funding",
+  "version": "1.0.0",
+  "label": "Funding",
+  "dependencies": [],
+  "import": [
+    {
+      "page": "Funding",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Funding.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Funding Program",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Funding_Program.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has PI",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_PI.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has administering organization",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_administering_organization.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has co PI",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_co_PI.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has currency",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_currency.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has description",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_description.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has end date",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_end_date.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has funder",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_funder.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has funding amount",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_funding_amount.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has funding program",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_funding_program.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has funding program type",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_funding_program_type.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has funding status",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_funding_status.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has funding type",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_funding_type.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has grant number",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_grant_number.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has name",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_name.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has start date",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_start_date.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has website",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_website.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    }
+  ],
+  "meta": {
+    "version": "1",
+    "ontologyVersion": ""
+  }
+}

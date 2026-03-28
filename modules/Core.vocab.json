@@ -1,0 +1,353 @@
+{
+  "description": "Essential entities shared across all modules",
+  "id": "Core",
+  "version": "1.0.0",
+  "label": "Core",
+  "dependencies": [],
+  "import": [
+    {
+      "page": "Activity",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Activity.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Agent",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Agent.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Document",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Document.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Location",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Location.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Organization",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Organization.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Person",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Person.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has DOI",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_DOI.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has SOP",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_SOP.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has acronym",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_acronym.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has activity status",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_activity_status.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has author",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_author.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has birthday",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_birthday.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has building",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_building.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has capacity",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_capacity.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has description",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_description.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has document date",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_document_date.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has document type",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_document_type.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has email",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_email.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has end date",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_end_date.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has first name",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_first_name.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has floor",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_floor.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has institution type",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_institution_type.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has last name",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_last_name.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has location type",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_location_type.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has middle name",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_middle_name.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has name",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_name.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has parent location",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_parent_location.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has parent organization",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_parent_organization.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has phone number",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_phone_number.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has responsible party",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_responsible_party.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has room number",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_room_number.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has start date",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_start_date.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has version",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_version.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has website",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_website.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    }
+  ],
+  "meta": {
+    "version": "1",
+    "ontologyVersion": ""
+  }
+}

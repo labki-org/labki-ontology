@@ -1,0 +1,14 @@
+{
+  "id": "Labki_base",
+  "version": "1.0.0",
+  "label": "Labki Base",
+  "description": "Complete ontology for research lab and center management",
+  "modules": [
+    "Equipment",
+    "Funding",
+    "Materials",
+    "Research",
+    "Standard_operating_procedures",
+    "Core"
+  ]
+}
