@@ -93,5 +93,30 @@ export function validateReferences(entityIndex) {
     }
   }
 
+  // Module completeness check: all parent categories of a module's categories
+  // must also be in the module's category list
+  for (const [moduleId, moduleEntity] of entityIndex.modules) {
+    const moduleCategories = new Set(normalizeToArray(moduleEntity.categories))
+    const categoriesIndex = entityIndex.categories
+
+    for (const catId of moduleCategories) {
+      const category = categoriesIndex.get(catId)
+      if (!category) continue
+
+      const parents = normalizeToArray(category.parents)
+      for (const parentId of parents) {
+        // Skip if parent doesn't exist (already caught by missing-reference check)
+        if (!categoriesIndex.has(parentId)) continue
+        if (!moduleCategories.has(parentId)) {
+          errors.push({
+            file: moduleEntity._filePath || `modules/${moduleId}.vocab.json`,
+            type: 'incomplete-module',
+            message: `Module "${moduleId}" includes category "${catId}" whose parent "${parentId}" is not in the module`
+          })
+        }
+      }
+    }
+  }
+
   return { errors, warnings }
 }

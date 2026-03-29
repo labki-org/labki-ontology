@@ -310,6 +310,109 @@ describe('validateReferences', () => {
     })
   })
 
+  describe('Module completeness', () => {
+    test('module missing parent category returns error', () => {
+      const index = createMockEntityIndex({
+        categories: new Map([
+          ['Agent', {
+            id: 'Agent',
+            _filePath: 'categories/Agent.wikitext'
+          }],
+          ['Person', {
+            id: 'Person',
+            parents: ['Agent'],
+            _filePath: 'categories/Person.wikitext'
+          }]
+        ]),
+        modules: new Map([
+          ['People', {
+            id: 'People',
+            categories: ['Person'],  // Missing Agent
+            properties: [],
+            subobjects: [],
+            templates: [],
+            dependencies: []
+          }]
+        ])
+      })
+
+      const result = validateReferences(index)
+
+      const incompleteErrors = result.errors.filter(e => e.type === 'incomplete-module')
+      assert.strictEqual(incompleteErrors.length, 1)
+      assert.ok(incompleteErrors[0].message.includes('Person'))
+      assert.ok(incompleteErrors[0].message.includes('Agent'))
+    })
+
+    test('module with all parent categories passes', () => {
+      const index = createMockEntityIndex({
+        categories: new Map([
+          ['Agent', {
+            id: 'Agent',
+            _filePath: 'categories/Agent.wikitext'
+          }],
+          ['Person', {
+            id: 'Person',
+            parents: ['Agent'],
+            _filePath: 'categories/Person.wikitext'
+          }]
+        ]),
+        modules: new Map([
+          ['People', {
+            id: 'People',
+            categories: ['Agent', 'Person'],
+            properties: [],
+            subobjects: [],
+            templates: [],
+            dependencies: []
+          }]
+        ])
+      })
+
+      const result = validateReferences(index)
+
+      const incompleteErrors = result.errors.filter(e => e.type === 'incomplete-module')
+      assert.strictEqual(incompleteErrors.length, 0)
+    })
+
+    test('module with deep inheritance chain missing ancestor returns error', () => {
+      const index = createMockEntityIndex({
+        categories: new Map([
+          ['Agent', {
+            id: 'Agent',
+            _filePath: 'categories/Agent.wikitext'
+          }],
+          ['Person', {
+            id: 'Person',
+            parents: ['Agent'],
+            _filePath: 'categories/Person.wikitext'
+          }],
+          ['Researcher', {
+            id: 'Researcher',
+            parents: ['Person'],
+            _filePath: 'categories/Researcher.wikitext'
+          }]
+        ]),
+        modules: new Map([
+          ['Research', {
+            id: 'Research',
+            categories: ['Person', 'Researcher'],  // Missing Agent
+            properties: [],
+            subobjects: [],
+            templates: [],
+            dependencies: []
+          }]
+        ])
+      })
+
+      const result = validateReferences(index)
+
+      const incompleteErrors = result.errors.filter(e => e.type === 'incomplete-module')
+      assert.strictEqual(incompleteErrors.length, 1)
+      assert.ok(incompleteErrors[0].message.includes('Agent'))
+    })
+  })
+
   describe('Valid scenarios', () => {
     test('all references valid returns no errors', () => {
       const index = createDependencyChainIndex()
