@@ -267,77 +267,36 @@ describe('validateReferences', () => {
     })
   })
 
-  describe('Module scope validation', () => {
-    test('reference to entity in unrelated module returns scope-violation', () => {
+  describe('Entities in multiple modules', () => {
+    test('entity referenced across modules without dependencies passes', () => {
       const index = createMockEntityIndex({
         properties: new Map([
-          ['Name', {
-            id: 'Name',
+          ['SharedProp', {
+            id: 'SharedProp',
             datatype: 'Text',
-            _filePath: 'properties/Name.json'
-          }],
-          ['Isolated', {
-            id: 'Isolated',
-            datatype: 'Text',
-            _filePath: 'properties/Isolated.json'
+            _filePath: 'properties/SharedProp.json'
           }]
         ]),
         categories: new Map([
-          ['Person', {
-            id: 'Person',
-            optional_properties: ['Name', 'Isolated'],
-            _filePath: 'categories/Person.json'
+          ['CatA', {
+            id: 'CatA',
+            optional_properties: ['SharedProp'],
+            _filePath: 'categories/CatA.json'
           }]
         ]),
         modules: new Map([
-          ['Core', {
-            id: 'Core',
-            categories: ['Person'],
-            properties: ['Name'],
+          ['ModuleA', {
+            id: 'ModuleA',
+            categories: ['CatA'],
+            properties: ['SharedProp'],
             subobjects: [],
             templates: [],
             dependencies: []
           }],
-          ['OtherModule', {
-            id: 'OtherModule',
+          ['ModuleB', {
+            id: 'ModuleB',
             categories: [],
-            properties: ['Isolated'],
-            subobjects: [],
-            templates: [],
-            dependencies: []  // NOT a dependency of Core
-          }]
-        ])
-      })
-
-      const result = validateReferences(index)
-
-      const scopeErrors = result.errors.filter(e => e.type === 'scope-violation')
-      assert.strictEqual(scopeErrors.length, 1)
-      assert.ok(scopeErrors[0].message.includes('Isolated'))
-      assert.ok(scopeErrors[0].message.includes('OtherModule'))
-    })
-
-    test('reference to entity in same module passes', () => {
-      const index = createMockEntityIndex({
-        properties: new Map([
-          ['Name', {
-            id: 'Name',
-            datatype: 'Text',
-            _filePath: 'properties/Name.json'
-          }]
-        ]),
-        categories: new Map([
-          ['Person', {
-            id: 'Person',
-            required_properties: ['Name'],
-            _filePath: 'categories/Person.json'
-          }]
-        ]),
-        modules: new Map([
-          ['Core', {
-            id: 'Core',
-            categories: ['Person'],
-            properties: ['Name'],
+            properties: ['SharedProp'],
             subobjects: [],
             templates: [],
             dependencies: []
@@ -348,165 +307,6 @@ describe('validateReferences', () => {
       const result = validateReferences(index)
 
       assert.strictEqual(result.errors.length, 0)
-    })
-
-    test('reference to entity in dependency passes', () => {
-      const index = createMockEntityIndex({
-        properties: new Map([
-          ['BaseProp', {
-            id: 'BaseProp',
-            datatype: 'Text',
-            _filePath: 'properties/BaseProp.json'
-          }]
-        ]),
-        categories: new Map([
-          ['Derived', {
-            id: 'Derived',
-            required_properties: ['BaseProp'],
-            _filePath: 'categories/Derived.json'
-          }]
-        ]),
-        modules: new Map([
-          ['BaseModule', {
-            id: 'BaseModule',
-            categories: [],
-            properties: ['BaseProp'],
-            subobjects: [],
-            templates: [],
-            dependencies: []
-          }],
-          ['DerivedModule', {
-            id: 'DerivedModule',
-            categories: ['Derived'],
-            properties: [],
-            subobjects: [],
-            templates: [],
-            dependencies: ['BaseModule']  // Declares dependency
-          }]
-        ])
-      })
-
-      const result = validateReferences(index)
-
-      assert.strictEqual(result.errors.length, 0)
-    })
-
-    test('reference to entity in transitive dependency passes', () => {
-      const index = createMockEntityIndex({
-        properties: new Map([
-          ['RootProp', {
-            id: 'RootProp',
-            datatype: 'Text',
-            _filePath: 'properties/RootProp.json'
-          }]
-        ]),
-        categories: new Map([
-          ['LeafCat', {
-            id: 'LeafCat',
-            optional_properties: ['RootProp'],
-            _filePath: 'categories/LeafCat.json'
-          }]
-        ]),
-        modules: new Map([
-          ['Root', {
-            id: 'Root',
-            categories: [],
-            properties: ['RootProp'],
-            subobjects: [],
-            templates: [],
-            dependencies: []
-          }],
-          ['Middle', {
-            id: 'Middle',
-            categories: [],
-            properties: [],
-            subobjects: [],
-            templates: [],
-            dependencies: ['Root']
-          }],
-          ['Leaf', {
-            id: 'Leaf',
-            categories: ['LeafCat'],
-            properties: [],
-            subobjects: [],
-            templates: [],
-            dependencies: ['Middle']  // Transitive to Root
-          }]
-        ])
-      })
-
-      const result = validateReferences(index)
-
-      assert.strictEqual(result.errors.length, 0)
-    })
-
-    test('entity not in any module skips scope check', () => {
-      const index = createMockEntityIndex({
-        properties: new Map([
-          ['OrphanProp', {
-            id: 'OrphanProp',
-            datatype: 'Text',
-            _filePath: 'properties/OrphanProp.json'
-          }]
-        ]),
-        categories: new Map([
-          ['OrphanCat', {
-            id: 'OrphanCat',
-            optional_properties: ['OrphanProp'],
-            _filePath: 'categories/OrphanCat.json'
-          }]
-        ]),
-        modules: new Map()  // No modules
-      })
-
-      const result = validateReferences(index)
-
-      // No scope violation because category isn't in a module
-      const scopeErrors = result.errors.filter(e => e.type === 'scope-violation')
-      assert.strictEqual(scopeErrors.length, 0)
-    })
-
-    test('property references template outside scope returns scope-violation', () => {
-      const index = createMockEntityIndex({
-        templates: new Map([
-          ['IsolatedTemplate', {
-            id: 'IsolatedTemplate',
-            _filePath: 'templates/IsolatedTemplate.json'
-          }]
-        ]),
-        properties: new Map([
-          ['Display', {
-            id: 'Display',
-            datatype: 'Text',
-            has_display_template: 'IsolatedTemplate',
-            _filePath: 'properties/Display.json'
-          }]
-        ]),
-        modules: new Map([
-          ['Core', {
-            id: 'Core',
-            categories: [],
-            properties: ['Display'],
-            subobjects: [],
-            templates: [],  // Template NOT in this module
-            dependencies: []
-          }],
-          ['TemplateModule', {
-            id: 'TemplateModule',
-            categories: [],
-            properties: [],
-            subobjects: [],
-            templates: ['IsolatedTemplate'],
-            dependencies: []
-          }]
-        ])
-      })
-
-      const result = validateReferences(index)
-
-      const scopeErrors = result.errors.filter(e => e.type === 'scope-violation')
-      assert.strictEqual(scopeErrors.length, 1)
-      assert.ok(scopeErrors[0].message.includes('IsolatedTemplate'))
     })
   })
 
