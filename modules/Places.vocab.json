@@ -1,0 +1,89 @@
+{
+  "description": "Physical locations, rooms, buildings, and storage areas that house equipment, materials, and activities.",
+  "id": "Places",
+  "version": "1.0.0",
+  "label": "Places",
+  "dependencies": [],
+  "import": [
+    {
+      "page": "Location",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Location.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has building",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_building.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has capacity",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_capacity.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has floor",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_floor.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has location type",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_location_type.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has parent location",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_parent_location.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has room number",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_room_number.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    }
+  ],
+  "meta": {
+    "version": "1",
+    "ontologyVersion": ""
+  }
+}
