@@ -1,0 +1,262 @@
+{
+  "description": "\"People, organizations, and other actors that can be responsible for actions, own resources, or participate\n   in activities.",
+  "id": "Agents",
+  "version": "1.0.0",
+  "label": "Agents",
+  "dependencies": [],
+  "import": [
+    {
+      "page": "Agent",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Agent.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Organization",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Organization.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Person",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Person.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Researcher",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Researcher.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Staff",
+      "namespace": "NS_CATEGORY",
+      "contents": {
+        "importFrom": "categories/Staff.wikitext"
+      },
+      "options": {
+        "replaceable": true
+      }
+    },
+    {
+      "page": "Has acronym",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_acronym.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has birthday",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_birthday.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has department",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_department.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has description",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_description.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has email",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_email.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has first name",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_first_name.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has hire date",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_hire_date.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has institution type",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_institution_type.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has job title",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_job_title.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has last name",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_last_name.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has middle name",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_middle_name.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has name",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_name.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has orcid",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_orcid.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has parent organization",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_parent_organization.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has phone number",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_phone_number.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has skill",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_skill.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has website",
+      "namespace": "SMW_NS_PROPERTY",
+      "contents": {
+        "importFrom": "properties/Has_website.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    },
+    {
+      "page": "Has organizational role",
+      "namespace": "NS_SUBOBJECT",
+      "contents": {
+        "importFrom": "subobjects/Has_organizational_role.wikitext"
+      },
+      "options": {
+        "replaceable": true,
+        "auto_included": true
+      }
+    }
+  ],
+  "meta": {
+    "version": "1",
+    "ontologyVersion": ""
+  }
+}
