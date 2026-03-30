@@ -5,6 +5,5 @@
 [[Has required property::Property:Has last name]]
 [[Has optional property::Property:Has birthday]]
 [[Has optional property::Property:Has middle name]]
-[[Has optional property::Property:Has email]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]
