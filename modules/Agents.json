@@ -1,0 +1,42 @@
+{
+  "id": "Agents",
+  "label": "Agents",
+  "description": "People, organizations, and other actors that can be responsible for actions, own resources, or participate in activities.",
+  "categories": [
+    "Agent",
+    "Organization",
+    "Person",
+    "Researcher",
+    "Staff"
+  ],
+  "properties": [
+    "Has_acronym",
+    "Has_birthday",
+    "Has_department",
+    "Has_description",
+    "Has_email",
+    "Has_first_name",
+    "Has_hire_date",
+    "Has_institution_type",
+    "Has_job_title",
+    "Has_last_name",
+    "Has_middle_name",
+    "Has_name",
+    "Has_orcid",
+    "Has_parent_organization",
+    "Has_phone_number",
+    "Has_skill",
+    "Has_website"
+  ],
+  "subobjects": [
+    "Has_organizational_role"
+  ],
+  "templates": [],
+  "manual_categories": [
+    "Organization",
+    "Person",
+    "Researcher",
+    "Staff"
+  ],
+  "resources": []
+}
