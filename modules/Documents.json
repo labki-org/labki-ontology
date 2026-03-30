@@ -1,0 +1,53 @@
+{
+  "id": "Documents",
+  "label": "Documents",
+  "description": "Authored information artifacts including protocols, publications, SOPs, datasets, and reports.",
+  "categories": [
+    "Document",
+    "Publication",
+    "SOP"
+  ],
+  "properties": [
+    "Has_DOI",
+    "Has_PubMed_ID",
+    "Has_SOP_type",
+    "Has_attachment",
+    "Has_author",
+    "Has_description",
+    "Has_document_date",
+    "Has_document_type",
+    "Has_emergency_procedures",
+    "Has_equipment_used",
+    "Has_journal",
+    "Has_project",
+    "Has_publication_status",
+    "Has_purpose",
+    "Has_safety_precautions",
+    "Has_technique",
+    "Has_version",
+    "Has_waste_disposal",
+    "Has_website"
+  ],
+  "subobjects": [
+    "Has_publication_author"
+  ],
+  "templates": [],
+  "manual_categories": [
+    "Publication",
+    "SOP"
+  ],
+  "resources": [
+    "SOP/Bambu_Lab_X1C_operation",
+    "SOP/Chemical_fume_hood_use",
+    "SOP/Controleo3_reflow_oven_operation",
+    "SOP/FDM_3D_printing_safety",
+    "SOP/Fluorescence_microscope_operation",
+    "SOP/Formlabs_Form_4_operation",
+    "SOP/Hot_air_rework_station_safety",
+    "SOP/Pace_ADS200_operation",
+    "SOP/Pixel_Pump_operation",
+    "SOP/Resin_3D_printing_safety",
+    "SOP/Solder_reflow_oven_safety",
+    "SOP/Soldering_iron_safety"
+  ]
+}

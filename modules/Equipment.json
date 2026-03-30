@@ -1,0 +1,31 @@
+{
+  "id": "Equipment",
+  "label": "Equipment",
+  "description": "Physical instruments, devices, and computing resources that require tracking, maintenance, and location assignment.",
+  "categories": [
+    "Equipment"
+  ],
+  "properties": [
+    "Has_RRID",
+    "Has_SOP",
+    "Has_description",
+    "Has_equipment_status",
+    "Has_location",
+    "Has_manual_URL",
+    "Has_manufacturer",
+    "Has_model",
+    "Has_next_maintenance_date",
+    "Has_purchase_date",
+    "Has_responsible_party",
+    "Has_serial_number",
+    "Has_technique"
+  ],
+  "subobjects": [
+    "Has_maintenance_record"
+  ],
+  "templates": [],
+  "manual_categories": [
+    "Equipment"
+  ],
+  "resources": []
+}
