@@ -19,6 +19,8 @@
     "Has_emergency_procedures",
     "Has_equipment_used",
     "Has_journal",
+    "Has_organization",
+    "Has_person",
     "Has_project",
     "Has_publication_status",
     "Has_purpose",
@@ -26,7 +28,9 @@
     "Has_technique",
     "Has_version",
     "Has_waste_disposal",
-    "Has_website"
+    "Has_website",
+    "Is_corresponding_author",
+    "Is_first_author"
   ],
   "subobjects": [
     "Has_publication_author"

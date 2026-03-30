@@ -15,6 +15,7 @@
     "Has_department",
     "Has_description",
     "Has_email",
+    "Has_end_date",
     "Has_first_name",
     "Has_hire_date",
     "Has_institution_type",
@@ -23,9 +24,12 @@
     "Has_middle_name",
     "Has_name",
     "Has_orcid",
+    "Has_organization",
     "Has_parent_organization",
     "Has_phone_number",
+    "Has_research_role",
     "Has_skill",
+    "Has_start_date",
     "Has_website"
   ],
   "subobjects": [
