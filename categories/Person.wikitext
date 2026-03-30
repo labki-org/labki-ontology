@@ -1,5 +1,5 @@
 <!-- OntologySync Start -->
-[[Has description::A human person]]
+[[Has description::A human person involved in research activities]]
 [[Has parent category::Category:Agent]]
 [[Has required property::Property:Has first name]]
 [[Has required property::Property:Has last name]]
