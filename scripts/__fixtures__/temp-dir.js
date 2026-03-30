@@ -8,8 +8,6 @@ import {
   generateSubobject,
   generateTemplate,
   generateResource,
-  generateModuleVocab,
-  buildEntityPaths,
 } from '../lib/wikitext-generator.js'
 
 /**
@@ -166,10 +164,8 @@ export function createEntityTempDir(entities = {}) {
     const typeEntities = entities[type] || []
     for (const entity of typeEntities) {
       if (type === 'modules') {
-        // Modules use vocab.json format
-        const entityPaths = buildEntityPaths(entity)
-        const vocab = generateModuleVocab(entity, entityPaths, '0.0.0')
-        tempDir.writeJSON(`modules/${entity.id}.vocab.json`, vocab)
+        // Modules use simple JSON format
+        tempDir.writeJSON(`modules/${entity.id}.json`, entity)
       } else if (type === 'bundles') {
         // Bundles stay as JSON
         tempDir.writeJSON(`bundles/${entity.id}.json`, entity)

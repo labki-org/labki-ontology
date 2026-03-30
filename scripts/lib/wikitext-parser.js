@@ -400,7 +400,7 @@ function importPathToEntityKey(importPath, entityType) {
 
 /**
  * Detect entity type from file path.
- * @param {string} filePath - e.g. "categories/Person.wikitext" or "modules/Core.vocab.json"
+ * @param {string} filePath - e.g. "categories/Person.wikitext" or "modules/Core.json"
  * @returns {{ entityType: string, entityKey: string, fileType: string } | null}
  */
 export function parseFilePath(filePath) {
@@ -409,9 +409,9 @@ export function parseFilePath(filePath) {
 
   const directory = parts[0]
 
-  if (directory === 'modules' && filePath.endsWith('.vocab.json')) {
-    const entityKey = parts[1].replace('.vocab.json', '')
-    return { entityType: 'modules', entityKey, fileType: 'vocab.json' }
+  if (directory === 'modules' && filePath.endsWith('.json')) {
+    const entityKey = parts[1].replace('.json', '')
+    return { entityType: 'modules', entityKey, fileType: 'json' }
   }
 
   if (directory === 'bundles' && filePath.endsWith('.json')) {

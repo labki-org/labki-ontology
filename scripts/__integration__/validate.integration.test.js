@@ -20,22 +20,18 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('valid-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       fixture.writeJSON('categories/Agent.json', { id: 'Agent', label: 'Agent' })
       fixture.writeJSON('properties/Name.json', { id: 'Name', label: 'Name', datatype: 'Text' })
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
-        version: '1.0.0',
         categories: ['Agent'],
         properties: ['Name'],
         subobjects: [],
-        templates: [],
-        dependencies: []
+        templates: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
-        version: '1.0.0',
         modules: ['Core']
       })
 
@@ -49,7 +45,6 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('schema-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       // Property missing required 'datatype' field
       fixture.writeJSON('properties/Invalid.json', { id: 'Invalid', label: 'Invalid' })
@@ -63,7 +58,6 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('parse-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       // Malformed wikitext won't parse but shouldn't crash
       fixture.writeFile('categories/Malformed.wikitext', 'totally invalid content with no annotations')
@@ -78,7 +72,6 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('ref-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       fixture.writeJSON('categories/BadRef.json', {
         id: 'BadRef',
@@ -87,16 +80,13 @@ describe('validate.js integration tests', () => {
       })
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
-        version: '1.0.0',
         categories: ['BadRef'],
         properties: [],
         subobjects: [],
-        templates: [],
-        dependencies: []
+        templates: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
-        version: '1.0.0',
         modules: ['Core']
       })
 
@@ -110,7 +100,6 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('cycle-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       fixture.writeJSON('categories/CycleA.json', {
         id: 'CycleA',
@@ -124,16 +113,13 @@ describe('validate.js integration tests', () => {
       })
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
-        version: '1.0.0',
         categories: ['CycleA', 'CycleB'],
         properties: [],
         subobjects: [],
-        templates: [],
-        dependencies: []
+        templates: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
-        version: '1.0.0',
         modules: ['Core']
       })
 
@@ -149,21 +135,17 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('markdown-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       fixture.writeJSON('categories/Agent.json', { id: 'Agent', label: 'Agent' })
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
-        version: '1.0.0',
         categories: ['Agent'],
         properties: [],
         subobjects: [],
-        templates: [],
-        dependencies: []
+        templates: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
-        version: '1.0.0',
         modules: ['Core']
       })
 
@@ -183,22 +165,18 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('gha-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       // Create orphan (generates warning)
       fixture.writeJSON('categories/Orphan.json', { id: 'Orphan', label: 'Orphan' })
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
-        version: '1.0.0',
         categories: [],
         properties: [],
         subobjects: [],
-        templates: [],
-        dependencies: []
+        templates: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
-        version: '1.0.0',
         modules: ['Core']
       })
 
@@ -217,21 +195,17 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('summary-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       fixture.writeJSON('categories/Agent.json', { id: 'Agent', label: 'Agent' })
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
-        version: '1.0.0',
         categories: ['Agent'],
         properties: [],
         subobjects: [],
-        templates: [],
-        dependencies: []
+        templates: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
-        version: '1.0.0',
         modules: ['Core']
       })
 
@@ -255,7 +229,6 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('multi-error-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       // Schema error (missing datatype)
       fixture.writeJSON('properties/NoDatatype.json', { id: 'NoDatatype', label: 'No Datatype' })
@@ -269,16 +242,13 @@ describe('validate.js integration tests', () => {
 
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
-        version: '1.0.0',
         categories: ['BadRef'],
         properties: ['NoDatatype'],
         subobjects: [],
-        templates: [],
-        dependencies: []
+        templates: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
-        version: '1.0.0',
         modules: ['Core']
       })
 
@@ -305,7 +275,6 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('schema-only-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       const result = await runCLI('validate.js', { cwd: fixture.path })
 
@@ -318,15 +287,14 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('id-derive-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       // With wikitext, the ID is always derived from the filename
       fixture.writeEntity('categories', { id: 'My_category', label: 'My Category', description: 'Test' })
       fixture.writeEntity('modules', {
-        id: 'Core', version: '1.0.0', label: 'Core', description: 'Core',
-        categories: ['My_category'], properties: [], subobjects: [], templates: [], dependencies: []
+        id: 'Core', label: 'Core', description: 'Core',
+        categories: ['My_category'], properties: [], subobjects: [], templates: []
       })
-      fixture.writeEntity('bundles', { id: 'Default', version: '1.0.0', label: 'Default', description: 'Default', modules: ['Core'] })
+      fixture.writeEntity('bundles', { id: 'Default', label: 'Default', description: 'Default', modules: ['Core'] })
 
       const result = await runCLI('validate.js', { cwd: fixture.path })
 
@@ -339,7 +307,6 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('constraint-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       fixture.writeJSON('properties/Name.json', { id: 'Name', label: 'Name', datatype: 'Text' })
       fixture.writeJSON('categories/Conflict.json', {
@@ -350,16 +317,13 @@ describe('validate.js integration tests', () => {
       })
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
-        version: '1.0.0',
         categories: ['Conflict'],
         properties: ['Name'],
         subobjects: [],
-        templates: [],
-        dependencies: []
+        templates: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
-        version: '1.0.0',
         modules: ['Core']
       })
 
@@ -375,7 +339,6 @@ describe('validate.js integration tests', () => {
       fixture = createTempFixture('orphan-test')
       fixture.createEntityDirectories()
       fixture.writeSchemas()
-      fixture.writeVersion('1.0.0')
 
       // Orphan - not in any module
       fixture.writeJSON('categories/Orphan.json', { id: 'Orphan', label: 'Orphan' })
@@ -383,16 +346,13 @@ describe('validate.js integration tests', () => {
       // Module that doesn't include the orphan
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
-        version: '1.0.0',
         categories: [],
         properties: [],
         subobjects: [],
-        templates: [],
-        dependencies: []
+        templates: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
-        version: '1.0.0',
         modules: ['Core']
       })
 
@@ -402,64 +362,6 @@ describe('validate.js integration tests', () => {
       assert.strictEqual(result.exitCode, 0)
       // Should mention orphan
       assert.ok(result.stdout.includes('warning') || result.stdout.includes('Orphan'))
-    })
-  })
-
-  describe('Version validation', () => {
-    test('missing VERSION file is detected', async () => {
-      fixture = createTempFixture('no-version-test')
-      fixture.createEntityDirectories()
-      fixture.writeSchemas()
-      // Don't write VERSION file
-
-      fixture.writeJSON('categories/Agent.json', { id: 'Agent', label: 'Agent' })
-      fixture.writeJSON('modules/Core.json', {
-        id: 'Core',
-        version: '1.0.0',
-        categories: ['Agent'],
-        properties: [],
-        subobjects: [],
-        templates: [],
-        dependencies: []
-      })
-      fixture.writeJSON('bundles/Default.json', {
-        id: 'Default',
-        version: '1.0.0',
-        modules: ['Core']
-      })
-
-      const result = await runCLI('validate.js', { cwd: fixture.path })
-
-      assert.strictEqual(result.exitCode, 1)
-      assert.ok(result.stderr.includes('VERSION') || result.stderr.includes('version'))
-    })
-
-    test('invalid VERSION format is detected', async () => {
-      fixture = createTempFixture('bad-version-test')
-      fixture.createEntityDirectories()
-      fixture.writeSchemas()
-      fixture.writeFile('VERSION', 'not-a-version\n')
-
-      fixture.writeJSON('categories/Agent.json', { id: 'Agent', label: 'Agent' })
-      fixture.writeJSON('modules/Core.json', {
-        id: 'Core',
-        version: '1.0.0',
-        categories: ['Agent'],
-        properties: [],
-        subobjects: [],
-        templates: [],
-        dependencies: []
-      })
-      fixture.writeJSON('bundles/Default.json', {
-        id: 'Default',
-        version: '1.0.0',
-        modules: ['Core']
-      })
-
-      const result = await runCLI('validate.js', { cwd: fixture.path })
-
-      assert.strictEqual(result.exitCode, 1)
-      assert.ok(result.stderr.includes('semver') || result.stderr.includes('Invalid'))
     })
   })
 })

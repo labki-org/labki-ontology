@@ -24,7 +24,6 @@ export const REFERENCE_FIELDS = {
     properties: 'properties',
     subobjects: 'subobjects',
     templates: 'templates',
-    dependencies: 'modules',
     dashboards: 'dashboards',
     resources: 'resources'
   },
@@ -109,7 +108,7 @@ export function validateReferences(entityIndex) {
         if (!categoriesIndex.has(parentId)) continue
         if (!moduleCategories.has(parentId)) {
           errors.push({
-            file: moduleEntity._filePath || `modules/${moduleId}.vocab.json`,
+            file: moduleEntity._filePath || `modules/${moduleId}.json`,
             type: 'incomplete-module',
             message: `Module "${moduleId}" includes category "${catId}" whose parent "${parentId}" is not in the module`
           })

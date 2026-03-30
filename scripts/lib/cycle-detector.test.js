@@ -94,84 +94,6 @@ describe('detectCycles', () => {
     })
   })
 
-  describe('Module dependency cycles', () => {
-    test('ModuleA->ModuleB->ModuleA cycle detected', () => {
-      const index = createCyclicIndex('module')
-
-      const result = detectCycles(index)
-
-      const moduleErrors = result.errors.filter(e => e.type.includes('module'))
-      assert.strictEqual(moduleErrors.length, 1)
-      assert.ok(moduleErrors[0].message.includes('ModuleA'))
-      assert.ok(moduleErrors[0].message.includes('ModuleB'))
-    })
-
-    test('three-module cycle detected', () => {
-      const index = createMockEntityIndex({
-        modules: new Map([
-          ['ModA', { id: 'ModA', dependencies: ['ModC'], categories: [], properties: [] }],
-          ['ModB', { id: 'ModB', dependencies: ['ModA'], categories: [], properties: [] }],
-          ['ModC', { id: 'ModC', dependencies: ['ModB'], categories: [], properties: [] }]
-        ])
-      })
-
-      const result = detectCycles(index)
-
-      const moduleErrors = result.errors.filter(e => e.type.includes('module'))
-      assert.strictEqual(moduleErrors.length, 1)
-    })
-
-    test('self-dependency detected', () => {
-      const index = createMockEntityIndex({
-        modules: new Map([
-          ['SelfDep', {
-            id: 'SelfDep',
-            dependencies: ['SelfDep'],
-            categories: [],
-            properties: [],
-            _filePath: 'modules/SelfDep.json'
-          }]
-        ])
-      })
-
-      const result = detectCycles(index)
-
-      const moduleErrors = result.errors.filter(e => e.type.includes('module'))
-      assert.strictEqual(moduleErrors.length, 1)
-    })
-
-    test('valid dependency chain passes', () => {
-      const index = createMockEntityIndex({
-        modules: new Map([
-          ['Core', { id: 'Core', dependencies: [], categories: [], properties: [] }],
-          ['Lab', { id: 'Lab', dependencies: ['Core'], categories: [], properties: [] }],
-          ['Analysis', { id: 'Analysis', dependencies: ['Lab'], categories: [], properties: [] }]
-        ])
-      })
-
-      const result = detectCycles(index)
-
-      const moduleErrors = result.errors.filter(e => e.type.includes('module'))
-      assert.strictEqual(moduleErrors.length, 0)
-    })
-
-    test('complex valid tree passes', () => {
-      const index = createMockEntityIndex({
-        modules: new Map([
-          ['Core', { id: 'Core', dependencies: [], categories: [], properties: [] }],
-          ['Utils', { id: 'Utils', dependencies: ['Core'], categories: [], properties: [] }],
-          ['Lab', { id: 'Lab', dependencies: ['Core', 'Utils'], categories: [], properties: [] }],
-          ['Analysis', { id: 'Analysis', dependencies: ['Lab', 'Utils'], categories: [], properties: [] }]
-        ])
-      })
-
-      const result = detectCycles(index)
-
-      const moduleErrors = result.errors.filter(e => e.type.includes('module'))
-      assert.strictEqual(moduleErrors.length, 0)
-    })
-  })
-
   describe('Property parent_property cycles', () => {
     test('PropA->PropB->PropA cycle detected', () => {
       const index = createCyclicIndex('property')
@@ -265,7 +187,7 @@ describe('detectCycles', () => {
           ['Name', { id: 'Name', datatype: 'Text', _filePath: 'properties/Name.json' }]
         ]),
         modules: new Map([
-          ['Core', { id: 'Core', dependencies: [], categories: ['Base', 'Derived'], properties: ['Name'] }]
+          ['Core', { id: 'Core', categories: ['Base', 'Derived'], properties: ['Name'] }]
         ])
       })
 
@@ -280,10 +202,6 @@ describe('detectCycles', () => {
           ['CatCycle1', { id: 'CatCycle1', parents: ['CatCycle2'], _filePath: 'categories/CatCycle1.json' }],
           ['CatCycle2', { id: 'CatCycle2', parents: ['CatCycle1'], _filePath: 'categories/CatCycle2.json' }]
         ]),
-        modules: new Map([
-          ['ModCycle1', { id: 'ModCycle1', dependencies: ['ModCycle2'], categories: [], properties: [] }],
-          ['ModCycle2', { id: 'ModCycle2', dependencies: ['ModCycle1'], categories: [], properties: [] }]
-        ]),
         properties: new Map([
           ['PropCycle1', { id: 'PropCycle1', datatype: 'Text', parent_property: 'PropCycle2', _filePath: 'properties/PropCycle1.json' }],
           ['PropCycle2', { id: 'PropCycle2', datatype: 'Text', parent_property: 'PropCycle1', _filePath: 'properties/PropCycle2.json' }]
@@ -293,14 +211,12 @@ describe('detectCycles', () => {
       const result = detectCycles(index)
 
       // Should detect at least one error from each cycle type
-      assert.ok(result.errors.length >= 3)
+      assert.ok(result.errors.length >= 2)
 
       const categoryErrors = result.errors.filter(e => e.type.includes('category'))
-      const moduleErrors = result.errors.filter(e => e.type.includes('module'))
       const propertyErrors = result.errors.filter(e => e.type.includes('property'))
 
       assert.ok(categoryErrors.length >= 1)
-      assert.ok(moduleErrors.length >= 1)
       assert.ok(propertyErrors.length >= 1)
     })
 

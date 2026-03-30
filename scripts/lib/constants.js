@@ -17,7 +17,7 @@ export const MODULE_ENTITY_TYPES = ['categories', 'properties', 'subobjects', 't
  * Glob patterns for discovering entity source files
  */
 export const WIKITEXT_GLOB = '**/*.wikitext'
-export const MODULE_GLOB = 'modules/*.vocab.json'
+export const MODULE_GLOB = 'modules/*.json'
 export const BUNDLE_GLOB = 'bundles/*.json'
 
 /**
@@ -45,8 +45,3 @@ export const NAMESPACE_TO_ENTITY_TYPE = {
   'NS_ONTOLOGY_DASHBOARD': 'dashboards',
   'NS_ONTOLOGY_RESOURCE': 'resources',
 }
-
-/**
- * Bump priority levels for comparison
- */
-export const BUMP_PRIORITY = { major: 3, minor: 2, patch: 1 }

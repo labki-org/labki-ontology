@@ -92,17 +92,6 @@ export function detectCycles(entityIndex) {
     entityIndex.categories
   ))
 
-  // Check module dependency cycles (GRPH-02)
-  const moduleGraph = buildEntityGraph(
-    entityIndex.modules,
-    entity => entity.dependencies || []
-  )
-  errors.push(...checkForCycles(
-    moduleGraph,
-    'module dependency',
-    entityIndex.modules
-  ))
-
   // Check property parent_property cycles (GRPH-03)
   const propertyGraph = buildEntityGraph(
     entityIndex.properties,

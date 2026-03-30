@@ -24,8 +24,8 @@ describe('buildEntityIndex', () => {
       properties: [{ id: 'Has_name', label: 'Name', description: 'A name', datatype: 'Text', cardinality: 'single' }],
       subobjects: [{ id: 'Address', label: 'Address', description: 'An address' }],
       templates: [{ id: 'Display', label: 'Display', description: '', wikitext: '{{{value}}}' }],
-      modules: [{ id: 'Core', version: '1.0.0', label: 'Core', description: 'Core', categories: [], properties: [] }],
-      bundles: [{ id: 'Default', version: '1.0.0', label: 'Default', description: 'Default', modules: ['Core'] }]
+      modules: [{ id: 'Core', label: 'Core', description: 'Core', categories: [], properties: [] }],
+      bundles: [{ id: 'Default', label: 'Default', description: 'Default', modules: ['Core'] }]
     })
 
     const index = await buildEntityIndex(tempDir.path)
