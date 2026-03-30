@@ -1,0 +1,22 @@
+{
+  "id": "Places",
+  "label": "Places",
+  "description": "Physical locations, rooms, buildings, and storage areas that house equipment, materials, and activities.",
+  "categories": [
+    "Location"
+  ],
+  "properties": [
+    "Has_building",
+    "Has_capacity",
+    "Has_floor",
+    "Has_location_type",
+    "Has_parent_location",
+    "Has_room_number"
+  ],
+  "subobjects": [],
+  "templates": [],
+  "manual_categories": [
+    "Location"
+  ],
+  "resources": []
+}
