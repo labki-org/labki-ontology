@@ -1,0 +1,14 @@
+{
+  "id": "Research_lab",
+  "label": "Research Lab",
+  "description": "ontology for research lab management \u2014 covers people, places, projects, equipment, materials, documents, and funding.",
+  "modules": [
+    "Activities",
+    "Agents",
+    "Documents",
+    "Equipment",
+    "Funding",
+    "Materials",
+    "Places"
+  ]
+}
