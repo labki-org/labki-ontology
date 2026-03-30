@@ -1,0 +1,45 @@
+{
+  "id": "Funding",
+  "label": "Funding",
+  "description": "Financial support structures including grants, awards, contracts, proposals, and the programs that administer them.",
+  "categories": [
+    "Activity",
+    "Funding",
+    "Funding_Program",
+    "Proposal"
+  ],
+  "properties": [
+    "Has_PI",
+    "Has_SOP",
+    "Has_activity_status",
+    "Has_administering_organization",
+    "Has_attachment",
+    "Has_awarded_funding",
+    "Has_co_PI",
+    "Has_currency",
+    "Has_description",
+    "Has_end_date",
+    "Has_funder",
+    "Has_funding_amount",
+    "Has_funding_program",
+    "Has_funding_program_type",
+    "Has_funding_status",
+    "Has_funding_type",
+    "Has_grant_number",
+    "Has_name",
+    "Has_participant",
+    "Has_proposal_status",
+    "Has_responsible_party",
+    "Has_start_date",
+    "Has_submission_deadline",
+    "Has_website"
+  ],
+  "subobjects": [],
+  "templates": [],
+  "manual_categories": [
+    "Funding",
+    "Funding_Program",
+    "Proposal"
+  ],
+  "resources": []
+}

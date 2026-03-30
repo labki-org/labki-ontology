@@ -1,0 +1,26 @@
+{
+  "id": "Materials",
+  "label": "Materials",
+  "description": "Consumable substances, reagents, samples, and supplies that are inventoried, stored, and used in experiments.",
+  "categories": [
+    "Material"
+  ],
+  "properties": [
+    "Has_CAS_number",
+    "Has_RRID",
+    "Has_SOP",
+    "Has_catalog_number",
+    "Has_description",
+    "Has_hazard_level",
+    "Has_storage_location",
+    "Has_supplier"
+  ],
+  "subobjects": [
+    "Has_stock_entry"
+  ],
+  "templates": [],
+  "manual_categories": [
+    "Material"
+  ],
+  "resources": []
+}
