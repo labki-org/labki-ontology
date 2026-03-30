@@ -6,7 +6,6 @@
   "private": true,
   "scripts": {
     "validate": "node scripts/validate.js",
-    "generate-artifacts": "node scripts/generate-artifacts.js",
     "test": "node --test scripts/lib/*.test.js",
     "test:integration": "node --test scripts/__integration__/*.test.js",
     "test:all": "node --test scripts/lib/*.test.js scripts/__integration__/*.test.js",
@@ -18,7 +17,6 @@
     "deep-object-diff": "^1.1.9",
     "dependency-graph": "^1.0.0",
     "fast-glob": "^3.3.3",
-    "json-parse-even-better-errors": "^4.0.0",
-    "semver": "^7.7.3"
+    "json-parse-even-better-errors": "^4.0.0"
   }
 }

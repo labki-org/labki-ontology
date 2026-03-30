@@ -2,8 +2,8 @@ import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import { detailedDiff } from 'deep-object-diff'
-import { ENTITY_TYPES_SET, BUMP_PRIORITY } from './constants.js'
-import { parseFilePath, parseCategory, parseProperty, parseSubobject, parseTemplate, parseResource, parseModuleVocab } from './wikitext-parser.js'
+import { ENTITY_TYPES_SET } from './constants.js'
+import { parseFilePath, parseCategory, parseProperty, parseSubobject, parseTemplate, parseResource } from './wikitext-parser.js'
 
 /**
  * Get list of changed files between base branch and HEAD
@@ -28,11 +28,10 @@ export function getChangedFiles(baseBranch = 'origin/main') {
       .filter(Boolean)
       .filter(filePath => {
         const firstSegment = filePath.split('/')[0]
-        // Include entity files: .wikitext, .vocab.json, .json (bundles)
+        // Include entity files: .wikitext, .json (modules and bundles)
         return ENTITY_TYPES_SET.has(firstSegment) &&
                (filePath.endsWith('.wikitext') ||
-                filePath.endsWith('.vocab.json') ||
-                (filePath.endsWith('.json') && firstSegment === 'bundles'))
+                (filePath.endsWith('.json') && (firstSegment === 'modules' || firstSegment === 'bundles')))
       })
   } catch (err) {
     // No changes or git error
@@ -94,7 +93,7 @@ const WIKITEXT_PARSERS = {
 }
 
 /**
- * Parse file content based on file path (wikitext, vocab.json, or JSON)
+ * Parse file content based on file path (wikitext or JSON)
  */
 function parseEntityContent(filePath, content) {
   const parsed = parseFilePath(filePath)
@@ -104,10 +103,7 @@ function parseEntityContent(filePath, content) {
     const parser = WIKITEXT_PARSERS[parsed.entityType]
     return parser ? parser(content, parsed.entityKey) : null
   }
-  if (parsed.fileType === 'vocab.json') {
-    return parseModuleVocab(JSON.parse(content))
-  }
-  // Plain JSON (bundles)
+  // Plain JSON (modules and bundles)
   return JSON.parse(content)
 }
 
@@ -340,44 +336,58 @@ function checkCategoryBreakingChanges(baseEntity, prEntity, deleted, updated) {
   return null
 }
 
+/** Impact priority levels for comparison */
+const IMPACT_PRIORITY = { major: 3, minor: 2, patch: 1 }
+
 /**
- * Detect changes in all modified entities and compute required version bump
+ * Detect changes in all modified entities and compute max impact label
  *
  * @param {object} entityIndex - Entity index from buildEntityIndex (unused, for API compatibility)
  * @param {string} baseBranch - Base branch reference
- * @returns {{changes: Array<{file: string, entityType: string, changeType: string, reason: string|null}>, requiredBump: 'major'|'minor'|'patch'}}
+ * @returns {{changes: Array<{file: string, entityType: string, status: string, impact: string, reason: string|null}>, maxImpact: 'major'|'minor'|'patch'}}
  *
  * @example
  * const result = detectChanges(entityIndex, 'origin/main')
- * // { changes: [...], requiredBump: 'major' }
+ * // { changes: [...], maxImpact: 'major' }
  */
 export function detectChanges(entityIndex, baseBranch = 'origin/main') {
   const changedFiles = getChangedFiles(baseBranch)
   const changes = []
-  let requiredBump = 'patch'
-  let requiredPriority = BUMP_PRIORITY.patch
+  let maxImpact = 'patch'
+  let maxPriority = IMPACT_PRIORITY.patch
 
   for (const filePath of changedFiles) {
     const entityType = filePath.split('/')[0]
     const baseEntity = getBaseEntity(filePath, baseBranch)
     const prEntity = getPrEntity(filePath)
 
+    // Determine status
+    let status
+    if (!baseEntity && prEntity) {
+      status = 'added'
+    } else if (baseEntity && !prEntity) {
+      status = 'deleted'
+    } else {
+      status = 'modified'
+    }
+
     const result = detectBreakingChange(entityType, baseEntity, prEntity)
 
     changes.push({
       file: filePath,
       entityType,
-      changeType: result.changeType,
+      status,
+      impact: result.changeType,
       reason: result.reason
     })
 
-    // Update required bump using priority comparison
-    const changePriority = BUMP_PRIORITY[result.changeType] || 0
-    if (changePriority > requiredPriority) {
-      requiredBump = result.changeType
-      requiredPriority = changePriority
+    // Update max impact using priority comparison
+    const changePriority = IMPACT_PRIORITY[result.changeType] || 0
+    if (changePriority > maxPriority) {
+      maxImpact = result.changeType
+      maxPriority = changePriority
     }
   }
 
-  return { changes, requiredBump }
+  return { changes, maxImpact }
 }

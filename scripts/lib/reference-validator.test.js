@@ -21,7 +21,6 @@ describe('validateReferences', () => {
             properties: [],
             subobjects: [],
             templates: [],
-            dependencies: []
           }]
         ])
       })
@@ -49,7 +48,6 @@ describe('validateReferences', () => {
             properties: [],
             subobjects: [],
             templates: [],
-            dependencies: []
           }]
         ])
       })
@@ -77,7 +75,6 @@ describe('validateReferences', () => {
             properties: [],
             subobjects: [],
             templates: [],
-            dependencies: []
           }]
         ])
       })
@@ -105,7 +102,6 @@ describe('validateReferences', () => {
             properties: ['ChildProp'],
             subobjects: [],
             templates: [],
-            dependencies: []
           }]
         ])
       })
@@ -126,7 +122,6 @@ describe('validateReferences', () => {
             properties: [],
             subobjects: [],
             templates: [],
-            dependencies: [],
             _filePath: 'modules/Core.json'
           }]
         ])
@@ -175,7 +170,6 @@ describe('validateReferences', () => {
             properties: [],
             subobjects: [],
             templates: [],
-            dependencies: []
           }]
         ])
       })
@@ -204,28 +198,6 @@ describe('validateReferences', () => {
             properties: ['SelfProp'],
             subobjects: [],
             templates: [],
-            dependencies: []
-          }]
-        ])
-      })
-
-      const result = validateReferences(index)
-
-      const selfRefErrors = result.errors.filter(e => e.type === 'self-reference')
-      assert.strictEqual(selfRefErrors.length, 1)
-    })
-
-    test('module dependency references itself returns error', () => {
-      const index = createMockEntityIndex({
-        modules: new Map([
-          ['SelfDep', {
-            id: 'SelfDep',
-            dependencies: ['SelfDep'],
-            categories: [],
-            properties: [],
-            subobjects: [],
-            templates: [],
-            _filePath: 'modules/SelfDep.json'
           }]
         ])
       })
@@ -256,7 +228,6 @@ describe('validateReferences', () => {
             properties: [],
             subobjects: [],
             templates: [],
-            dependencies: []
           }]
         ])
       })
@@ -268,7 +239,7 @@ describe('validateReferences', () => {
   })
 
   describe('Entities in multiple modules', () => {
-    test('entity referenced across modules without dependencies passes', () => {
+    test('entity in multiple modules passes', () => {
       const index = createMockEntityIndex({
         properties: new Map([
           ['SharedProp', {
@@ -291,7 +262,6 @@ describe('validateReferences', () => {
             properties: ['SharedProp'],
             subobjects: [],
             templates: [],
-            dependencies: []
           }],
           ['ModuleB', {
             id: 'ModuleB',
@@ -299,7 +269,6 @@ describe('validateReferences', () => {
             properties: ['SharedProp'],
             subobjects: [],
             templates: [],
-            dependencies: []
           }]
         ])
       })
@@ -331,7 +300,6 @@ describe('validateReferences', () => {
             properties: [],
             subobjects: [],
             templates: [],
-            dependencies: []
           }]
         ])
       })
@@ -364,7 +332,6 @@ describe('validateReferences', () => {
             properties: [],
             subobjects: [],
             templates: [],
-            dependencies: []
           }]
         ])
       })
@@ -400,7 +367,6 @@ describe('validateReferences', () => {
             properties: [],
             subobjects: [],
             templates: [],
-            dependencies: []
           }]
         ])
       })
@@ -447,7 +413,6 @@ describe('validateReferences', () => {
             properties: ['CoreProp', 'ChildProp'],
             subobjects: [],
             templates: [],
-            dependencies: []
           }]
         ]),
         bundles: new Map([
@@ -486,7 +451,6 @@ describe('validateReferences', () => {
             properties: ['Prop1', 'Prop2', 'Prop3'],
             subobjects: [],
             templates: [],
-            dependencies: []
           }]
         ])
       })

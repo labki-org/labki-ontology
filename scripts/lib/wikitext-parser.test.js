@@ -11,7 +11,6 @@ import {
   parseTemplate,
   parseDashboardPage,
   parseResource,
-  parseModuleVocab,
   parseFilePath,
 } from './wikitext-parser.js'
 
@@ -241,33 +240,6 @@ describe('parseResource', () => {
   })
 })
 
-describe('parseModuleVocab', () => {
-  it('extracts entity lists from import array', () => {
-    const vocab = {
-      id: 'Core',
-      version: '1.0.0',
-      label: 'Core Module',
-      description: 'Core entities',
-      dependencies: [],
-      import: [
-        { page: 'Person', namespace: 'NS_CATEGORY', contents: { importFrom: 'categories/Person.wikitext' } },
-        { page: 'Has name', namespace: 'SMW_NS_PROPERTY', contents: { importFrom: 'properties/Has_name.wikitext' } },
-        { page: 'Address', namespace: 'NS_SUBOBJECT', contents: { importFrom: 'subobjects/Address.wikitext' } },
-        { page: 'Property/Page', namespace: 'NS_TEMPLATE', contents: { importFrom: 'templates/Property/Page.wikitext' } },
-      ],
-      meta: { version: '1' },
-    }
-
-    const result = parseModuleVocab(vocab)
-    assert.strictEqual(result.id, 'Core')
-    assert.strictEqual(result.version, '1.0.0')
-    assert.deepStrictEqual(result.categories, ['Person'])
-    assert.deepStrictEqual(result.properties, ['Has_name'])
-    assert.deepStrictEqual(result.subobjects, ['Address'])
-    assert.deepStrictEqual(result.templates, ['Property/Page'])
-  })
-})
-
 describe('parseFilePath', () => {
   it('parses category wikitext path', () => {
     assert.deepStrictEqual(parseFilePath('categories/Person.wikitext'), {
@@ -287,9 +259,9 @@ describe('parseFilePath', () => {
     })
   })
 
-  it('parses module vocab.json path', () => {
-    assert.deepStrictEqual(parseFilePath('modules/Core.vocab.json'), {
-      entityType: 'modules', entityKey: 'Core', fileType: 'vocab.json',
+  it('parses module json path', () => {
+    assert.deepStrictEqual(parseFilePath('modules/Core.json'), {
+      entityType: 'modules', entityKey: 'Core', fileType: 'json',
     })
   })
 

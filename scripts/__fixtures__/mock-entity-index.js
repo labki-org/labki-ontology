@@ -71,31 +71,26 @@ export function createDependencyChainIndex() {
     modules: new Map([
       ['Core', {
         id: 'Core',
-        version: '1.0.0',
         categories: ['Agent'],
         properties: ['Name'],
         subobjects: [],
         templates: [],
         dashboards: [],
         resources: [],
-        dependencies: []
       }],
       ['Lab', {
         id: 'Lab',
-        version: '1.0.0',
         categories: ['Equipment'],
         properties: ['SerialNumber'],
         subobjects: [],
         templates: [],
         dashboards: [],
         resources: [],
-        dependencies: ['Core']
       }]
     ]),
     bundles: new Map([
       ['Default', {
         id: 'Default',
-        version: '1.0.0',
         modules: ['Core', 'Lab']
       }]
     ])
@@ -125,24 +120,6 @@ export function createCyclicIndex(cycleType) {
         label: 'Category B',
         parents: ['CategoryA'],
         _filePath: 'categories/CategoryB.json'
-      }]
-    ])
-  }
-
-  if (cycleType === 'module') {
-    // ModuleA -> ModuleB -> ModuleA cycle
-    base.modules = new Map([
-      ['ModuleA', {
-        id: 'ModuleA',
-        dependencies: ['ModuleB'],
-        categories: [],
-        properties: []
-      }],
-      ['ModuleB', {
-        id: 'ModuleB',
-        dependencies: ['ModuleA'],
-        categories: [],
-        properties: []
       }]
     ])
   }
@@ -224,7 +201,6 @@ export function createReferenceTestIndex(options = {}) {
       properties: ['Name', 'Email'],
       subobjects: [],
       templates: [],
-      dependencies: []
     }]
   ])
 
@@ -262,7 +238,6 @@ export function createReferenceTestIndex(options = {}) {
       properties: ['Isolated'],
       subobjects: [],
       templates: [],
-      dependencies: []  // NOT a dependency of Core
     })
 
     // Reference Isolated from Core's Person category

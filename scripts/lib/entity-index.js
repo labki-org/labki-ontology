@@ -9,7 +9,6 @@ import {
   parseTemplate,
   parseDashboardPage,
   parseResource,
-  parseModuleVocab,
   parseFilePath,
 } from './wikitext-parser.js'
 
@@ -27,7 +26,7 @@ const WIKITEXT_PARSERS = {
 /**
  * Build an index of all entities in the project.
  *
- * Discovers .wikitext files for entity content, .vocab.json for modules,
+ * Discovers .wikitext files for entity content, .json for modules,
  * and .json for bundles. Parses wikitext into structured dicts matching
  * the old JSON format so downstream validators work unchanged.
  *
@@ -46,9 +45,9 @@ export async function buildEntityIndex(rootDir = process.cwd()) {
     resources: new Map()
   }
 
-  // Discover all entity files (.wikitext, .vocab.json, .json)
+  // Discover all entity files (.wikitext, .json for modules/bundles)
   const files = await fg(
-    ['**/*.wikitext', 'modules/*.vocab.json', 'bundles/*.json'],
+    ['**/*.wikitext', 'modules/*.json', 'bundles/*.json'],
     {
       ignore: GLOB_IGNORE_PATTERNS,
       cwd: rootDir,
@@ -98,21 +97,17 @@ export async function buildEntityIndex(rootDir = process.cwd()) {
         if (!data.id) continue
 
         index[entityType].set(data.id, { ...data, _filePath: relativePath })
-      } else if (fileType === 'vocab.json') {
-        // Module vocab.json
-        const content = fs.readFileSync(absolutePath, 'utf8')
-        const vocabJson = JSON.parse(content)
-        const data = parseModuleVocab(vocabJson)
-        if (!data.id) continue
-
-        index.modules.set(data.id, { ...data, _filePath: relativePath })
       } else if (fileType === 'json') {
-        // Bundle JSON (unchanged format)
+        // Module or bundle JSON
         const content = fs.readFileSync(absolutePath, 'utf8')
         const data = JSON.parse(content)
         if (!data.id) continue
 
-        index.bundles.set(data.id, { ...data, _filePath: relativePath })
+        if (entityType === 'modules') {
+          index.modules.set(data.id, { ...data, _filePath: relativePath })
+        } else {
+          index.bundles.set(data.id, { ...data, _filePath: relativePath })
+        }
       }
     } catch (err) {
       // Skip files that can't be parsed (validate.js handles parse errors)
