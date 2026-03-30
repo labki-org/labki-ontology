@@ -11,9 +11,14 @@
     "Has_SOP",
     "Has_catalog_number",
     "Has_description",
+    "Has_expiration_date",
     "Has_hazard_level",
+    "Has_lot_number",
+    "Has_quantity",
+    "Has_received_date",
     "Has_storage_location",
-    "Has_supplier"
+    "Has_supplier",
+    "Has_unit"
   ],
   "subobjects": [
     "Has_stock_entry"

@@ -18,6 +18,7 @@
     "Has_description",
     "Has_deviation",
     "Has_due_date",
+    "Has_effort_fraction",
     "Has_end_date",
     "Has_equipment_used",
     "Has_event_type",
@@ -28,11 +29,13 @@
     "Has_notes",
     "Has_operator",
     "Has_participant",
+    "Has_person",
     "Has_priority",
     "Has_project",
     "Has_protocol",
     "Has_responsible_party",
     "Has_result",
+    "Has_role_type",
     "Has_start_date"
   ],
   "subobjects": [
