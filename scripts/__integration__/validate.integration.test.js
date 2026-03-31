@@ -21,7 +21,7 @@ describe('validate.js integration tests', () => {
       fixture.createEntityDirectories()
       fixture.writeSchemas()
 
-      fixture.writeJSON('categories/Agent.json', { id: 'Agent', label: 'Agent' })
+      fixture.writeJSON('categories/Agent.json', { id: 'Agent', label: 'Agent', required_properties: ['Name'] })
       fixture.writeJSON('properties/Name.json', { id: 'Name', label: 'Name', datatype: 'Text' })
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',

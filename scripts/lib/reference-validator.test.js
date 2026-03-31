@@ -41,22 +41,13 @@ describe('validateReferences', () => {
             _filePath: 'categories/Person.json'
           }]
         ]),
-        modules: new Map([
-          ['Core', {
-            id: 'Core',
-            categories: ['Person'],
-            properties: [],
-            subobjects: [],
-            templates: [],
-          }]
-        ])
       })
 
       const result = validateReferences(index)
 
-      assert.strictEqual(result.errors.length, 1)
-      assert.strictEqual(result.errors[0].type, 'missing-reference')
-      assert.ok(result.errors[0].message.includes('MissingProp'))
+      const refErrors = result.errors.filter(e => e.type === 'missing-reference')
+      assert.strictEqual(refErrors.length, 1)
+      assert.ok(refErrors[0].message.includes('MissingProp'))
     })
 
     test('category with missing optional_property returns error', () => {
@@ -68,21 +59,12 @@ describe('validateReferences', () => {
             _filePath: 'categories/Person.json'
           }]
         ]),
-        modules: new Map([
-          ['Core', {
-            id: 'Core',
-            categories: ['Person'],
-            properties: [],
-            subobjects: [],
-            templates: [],
-          }]
-        ])
       })
 
       const result = validateReferences(index)
 
-      assert.strictEqual(result.errors.length, 1)
-      assert.strictEqual(result.errors[0].type, 'missing-reference')
+      const refErrors = result.errors.filter(e => e.type === 'missing-reference')
+      assert.strictEqual(refErrors.length, 1)
     })
 
     test('property with missing parent_property returns error', () => {
@@ -95,22 +77,13 @@ describe('validateReferences', () => {
             _filePath: 'properties/ChildProp.json'
           }]
         ]),
-        modules: new Map([
-          ['Core', {
-            id: 'Core',
-            categories: [],
-            properties: ['ChildProp'],
-            subobjects: [],
-            templates: [],
-          }]
-        ])
       })
 
       const result = validateReferences(index)
 
-      assert.strictEqual(result.errors.length, 1)
-      assert.strictEqual(result.errors[0].type, 'missing-reference')
-      assert.ok(result.errors[0].message.includes('MissingParent'))
+      const refErrors = result.errors.filter(e => e.type === 'missing-reference')
+      assert.strictEqual(refErrors.length, 1)
+      assert.ok(refErrors[0].message.includes('MissingParent'))
     })
 
     test('module with missing category returns error', () => {
@@ -253,6 +226,11 @@ describe('validateReferences', () => {
             id: 'CatA',
             optional_properties: ['SharedProp'],
             _filePath: 'categories/CatA.json'
+          }],
+          ['CatB', {
+            id: 'CatB',
+            optional_properties: ['SharedProp'],
+            _filePath: 'categories/CatB.json'
           }]
         ]),
         modules: new Map([
@@ -265,7 +243,7 @@ describe('validateReferences', () => {
           }],
           ['ModuleB', {
             id: 'ModuleB',
-            categories: [],
+            categories: ['CatB'],
             properties: ['SharedProp'],
             subobjects: [],
             templates: [],

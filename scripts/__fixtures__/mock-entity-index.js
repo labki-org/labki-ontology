@@ -42,11 +42,13 @@ export function createDependencyChainIndex() {
       ['Agent', {
         id: 'Agent',
         label: 'Agent',
+        required_properties: ['Name'],
         _filePath: 'categories/Agent.json'
       }],
       ['Equipment', {
         id: 'Equipment',
         label: 'Equipment',
+        required_properties: ['SerialNumber'],
         _filePath: 'categories/Equipment.json'
       }]
     ]),
@@ -225,23 +227,30 @@ export function createReferenceTestIndex(options = {}) {
   }
 
   if (options.withScopeViolation) {
-    // Add an unrelated module with a property
+    // Add an unrelated module with a category that uses the property
     index.properties.set('Isolated', {
       id: 'Isolated',
       label: 'Isolated Property',
       datatype: 'Text',
       _filePath: 'properties/Isolated.json'
     })
+    index.categories.set('Other', {
+      id: 'Other',
+      label: 'Other',
+      optional_properties: ['Isolated'],
+      _filePath: 'categories/Other.json'
+    })
     index.modules.set('OtherModule', {
       id: 'OtherModule',
-      categories: [],
+      categories: ['Other'],
       properties: ['Isolated'],
       subobjects: [],
       templates: [],
     })
 
-    // Reference Isolated from Core's Person category
+    // Also reference Isolated from Core's Person category
     index.categories.get('Person').optional_properties.push('Isolated')
+    index.modules.get('Core').properties.push('Isolated')
   }
 
   return index

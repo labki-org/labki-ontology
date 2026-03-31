@@ -1,3 +1,5 @@
+import { resolveModule, diffModule, tracePropertySource, traceSubobjectSource } from './module-resolver.js'
+
 /**
  * Declarative map of entity types to their reference fields and target types
  *
@@ -114,6 +116,48 @@ export function validateReferences(entityIndex) {
           })
         }
       }
+    }
+  }
+
+  // Module auto-include check: properties and subobjects must match
+  // what is resolved from the module's categories
+  for (const [moduleId, moduleEntity] of entityIndex.modules) {
+    const resolved = resolveModule(moduleEntity, entityIndex)
+    const diff = diffModule(moduleEntity, resolved)
+    const filePath = moduleEntity._filePath || `modules/${moduleId}.json`
+
+    for (const prop of diff.missingProperties) {
+      const source = tracePropertySource(prop, moduleEntity, entityIndex)
+      errors.push({
+        file: filePath,
+        type: 'incomplete-module-properties',
+        message: `Module "${moduleId}" is missing property "${prop}" (required by ${source})`
+      })
+    }
+
+    for (const prop of diff.extraProperties) {
+      errors.push({
+        file: filePath,
+        type: 'incomplete-module-properties',
+        message: `Module "${moduleId}" lists property "${prop}" which is not referenced by any of its categories or subobjects`
+      })
+    }
+
+    for (const sub of diff.missingSubobjects) {
+      const source = traceSubobjectSource(sub, moduleEntity, entityIndex)
+      errors.push({
+        file: filePath,
+        type: 'incomplete-module-subobjects',
+        message: `Module "${moduleId}" is missing subobject "${sub}" (required by ${source})`
+      })
+    }
+
+    for (const sub of diff.extraSubobjects) {
+      errors.push({
+        file: filePath,
+        type: 'incomplete-module-subobjects',
+        message: `Module "${moduleId}" lists subobject "${sub}" which is not referenced by any of its categories`
+      })
     }
   }
 

@@ -390,66 +390,61 @@ Category memberships appear outside the markers. Resources belong to both their 
 
 ## Module
 
-A Module is a logical grouping of related entities. Modules declare which entities they contain and can depend on other modules.
+A Module is a logical grouping of related entities. Modules declare which categories they contain; properties and subobjects are auto-computed from those categories.
 
 ### File Location
 
-`modules/{Module_id}.vocab.json`
+`modules/{Module_id}.json`
 
 ### Format
 
-Modules use a `vocab.json` format with an `import` array that lists each entity by namespace and path:
-
 ```json
 {
-  "description": "Essential entities for any wiki",
-  "id": "Core",
-  "version": "1.0.0",
-  "label": "Core Module",
-  "dependencies": [],
-  "import": [
-    {
-      "page": "Person",
-      "namespace": "NS_CATEGORY",
-      "contents": { "importFrom": "categories/Person.wikitext" },
-      "options": { "replaceable": true }
-    },
-    {
-      "page": "Has name",
-      "namespace": "SMW_NS_PROPERTY",
-      "contents": { "importFrom": "properties/Has_name.wikitext" },
-      "options": { "replaceable": true }
-    }
-  ],
-  "meta": {
-    "version": "1",
-    "ontologyVersion": "0.1.2"
-  }
+  "id": "Agents",
+  "label": "Agents",
+  "description": "People, organizations, and other actors",
+  "categories": ["Agent", "Person", "Researcher"],
+  "properties": ["Has_first_name", "Has_last_name", "Has_name"],
+  "subobjects": ["Has_organizational_role"],
+  "templates": [],
+  "manual_categories": ["Person", "Researcher"],
+  "resources": []
 }
 ```
 
 ### Fields
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | string | Yes | Module identifier matching the filename |
-| `version` | string | Yes | Semantic version of this module |
-| `label` | string | No | Human-readable display name |
-| `description` | string | Yes | What this Module provides |
-| `dependencies` | string[] | No | Module IDs that must be installed first |
-| `import` | array | Yes | List of entity import entries |
-| `meta` | object | No | Metadata (format version, ontology version) |
+| Field | Type | Required | Manual/Auto | Description |
+|-------|------|----------|-------------|-------------|
+| `id` | string | Yes | Manual | Module identifier matching the filename |
+| `label` | string | No | Manual | Human-readable display name |
+| `description` | string | Yes | Manual | What this Module provides |
+| `categories` | string[] | Yes | Manual | Category IDs in this module |
+| `properties` | string[] | Yes | **Auto-computed** | Properties referenced by categories and subobjects |
+| `subobjects` | string[] | Yes | **Auto-computed** | Subobjects referenced by categories |
+| `templates` | string[] | No | Manual | Template IDs in this module |
+| `dashboards` | string[] | No | Manual | Dashboard IDs in this module |
+| `manual_categories` | string[] | No | Manual | Categories that users can create pages for |
+| `resources` | string[] | No | Manual | Resource IDs in this module |
 
-### Import Entry Format
+### Auto-Computed Fields
 
-Each entry in the `import` array specifies:
+The `properties` and `subobjects` arrays are automatically resolved from the module's categories:
 
-| Field | Description |
-|-------|-------------|
-| `page` | Wiki page name (spaces, not underscores) |
-| `namespace` | SMW namespace constant |
-| `contents.importFrom` | Relative path to the `.wikitext` file |
-| `options.replaceable` | Whether the page can be overwritten on update |
+1. For each category in the module, collect all `required_properties`, `optional_properties`, `required_subobjects`, and `optional_subobjects`
+2. For each collected subobject, collect its `required_properties` and `optional_properties`
+3. The union of all collected properties becomes the module's `properties` array
+4. The union of all collected subobjects becomes the module's `subobjects` array
+5. Both arrays are sorted alphabetically
+
+Run `npm run sync-modules` to recompute these fields after editing categories or subobjects. Validation enforces that these arrays exactly match the resolved set.
+
+### Module Completeness
+
+Validation requires:
+- If a module includes a child category, it must also include all parent categories
+- The `properties` array must exactly match the resolved set (no missing, no extra)
+- The `subobjects` array must exactly match the resolved set (no missing, no extra)
 
 ### Namespace Constants
 
@@ -466,7 +461,7 @@ Each entry in the `import` array specifies:
 
 When a Module is installed:
 1. All modules in `dependencies` are installed first (recursively)
-2. All entities in the `import` array are imported
+2. All entities listed in the module are imported
 3. Duplicate entities from overlapping modules are imported only once
 
 ---

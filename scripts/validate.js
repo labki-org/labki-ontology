@@ -305,6 +305,8 @@ function getErrorSuggestion(errorType) {
     'missing-reference': 'Create the referenced entity or fix the reference.',
     'property-conflict': 'Remove the item from either required or optional list (not both).',
     'subobject-conflict': 'Remove the item from either required or optional list (not both).',
+    'incomplete-module-properties': 'Run `npm run sync-modules` to auto-update module property and subobject lists.',
+    'incomplete-module-subobjects': 'Run `npm run sync-modules` to auto-update module property and subobject lists.',
   }
 
   if (suggestions[errorType]) {

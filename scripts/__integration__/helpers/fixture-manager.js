@@ -193,7 +193,7 @@ export function createGitFixture(name = 'git-fixture') {
       fixture.createEntityDirectories()
       fixture.writeSchemas()
       // Create initial structure
-      fixture.writeEntity('categories', { id: 'Agent', label: 'Agent', description: 'An agent' })
+      fixture.writeEntity('categories', { id: 'Agent', label: 'Agent', description: 'An agent', required_properties: ['Has_name'] })
       fixture.writeEntity('properties', { id: 'Has_name', label: 'Name', description: 'A name', datatype: 'Text', cardinality: 'single' })
       fixture.writeEntity('modules', {
         id: 'Core', label: 'Core', description: 'Core module',
