@@ -13,7 +13,6 @@
     "Has_equipment_status",
     "Has_location",
     "Has_maintenance_type",
-    "Has_manual_URL",
     "Has_manufacturer",
     "Has_model",
     "Has_next_maintenance_date",
