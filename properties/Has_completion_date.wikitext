@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Date]]
+[[Has description::The date a training or certification was completed]]
+[[Display label::Completion Date]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

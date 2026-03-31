@@ -5,5 +5,6 @@
 [[Has optional property::Property:Has acronym]]
 [[Has optional property::Property:Has institution type]]
 [[Has optional property::Property:Has parent organization]]
+[[Has optional property::Property:Has required training]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

@@ -1,0 +1,6 @@
+<!-- OntologySync Start -->
+[[Has type::Number]]
+[[Has description::Number of months between required renewals]]
+[[Display label::Renewal Period (Months)]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

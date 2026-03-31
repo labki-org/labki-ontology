@@ -1,0 +1,13 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The type of training this is]]
+[[Display label::Training Type]]
+[[Allows multiple values::true]]
+[[Allows value::Safety]]
+[[Allows value::Equipment]]
+[[Allows value::Operation]]
+[[Allows value::Compliance]]
+[[Allows value::Orientation]]
+[[Allows value::Technique]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
