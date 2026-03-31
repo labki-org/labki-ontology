@@ -3,7 +3,6 @@
 [[Has required property::Property:Has location]]
 [[Has required property::Property:Has responsible party]]
 [[Has required property::Property:Has equipment status]]
-[[Has required property::Property:Has attachment]]
 [[Has optional property::Property:Has description]]
 [[Has optional property::Property:Has manufacturer]]
 [[Has optional property::Property:Has model]]
