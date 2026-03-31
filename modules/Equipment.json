@@ -19,7 +19,7 @@
     "Has_next_maintenance_date",
     "Has_notes",
     "Has_performed_by",
-    "Has_purchase_date",
+    "Has_required_training",
     "Has_responsible_party",
     "Has_serial_number",
     "Has_technique"
