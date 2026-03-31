@@ -27,6 +27,7 @@
     "Has_middle_name",
     "Has_name",
     "Has_notes",
+    "Has_orcid",
     "Has_organization",
     "Has_parent_organization",
     "Has_phone_number",
