@@ -35,7 +35,9 @@ async function main() {
       diff.missingProperties.length > 0 ||
       diff.extraProperties.length > 0 ||
       diff.missingSubobjects.length > 0 ||
-      diff.extraSubobjects.length > 0
+      diff.extraSubobjects.length > 0 ||
+      diff.missingResources.length > 0 ||
+      diff.extraResources.length > 0
 
     if (!hasChanges) {
       console.log(`  ${moduleId}: up to date`)
@@ -57,6 +59,12 @@ async function main() {
     if (diff.extraSubobjects.length > 0) {
       console.log(`    - subobjects: ${diff.extraSubobjects.join(', ')}`)
     }
+    if (diff.missingResources.length > 0) {
+      console.log(`    + resources: ${diff.missingResources.join(', ')}`)
+    }
+    if (diff.extraResources.length > 0) {
+      console.log(`    - resources: ${diff.extraResources.join(', ')}`)
+    }
 
     if (!dryRun) {
       const filePath = moduleEntity._filePath || `modules/${moduleId}.json`
@@ -65,6 +73,7 @@ async function main() {
 
       content.properties = resolved.properties
       content.subobjects = resolved.subobjects
+      content.resources = resolved.resources
 
       fs.writeFileSync(absolutePath, JSON.stringify(content, null, 2) + '\n', 'utf8')
     }

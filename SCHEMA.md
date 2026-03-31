@@ -422,10 +422,10 @@ A Module is a logical grouping of related entities. Modules declare which catego
 | `categories` | string[] | Yes | Manual | Category IDs in this module |
 | `properties` | string[] | Yes | **Auto-computed** | Properties referenced by categories and subobjects |
 | `subobjects` | string[] | Yes | **Auto-computed** | Subobjects referenced by categories |
+| `resources` | string[] | No | **Auto-computed** | Resources whose category is in this module |
 | `templates` | string[] | No | Manual | Template IDs in this module |
 | `dashboards` | string[] | No | Manual | Dashboard IDs in this module |
 | `manual_categories` | string[] | No | Manual | Categories that users can create pages for |
-| `resources` | string[] | No | Manual | Resource IDs in this module |
 
 ### Auto-Computed Fields
 
@@ -433,11 +433,13 @@ The `properties` and `subobjects` arrays are automatically resolved from the mod
 
 1. For each category in the module, collect all `required_properties`, `optional_properties`, `required_subobjects`, and `optional_subobjects`
 2. For each collected subobject, collect its `required_properties` and `optional_properties`
-3. The union of all collected properties becomes the module's `properties` array
-4. The union of all collected subobjects becomes the module's `subobjects` array
-5. Both arrays are sorted alphabetically
+3. For each resource in the ontology, include it if its `[[Category:X]]` matches a category in the module
+4. The union of all collected properties becomes the module's `properties` array
+5. The union of all collected subobjects becomes the module's `subobjects` array
+6. The matching resources become the module's `resources` array
+7. All arrays are sorted alphabetically
 
-Run `npm run sync-modules` to recompute these fields after editing categories or subobjects. Validation enforces that these arrays exactly match the resolved set.
+Run `npm run sync-modules` to recompute these fields after editing entities. Validation enforces that these arrays exactly match the resolved set.
 
 ### Module Completeness
 
@@ -445,6 +447,7 @@ Validation requires:
 - If a module includes a child category, it must also include all parent categories
 - The `properties` array must exactly match the resolved set (no missing, no extra)
 - The `subobjects` array must exactly match the resolved set (no missing, no extra)
+- The `resources` array must exactly match the resolved set (no missing, no extra)
 
 ### Namespace Constants
 

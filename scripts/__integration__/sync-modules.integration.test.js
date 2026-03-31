@@ -182,7 +182,6 @@ describe('sync-modules.js integration tests', () => {
         moduleOverrides: {
           templates: ['Property/Page'],
           manual_categories: ['Agent'],
-          resources: ['Person/John_doe'],
         },
       })
 
@@ -193,7 +192,6 @@ describe('sync-modules.js integration tests', () => {
       // Manual fields preserved
       assert.deepStrictEqual(mod.templates, ['Property/Page'])
       assert.deepStrictEqual(mod.manual_categories, ['Agent'])
-      assert.deepStrictEqual(mod.resources, ['Person/John_doe'])
     })
 
     test('sorts properties alphabetically', async () => {

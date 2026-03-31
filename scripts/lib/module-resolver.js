@@ -9,17 +9,19 @@
  */
 
 /**
- * Collect all properties and subobjects referenced by a module's categories.
+ * Collect all properties, subobjects, and resources referenced by a module's categories.
  *
  * @param {object} moduleEntity - Module from the entity index (has categories array)
- * @param {object} entityIndex - Full entity index with categories, subobjects maps
- * @returns {{ properties: string[], subobjects: string[] }} Sorted arrays of entity IDs
+ * @param {object} entityIndex - Full entity index with categories, subobjects, resources maps
+ * @returns {{ properties: string[], subobjects: string[], resources: string[] }} Sorted arrays of entity IDs
  */
 export function resolveModule(moduleEntity, entityIndex) {
   const properties = new Set()
   const subobjects = new Set()
+  const resources = new Set()
 
   const categories = moduleEntity.categories || []
+  const categorySet = new Set(categories)
 
   for (const catId of categories) {
     const category = entityIndex.categories.get(catId)
@@ -52,18 +54,28 @@ export function resolveModule(moduleEntity, entityIndex) {
     }
   }
 
+  // Collect resources whose category is in the module
+  if (entityIndex.resources) {
+    for (const [resourceId, resource] of entityIndex.resources) {
+      if (resource.category && categorySet.has(resource.category)) {
+        resources.add(resourceId)
+      }
+    }
+  }
+
   return {
     properties: [...properties].sort(),
     subobjects: [...subobjects].sort(),
+    resources: [...resources].sort(),
   }
 }
 
 /**
- * Compare a module's current properties/subobjects against the resolved set.
+ * Compare a module's current properties/subobjects/resources against the resolved set.
  *
  * @param {object} moduleEntity - Module from the entity index
- * @param {{ properties: string[], subobjects: string[] }} resolved - From resolveModule()
- * @returns {{ missingProperties: string[], extraProperties: string[], missingSubobjects: string[], extraSubobjects: string[] }}
+ * @param {{ properties: string[], subobjects: string[], resources: string[] }} resolved - From resolveModule()
+ * @returns {object} Diff with missing/extra arrays for each field
  */
 export function diffModule(moduleEntity, resolved) {
   const currentProps = new Set(moduleEntity.properties || [])
@@ -72,11 +84,16 @@ export function diffModule(moduleEntity, resolved) {
   const currentSubs = new Set(moduleEntity.subobjects || [])
   const resolvedSubs = new Set(resolved.subobjects)
 
+  const currentRes = new Set(moduleEntity.resources || [])
+  const resolvedRes = new Set(resolved.resources)
+
   return {
     missingProperties: resolved.properties.filter(p => !currentProps.has(p)),
     extraProperties: (moduleEntity.properties || []).filter(p => !resolvedProps.has(p)),
     missingSubobjects: resolved.subobjects.filter(s => !currentSubs.has(s)),
     extraSubobjects: (moduleEntity.subobjects || []).filter(s => !resolvedSubs.has(s)),
+    missingResources: resolved.resources.filter(r => !currentRes.has(r)),
+    extraResources: (moduleEntity.resources || []).filter(r => !resolvedRes.has(r)),
   }
 }
 

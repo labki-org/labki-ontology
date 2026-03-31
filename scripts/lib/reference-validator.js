@@ -159,6 +159,22 @@ export function validateReferences(entityIndex) {
         message: `Module "${moduleId}" lists subobject "${sub}" which is not referenced by any of its categories`
       })
     }
+
+    for (const res of diff.missingResources) {
+      errors.push({
+        file: filePath,
+        type: 'incomplete-module-resources',
+        message: `Module "${moduleId}" is missing resource "${res}" (its category is in this module)`
+      })
+    }
+
+    for (const res of diff.extraResources) {
+      errors.push({
+        file: filePath,
+        type: 'incomplete-module-resources',
+        message: `Module "${moduleId}" lists resource "${res}" whose category is not in this module`
+      })
+    }
   }
 
   return { errors, warnings }

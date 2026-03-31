@@ -5,12 +5,13 @@ import { resolveModule, diffModule, tracePropertySource, traceSubobjectSource } 
 /**
  * Helper to build a minimal entity index for testing.
  */
-function makeIndex({ categories = {}, subobjects = {} } = {}) {
+function makeIndex({ categories = {}, subobjects = {}, resources = {} } = {}) {
   return {
     categories: new Map(Object.entries(categories)),
     subobjects: new Map(Object.entries(subobjects)),
     properties: new Map(),
     modules: new Map(),
+    resources: new Map(Object.entries(resources)),
   }
 }
 
@@ -171,13 +172,64 @@ describe('resolveModule', () => {
 
     assert.deepStrictEqual(result.properties, [])
     assert.deepStrictEqual(result.subobjects, [])
+    assert.deepStrictEqual(result.resources, [])
+  })
+
+  it('collects resources whose category is in the module', () => {
+    const index = makeIndex({
+      categories: {
+        SOP: { id: 'SOP' },
+      },
+      resources: {
+        'SOP/Safety_manual': { id: 'SOP/Safety_manual', category: 'SOP' },
+        'SOP/Equipment_guide': { id: 'SOP/Equipment_guide', category: 'SOP' },
+        'Person/John_doe': { id: 'Person/John_doe', category: 'Person' },
+      },
+    })
+
+    const mod = { categories: ['SOP'] }
+    const result = resolveModule(mod, index)
+
+    assert.deepStrictEqual(result.resources, ['SOP/Equipment_guide', 'SOP/Safety_manual'])
+  })
+
+  it('excludes resources whose category is not in the module', () => {
+    const index = makeIndex({
+      categories: {
+        Agent: { id: 'Agent' },
+      },
+      resources: {
+        'SOP/Safety_manual': { id: 'SOP/Safety_manual', category: 'SOP' },
+      },
+    })
+
+    const mod = { categories: ['Agent'] }
+    const result = resolveModule(mod, index)
+
+    assert.deepStrictEqual(result.resources, [])
+  })
+
+  it('handles resources with no category', () => {
+    const index = makeIndex({
+      categories: {
+        Agent: { id: 'Agent' },
+      },
+      resources: {
+        'Misc/Item': { id: 'Misc/Item', category: '' },
+      },
+    })
+
+    const mod = { categories: ['Agent'] }
+    const result = resolveModule(mod, index)
+
+    assert.deepStrictEqual(result.resources, [])
   })
 })
 
 describe('diffModule', () => {
   it('finds missing properties', () => {
     const mod = { properties: ['Has_name'] }
-    const resolved = { properties: ['Has_email', 'Has_name'], subobjects: [] }
+    const resolved = { properties: ['Has_email', 'Has_name'], subobjects: [], resources: [] }
 
     const diff = diffModule(mod, resolved)
 
@@ -187,7 +239,7 @@ describe('diffModule', () => {
 
   it('finds extra properties', () => {
     const mod = { properties: ['Has_name', 'Has_stale'] }
-    const resolved = { properties: ['Has_name'], subobjects: [] }
+    const resolved = { properties: ['Has_name'], subobjects: [], resources: [] }
 
     const diff = diffModule(mod, resolved)
 
@@ -197,7 +249,7 @@ describe('diffModule', () => {
 
   it('finds missing and extra subobjects', () => {
     const mod = { subobjects: ['Old_sub'], properties: [] }
-    const resolved = { properties: [], subobjects: ['New_sub'] }
+    const resolved = { properties: [], subobjects: ['New_sub'], resources: [] }
 
     const diff = diffModule(mod, resolved)
 
@@ -205,9 +257,19 @@ describe('diffModule', () => {
     assert.deepStrictEqual(diff.extraSubobjects, ['Old_sub'])
   })
 
+  it('finds missing and extra resources', () => {
+    const mod = { properties: [], subobjects: [], resources: ['Old/Resource'] }
+    const resolved = { properties: [], subobjects: [], resources: ['New/Resource'] }
+
+    const diff = diffModule(mod, resolved)
+
+    assert.deepStrictEqual(diff.missingResources, ['New/Resource'])
+    assert.deepStrictEqual(diff.extraResources, ['Old/Resource'])
+  })
+
   it('returns empty diffs when module matches resolved', () => {
-    const mod = { properties: ['A', 'B'], subobjects: ['S'] }
-    const resolved = { properties: ['A', 'B'], subobjects: ['S'] }
+    const mod = { properties: ['A', 'B'], subobjects: ['S'], resources: ['R/One'] }
+    const resolved = { properties: ['A', 'B'], subobjects: ['S'], resources: ['R/One'] }
 
     const diff = diffModule(mod, resolved)
 
@@ -215,11 +277,13 @@ describe('diffModule', () => {
     assert.deepStrictEqual(diff.extraProperties, [])
     assert.deepStrictEqual(diff.missingSubobjects, [])
     assert.deepStrictEqual(diff.extraSubobjects, [])
+    assert.deepStrictEqual(diff.missingResources, [])
+    assert.deepStrictEqual(diff.extraResources, [])
   })
 
   it('handles undefined module arrays', () => {
     const mod = {}
-    const resolved = { properties: ['Has_name'], subobjects: ['Sub'] }
+    const resolved = { properties: ['Has_name'], subobjects: ['Sub'], resources: ['R/One'] }
 
     const diff = diffModule(mod, resolved)
 
@@ -227,6 +291,8 @@ describe('diffModule', () => {
     assert.deepStrictEqual(diff.extraProperties, [])
     assert.deepStrictEqual(diff.missingSubobjects, ['Sub'])
     assert.deepStrictEqual(diff.extraSubobjects, [])
+    assert.deepStrictEqual(diff.missingResources, ['R/One'])
+    assert.deepStrictEqual(diff.extraResources, [])
   })
 })
 
