@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+[[Has type::Text]]
+[[Has description::The status of a person's training or certification]]
+[[Display label::Training Status]]
+[[Allows value::Current]]
+[[Allows value::Expired]]
+[[Allows value::Waived]]
+[[Allows value::Pending]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

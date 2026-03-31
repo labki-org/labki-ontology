@@ -8,5 +8,6 @@
 [[Allows value::Analytical Method]]
 [[Allows value::General Procedure]]
 [[Allows value::Safety]]
+[[Allows value::Training]]
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

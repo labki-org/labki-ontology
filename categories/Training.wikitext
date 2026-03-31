@@ -1,0 +1,11 @@
+<!-- OntologySync Start -->
+[[Has description::A training course, certification, or safety qualification.]]
+[[Has required property::Property:Has name]]
+[[Has required property::Property:Has training type]]
+[[Has optional property::Property:Has description]]
+[[Has optional property::Property:Has url]]
+[[Has optional property::Property:Has organization]]
+[[Has optional property::Property:Has SOP]]
+[[Has optional property::Property:Has renewal period months]]
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]
