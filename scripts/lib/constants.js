@@ -11,7 +11,7 @@ export const ENTITY_TYPES_SET = new Set(ENTITY_TYPES)
 /**
  * Entity types for module contents (excludes modules/bundles)
  */
-export const MODULE_ENTITY_TYPES = ['categories', 'properties', 'subobjects', 'templates', 'dashboards', 'resources']
+export const MODULE_ENTITY_TYPES = ['categories', 'dashboards']
 
 /**
  * Glob patterns for discovering entity source files

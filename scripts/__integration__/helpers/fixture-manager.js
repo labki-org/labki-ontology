@@ -197,8 +197,7 @@ export function createGitFixture(name = 'git-fixture') {
       fixture.writeEntity('properties', { id: 'Has_name', label: 'Name', description: 'A name', datatype: 'Text', cardinality: 'single' })
       fixture.writeEntity('modules', {
         id: 'Core', label: 'Core', description: 'Core module',
-        categories: ['Agent'], properties: ['Has_name'],
-        subobjects: [], templates: []
+        categories: ['Agent'], dashboards: []
       })
       fixture.writeEntity('bundles', { id: 'Default', label: 'Default', description: 'Default', modules: ['Core'] })
 

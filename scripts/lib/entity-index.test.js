@@ -24,7 +24,7 @@ describe('buildEntityIndex', () => {
       properties: [{ id: 'Has_name', label: 'Name', description: 'A name', datatype: 'Text', cardinality: 'single' }],
       subobjects: [{ id: 'Address', label: 'Address', description: 'An address' }],
       templates: [{ id: 'Display', label: 'Display', description: '', wikitext: '{{{value}}}' }],
-      modules: [{ id: 'Core', label: 'Core', description: 'Core', categories: [], properties: [] }],
+      modules: [{ id: 'Core', label: 'Core', description: 'Core', categories: [], dashboards: [] }],
       bundles: [{ id: 'Default', label: 'Default', description: 'Default', modules: ['Core'] }]
     })
 

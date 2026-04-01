@@ -26,9 +26,7 @@ describe('validate.js integration tests', () => {
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
         categories: ['Agent'],
-        properties: ['Name'],
-        subobjects: [],
-        templates: []
+        dashboards: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
@@ -81,9 +79,7 @@ describe('validate.js integration tests', () => {
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
         categories: ['BadRef'],
-        properties: [],
-        subobjects: [],
-        templates: []
+        dashboards: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
@@ -114,9 +110,7 @@ describe('validate.js integration tests', () => {
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
         categories: ['CycleA', 'CycleB'],
-        properties: [],
-        subobjects: [],
-        templates: []
+        dashboards: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
@@ -140,9 +134,7 @@ describe('validate.js integration tests', () => {
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
         categories: ['Agent'],
-        properties: [],
-        subobjects: [],
-        templates: []
+        dashboards: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
@@ -171,9 +163,7 @@ describe('validate.js integration tests', () => {
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
         categories: [],
-        properties: [],
-        subobjects: [],
-        templates: []
+        dashboards: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
@@ -200,9 +190,7 @@ describe('validate.js integration tests', () => {
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
         categories: ['Agent'],
-        properties: [],
-        subobjects: [],
-        templates: []
+        dashboards: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
@@ -243,9 +231,7 @@ describe('validate.js integration tests', () => {
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
         categories: ['BadRef'],
-        properties: ['NoDatatype'],
-        subobjects: [],
-        templates: []
+        dashboards: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
@@ -292,7 +278,7 @@ describe('validate.js integration tests', () => {
       fixture.writeEntity('categories', { id: 'My_category', label: 'My Category', description: 'Test' })
       fixture.writeEntity('modules', {
         id: 'Core', label: 'Core', description: 'Core',
-        categories: ['My_category'], properties: [], subobjects: [], templates: []
+        categories: ['My_category'], dashboards: []
       })
       fixture.writeEntity('bundles', { id: 'Default', label: 'Default', description: 'Default', modules: ['Core'] })
 
@@ -318,9 +304,7 @@ describe('validate.js integration tests', () => {
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
         categories: ['Conflict'],
-        properties: ['Name'],
-        subobjects: [],
-        templates: []
+        dashboards: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',
@@ -347,9 +331,7 @@ describe('validate.js integration tests', () => {
       fixture.writeJSON('modules/Core.json', {
         id: 'Core',
         categories: [],
-        properties: [],
-        subobjects: [],
-        templates: []
+        dashboards: []
       })
       fixture.writeJSON('bundles/Default.json', {
         id: 'Default',

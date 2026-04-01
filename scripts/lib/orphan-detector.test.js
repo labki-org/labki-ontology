@@ -4,7 +4,7 @@ import { findOrphanedEntities } from './orphan-detector.js'
 import { createMockEntityIndex, createDependencyChainIndex } from '../__fixtures__/mock-entity-index.js'
 
 describe('findOrphanedEntities', () => {
-  test('entity in module is not orphan', () => {
+  test('category in module is not orphan', () => {
     const index = createMockEntityIndex({
       categories: new Map([
         ['Agent', { id: 'Agent', _filePath: 'categories/Agent.json' }]
@@ -13,9 +13,7 @@ describe('findOrphanedEntities', () => {
         ['Core', {
           id: 'Core',
           categories: ['Agent'],
-          properties: [],
-          subobjects: [],
-          templates: []
+          dashboards: [],
         }]
       ])
     })
@@ -25,7 +23,7 @@ describe('findOrphanedEntities', () => {
     assert.strictEqual(result.warnings.length, 0)
   })
 
-  test('entity not in any module is orphan', () => {
+  test('category not in any module is orphan', () => {
     const index = createMockEntityIndex({
       categories: new Map([
         ['Orphan', { id: 'Orphan', _filePath: 'categories/Orphan.json' }]
@@ -33,10 +31,8 @@ describe('findOrphanedEntities', () => {
       modules: new Map([
         ['Core', {
           id: 'Core',
-          categories: [],  // Orphan not included
-          properties: [],
-          subobjects: [],
-          templates: []
+          categories: [],
+          dashboards: [],
         }]
       ])
     })
@@ -56,49 +52,38 @@ describe('findOrphanedEntities', () => {
     assert.strictEqual(result.warnings.length, 0)
   })
 
-  test('mixed orphan and non-orphan returns correct detection', () => {
+  test('mixed orphan and non-orphan categories detected correctly', () => {
     const index = createMockEntityIndex({
       categories: new Map([
         ['InModule', { id: 'InModule', _filePath: 'categories/InModule.json' }],
         ['Orphan1', { id: 'Orphan1', _filePath: 'categories/Orphan1.json' }]
       ]),
-      properties: new Map([
-        ['PropInModule', { id: 'PropInModule', datatype: 'Text', _filePath: 'properties/PropInModule.json' }],
-        ['OrphanProp', { id: 'OrphanProp', datatype: 'Text', _filePath: 'properties/OrphanProp.json' }]
-      ]),
       modules: new Map([
         ['Core', {
           id: 'Core',
           categories: ['InModule'],
-          properties: ['PropInModule'],
-          subobjects: [],
-          templates: []
+          dashboards: [],
         }]
       ])
     })
 
     const result = findOrphanedEntities(index)
 
-    assert.strictEqual(result.warnings.length, 2)
-    const orphanIds = result.warnings.map(w => w.message)
-    assert.ok(orphanIds.some(m => m.includes('Orphan1')))
-    assert.ok(orphanIds.some(m => m.includes('OrphanProp')))
+    assert.strictEqual(result.warnings.length, 1)
+    assert.ok(result.warnings[0].message.includes('Orphan1'))
   })
 
-  test('empty modules map detects all entities as orphans', () => {
+  test('empty modules map detects all categories as orphans', () => {
     const index = createMockEntityIndex({
       categories: new Map([
         ['Cat1', { id: 'Cat1', _filePath: 'categories/Cat1.json' }]
-      ]),
-      properties: new Map([
-        ['Prop1', { id: 'Prop1', datatype: 'Text', _filePath: 'properties/Prop1.json' }]
       ]),
       modules: new Map()
     })
 
     const result = findOrphanedEntities(index)
 
-    assert.strictEqual(result.warnings.length, 2)
+    assert.strictEqual(result.warnings.length, 1)
   })
 
   test('modules and bundles are not checked for orphans', () => {
@@ -107,9 +92,7 @@ describe('findOrphanedEntities', () => {
         ['Standalone', {
           id: 'Standalone',
           categories: [],
-          properties: [],
-          subobjects: [],
-          templates: []
+          dashboards: [],
         }]
       ]),
       bundles: new Map([
@@ -127,30 +110,42 @@ describe('findOrphanedEntities', () => {
     assert.strictEqual(result.warnings.length, 0)
   })
 
-  test('templates and subobjects are checked for orphans', () => {
+  test('dashboard in module is not orphan', () => {
     const index = createMockEntityIndex({
-      subobjects: new Map([
-        ['OrphanSub', { id: 'OrphanSub', _filePath: 'subobjects/OrphanSub.json' }]
-      ]),
-      templates: new Map([
-        ['OrphanTmpl', { id: 'OrphanTmpl', _filePath: 'templates/OrphanTmpl.json' }]
+      dashboards: new Map([
+        ['MainDash', { id: 'MainDash', _filePath: 'dashboards/MainDash.wikitext' }]
       ]),
       modules: new Map([
         ['Core', {
           id: 'Core',
           categories: [],
-          properties: [],
-          subobjects: [],  // OrphanSub not included
-          templates: []    // OrphanTmpl not included
+          dashboards: ['MainDash'],
         }]
       ])
     })
 
     const result = findOrphanedEntities(index)
 
-    assert.strictEqual(result.warnings.length, 2)
-    const orphanIds = result.warnings.map(w => w.message)
-    assert.ok(orphanIds.some(m => m.includes('OrphanSub')))
-    assert.ok(orphanIds.some(m => m.includes('OrphanTmpl')))
+    assert.strictEqual(result.warnings.length, 0)
+  })
+
+  test('dashboard not in any module is orphan', () => {
+    const index = createMockEntityIndex({
+      dashboards: new Map([
+        ['OrphanDash', { id: 'OrphanDash', _filePath: 'dashboards/OrphanDash.wikitext' }]
+      ]),
+      modules: new Map([
+        ['Core', {
+          id: 'Core',
+          categories: [],
+          dashboards: [],
+        }]
+      ])
+    })
+
+    const result = findOrphanedEntities(index)
+
+    assert.strictEqual(result.warnings.length, 1)
+    assert.ok(result.warnings[0].message.includes('OrphanDash'))
   })
 })

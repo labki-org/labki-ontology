@@ -3,53 +3,10 @@
   "label": "Agents",
   "description": "People, organizations, and other actors that can be responsible for actions, own resources, or participate in activities.",
   "categories": [
-    "Agent",
     "Organization",
     "Person",
     "Researcher",
     "Staff"
   ],
-  "properties": [
-    "Has_acronym",
-    "Has_attachment",
-    "Has_birthday",
-    "Has_completion_date",
-    "Has_department",
-    "Has_description",
-    "Has_email",
-    "Has_end_date",
-    "Has_expiration_date",
-    "Has_first_name",
-    "Has_hire_date",
-    "Has_institution_type",
-    "Has_job_title",
-    "Has_last_name",
-    "Has_middle_name",
-    "Has_name",
-    "Has_notes",
-    "Has_orcid",
-    "Has_organization",
-    "Has_parent_organization",
-    "Has_phone_number",
-    "Has_required_training",
-    "Has_research_role",
-    "Has_skill",
-    "Has_start_date",
-    "Has_training",
-    "Has_training_status",
-    "Has_url",
-    "Has_website"
-  ],
-  "subobjects": [
-    "Has_organizational_role",
-    "Has_training_record"
-  ],
-  "templates": [],
-  "manual_categories": [
-    "Organization",
-    "Person",
-    "Researcher",
-    "Staff"
-  ],
-  "resources": []
+  "dashboards": []
 }

@@ -1,7 +1,5 @@
 {
   "id": "Core",
   "categories": ["Agent"],
-  "properties": ["Name"],
-  "subobjects": [],
-  "templates": []
+  "dashboards": []
 }

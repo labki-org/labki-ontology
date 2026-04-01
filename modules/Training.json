@@ -5,19 +5,5 @@
   "categories": [
     "Training"
   ],
-  "properties": [
-    "Has_SOP",
-    "Has_description",
-    "Has_name",
-    "Has_organization",
-    "Has_renewal_period_months",
-    "Has_training_type",
-    "Has_url"
-  ],
-  "subobjects": [],
-  "templates": [],
-  "manual_categories": [
-    "Training"
-  ],
-  "resources": []
+  "dashboards": []
 }

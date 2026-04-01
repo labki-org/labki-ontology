@@ -390,7 +390,7 @@ Category memberships appear outside the markers. Resources belong to both their 
 
 ## Module
 
-A Module is a logical grouping of related entities. Modules declare which categories they contain; properties and subobjects are auto-computed from those categories.
+A Module is a logical grouping of related categories. Modules declare which categories they contain; dependency resolution (properties, subobjects, templates, resources) is handled at install time by OntologySync.
 
 ### File Location
 
@@ -403,51 +403,25 @@ A Module is a logical grouping of related entities. Modules declare which catego
   "id": "Agents",
   "label": "Agents",
   "description": "People, organizations, and other actors",
-  "categories": ["Agent", "Person", "Researcher"],
-  "properties": ["Has_first_name", "Has_last_name", "Has_name"],
-  "subobjects": ["Has_organizational_role"],
-  "templates": [],
-  "manual_categories": ["Person", "Researcher"],
-  "resources": []
+  "categories": ["Organization", "Person", "Researcher", "Staff"],
+  "dashboards": []
 }
 ```
 
 ### Fields
 
-| Field | Type | Required | Manual/Auto | Description |
-|-------|------|----------|-------------|-------------|
-| `id` | string | Yes | Manual | Module identifier matching the filename |
-| `label` | string | No | Manual | Human-readable display name |
-| `description` | string | Yes | Manual | What this Module provides |
-| `categories` | string[] | Yes | Manual | Category IDs in this module |
-| `properties` | string[] | Yes | **Auto-computed** | Properties referenced by categories and subobjects |
-| `subobjects` | string[] | Yes | **Auto-computed** | Subobjects referenced by categories |
-| `resources` | string[] | No | **Auto-computed** | Resources whose category is in this module |
-| `templates` | string[] | No | Manual | Template IDs in this module |
-| `dashboards` | string[] | No | Manual | Dashboard IDs in this module |
-| `manual_categories` | string[] | No | Manual | Categories that users can create pages for |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | string | Yes | Module identifier matching the filename |
+| `label` | string | No | Human-readable display name |
+| `description` | string | Yes | What this Module provides |
+| `categories` | string[] | Yes | Manually selected category IDs in this module |
+| `dashboards` | string[] | No | Dashboard IDs in this module |
 
-### Auto-Computed Fields
+### Validation
 
-The `properties` and `subobjects` arrays are automatically resolved from the module's categories:
-
-1. For each category in the module, collect all `required_properties`, `optional_properties`, `required_subobjects`, and `optional_subobjects`
-2. For each collected subobject, collect its `required_properties` and `optional_properties`
-3. For each resource in the ontology, include it if its `[[Category:X]]` matches a category in the module
-4. The union of all collected properties becomes the module's `properties` array
-5. The union of all collected subobjects becomes the module's `subobjects` array
-6. The matching resources become the module's `resources` array
-7. All arrays are sorted alphabetically
-
-Run `npm run sync-modules` to recompute these fields after editing entities. Validation enforces that these arrays exactly match the resolved set.
-
-### Module Completeness
-
-Validation requires:
-- If a module includes a child category, it must also include all parent categories
-- The `properties` array must exactly match the resolved set (no missing, no extra)
-- The `subobjects` array must exactly match the resolved set (no missing, no extra)
-- The `resources` array must exactly match the resolved set (no missing, no extra)
+- All referenced categories must exist as defined entities
+- All referenced dashboards must exist as defined entities
 
 ### Namespace Constants
 
@@ -481,11 +455,11 @@ A Bundle is a curated collection of Modules designed for a specific deployment s
 
 ```json
 {
-  "id": "Default",
-  "version": "1.0.0",
-  "label": "Default Bundle",
-  "description": "Standard bundle with core entities",
-  "modules": ["Core"]
+  "id": "Research_lab",
+  "label": "Research Lab",
+  "description": "ontology for research lab management",
+  "modules": ["Activities", "Agents", "Documents"],
+  "dashboards": []
 }
 ```
 
@@ -494,53 +468,21 @@ A Bundle is a curated collection of Modules designed for a specific deployment s
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `id` | string | Yes | Bundle identifier matching the filename |
-| `version` | string | Yes | Semantic version of this bundle |
 | `label` | string | No | Human-readable display name |
 | `description` | string | Yes | What this Bundle is for |
 | `modules` | string[] | Yes | Module IDs to include |
+| `dashboards` | string[] | No | Dashboard IDs for this bundle |
 
-### Module Resolution
+### Dependency Resolution
 
-When a Bundle is installed:
-1. Each Module in `modules` is resolved (including its dependencies)
-2. Duplicate Modules from overlapping dependencies are installed only once
-3. All entities from all resolved Modules are collected and installed
-
----
-
-## Generated Artifacts
-
-The CI pipeline generates versioned artifact directories for each module and bundle. These are what OntologySync consumes.
-
-### Module Artifacts
-
-```
-modules/{Module_id}/versions/{version}/
-├── {module_id}.vocab.json    # SMW-importable manifest
-├── categories/               # Entity wikitext files
-├── properties/
-├── subobjects/
-├── templates/
-├── dashboards/
-└── resources/
-```
-
-The artifact `vocab.json` is similar to the source but with:
-- `dependencies` as an object mapping module IDs to versions (not an array)
-- A `generated` timestamp in the `meta` block
-- `importFrom` paths relative to the artifact directory
-
-### Bundle Artifacts
-
-```
-bundles/{Bundle_id}/versions/{version}/
-├── {bundle_id}.vocab.json    # Merged manifest with all module entities
-├── categories/
-├── properties/
-└── ...
-```
-
-The bundle artifact merges all import entries from all constituent modules into a single manifest with a `modules` field mapping module IDs to their versions.
+Dependency resolution is handled by OntologySync at install time:
+1. Collect all categories from all modules in the bundle
+2. For each category, transitively resolve parent categories
+3. For all resolved categories, collect properties and subobjects
+4. For each subobject, collect its properties
+5. For each property, check for template references
+6. Discover resources by matching category annotations
+7. Deduplicate and build the import manifest
 
 ---
 

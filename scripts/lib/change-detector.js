@@ -220,7 +220,7 @@ function checkEntityBreakingChanges(entityType, baseEntity, prEntity, deleted, u
     const deletedKeys = Object.keys(deleted).filter(k => k !== '_filePath')
     if (deletedKeys.length > 0) {
       // Check if any structural field was deleted
-      const structuralFields = new Set(['id', 'label', 'description', 'categories', 'properties'])
+      const structuralFields = new Set(['id', 'label', 'description', 'categories', 'dashboards'])
       for (const key of deletedKeys) {
         if (structuralFields.has(key)) {
           return {

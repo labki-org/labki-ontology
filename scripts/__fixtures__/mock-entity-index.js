@@ -30,8 +30,8 @@ export function createMockEntityIndex(overrides = {}) {
  * Create a mock entity index with a dependency chain for cascade testing
  *
  * Structure:
- * - Core module: contains Agent category, Name property
- * - Lab module: depends on Core, contains Equipment category
+ * - Core module: contains Agent category
+ * - Lab module: contains Equipment category
  * - Default bundle: contains Core and Lab modules
  *
  * @returns {Object} Entity index with dependency chain
@@ -74,20 +74,12 @@ export function createDependencyChainIndex() {
       ['Core', {
         id: 'Core',
         categories: ['Agent'],
-        properties: ['Name'],
-        subobjects: [],
-        templates: [],
         dashboards: [],
-        resources: [],
       }],
       ['Lab', {
         id: 'Lab',
         categories: ['Equipment'],
-        properties: ['SerialNumber'],
-        subobjects: [],
-        templates: [],
         dashboards: [],
-        resources: [],
       }]
     ]),
     bundles: new Map([
@@ -164,7 +156,6 @@ export function createEmptyIndex() {
  * @param {Object} options - Configuration options
  * @param {boolean} options.withMissingRef - Include a missing reference
  * @param {boolean} options.withSelfRef - Include a self-reference
- * @param {boolean} options.withScopeViolation - Include a scope violation
  * @returns {Object} Entity index configured for testing
  */
 export function createReferenceTestIndex(options = {}) {
@@ -200,9 +191,7 @@ export function createReferenceTestIndex(options = {}) {
     ['Core', {
       id: 'Core',
       categories: ['Person'],
-      properties: ['Name', 'Email'],
-      subobjects: [],
-      templates: [],
+      dashboards: [],
     }]
   ])
 
@@ -224,33 +213,6 @@ export function createReferenceTestIndex(options = {}) {
       _filePath: 'categories/SelfRefCategory.json'
     })
     index.modules.get('Core').categories.push('SelfRefCategory')
-  }
-
-  if (options.withScopeViolation) {
-    // Add an unrelated module with a category that uses the property
-    index.properties.set('Isolated', {
-      id: 'Isolated',
-      label: 'Isolated Property',
-      datatype: 'Text',
-      _filePath: 'properties/Isolated.json'
-    })
-    index.categories.set('Other', {
-      id: 'Other',
-      label: 'Other',
-      optional_properties: ['Isolated'],
-      _filePath: 'categories/Other.json'
-    })
-    index.modules.set('OtherModule', {
-      id: 'OtherModule',
-      categories: ['Other'],
-      properties: ['Isolated'],
-      subobjects: [],
-      templates: [],
-    })
-
-    // Also reference Isolated from Core's Person category
-    index.categories.get('Person').optional_properties.push('Isolated')
-    index.modules.get('Core').properties.push('Isolated')
   }
 
   return index

@@ -18,9 +18,7 @@ describe('validateReferences', () => {
           ['Core', {
             id: 'Core',
             categories: ['Child'],
-            properties: [],
-            subobjects: [],
-            templates: [],
+            dashboards: [],
           }]
         ])
       })
@@ -92,9 +90,7 @@ describe('validateReferences', () => {
           ['Core', {
             id: 'Core',
             categories: ['NonExistentCategory'],
-            properties: [],
-            subobjects: [],
-            templates: [],
+            dashboards: [],
             _filePath: 'modules/Core.json'
           }]
         ])
@@ -140,9 +136,7 @@ describe('validateReferences', () => {
           ['Core', {
             id: 'Core',
             categories: ['SelfRef'],
-            properties: [],
-            subobjects: [],
-            templates: [],
+            dashboards: [],
           }]
         ])
       })
@@ -164,15 +158,6 @@ describe('validateReferences', () => {
             _filePath: 'properties/SelfProp.json'
           }]
         ]),
-        modules: new Map([
-          ['Core', {
-            id: 'Core',
-            categories: [],
-            properties: ['SelfProp'],
-            subobjects: [],
-            templates: [],
-          }]
-        ])
       })
 
       const result = validateReferences(index)
@@ -198,9 +183,7 @@ describe('validateReferences', () => {
           ['Core', {
             id: 'Core',
             categories: ['Parent', 'Child'],
-            properties: [],
-            subobjects: [],
-            templates: [],
+            dashboards: [],
           }]
         ])
       })
@@ -212,41 +195,24 @@ describe('validateReferences', () => {
   })
 
   describe('Entities in multiple modules', () => {
-    test('entity in multiple modules passes', () => {
+    test('category in multiple modules passes', () => {
       const index = createMockEntityIndex({
-        properties: new Map([
-          ['SharedProp', {
-            id: 'SharedProp',
-            datatype: 'Text',
-            _filePath: 'properties/SharedProp.json'
-          }]
-        ]),
         categories: new Map([
-          ['CatA', {
-            id: 'CatA',
-            optional_properties: ['SharedProp'],
-            _filePath: 'categories/CatA.json'
-          }],
-          ['CatB', {
-            id: 'CatB',
-            optional_properties: ['SharedProp'],
-            _filePath: 'categories/CatB.json'
+          ['Shared', {
+            id: 'Shared',
+            _filePath: 'categories/Shared.json'
           }]
         ]),
         modules: new Map([
           ['ModuleA', {
             id: 'ModuleA',
-            categories: ['CatA'],
-            properties: ['SharedProp'],
-            subobjects: [],
-            templates: [],
+            categories: ['Shared'],
+            dashboards: [],
           }],
           ['ModuleB', {
             id: 'ModuleB',
-            categories: ['CatB'],
-            properties: ['SharedProp'],
-            subobjects: [],
-            templates: [],
+            categories: ['Shared'],
+            dashboards: [],
           }]
         ])
       })
@@ -254,106 +220,6 @@ describe('validateReferences', () => {
       const result = validateReferences(index)
 
       assert.strictEqual(result.errors.length, 0)
-    })
-  })
-
-  describe('Module completeness', () => {
-    test('module missing parent category returns error', () => {
-      const index = createMockEntityIndex({
-        categories: new Map([
-          ['Agent', {
-            id: 'Agent',
-            _filePath: 'categories/Agent.wikitext'
-          }],
-          ['Person', {
-            id: 'Person',
-            parents: ['Agent'],
-            _filePath: 'categories/Person.wikitext'
-          }]
-        ]),
-        modules: new Map([
-          ['People', {
-            id: 'People',
-            categories: ['Person'],  // Missing Agent
-            properties: [],
-            subobjects: [],
-            templates: [],
-          }]
-        ])
-      })
-
-      const result = validateReferences(index)
-
-      const incompleteErrors = result.errors.filter(e => e.type === 'incomplete-module')
-      assert.strictEqual(incompleteErrors.length, 1)
-      assert.ok(incompleteErrors[0].message.includes('Person'))
-      assert.ok(incompleteErrors[0].message.includes('Agent'))
-    })
-
-    test('module with all parent categories passes', () => {
-      const index = createMockEntityIndex({
-        categories: new Map([
-          ['Agent', {
-            id: 'Agent',
-            _filePath: 'categories/Agent.wikitext'
-          }],
-          ['Person', {
-            id: 'Person',
-            parents: ['Agent'],
-            _filePath: 'categories/Person.wikitext'
-          }]
-        ]),
-        modules: new Map([
-          ['People', {
-            id: 'People',
-            categories: ['Agent', 'Person'],
-            properties: [],
-            subobjects: [],
-            templates: [],
-          }]
-        ])
-      })
-
-      const result = validateReferences(index)
-
-      const incompleteErrors = result.errors.filter(e => e.type === 'incomplete-module')
-      assert.strictEqual(incompleteErrors.length, 0)
-    })
-
-    test('module with deep inheritance chain missing ancestor returns error', () => {
-      const index = createMockEntityIndex({
-        categories: new Map([
-          ['Agent', {
-            id: 'Agent',
-            _filePath: 'categories/Agent.wikitext'
-          }],
-          ['Person', {
-            id: 'Person',
-            parents: ['Agent'],
-            _filePath: 'categories/Person.wikitext'
-          }],
-          ['Researcher', {
-            id: 'Researcher',
-            parents: ['Person'],
-            _filePath: 'categories/Researcher.wikitext'
-          }]
-        ]),
-        modules: new Map([
-          ['Research', {
-            id: 'Research',
-            categories: ['Person', 'Researcher'],  // Missing Agent
-            properties: [],
-            subobjects: [],
-            templates: [],
-          }]
-        ])
-      })
-
-      const result = validateReferences(index)
-
-      const incompleteErrors = result.errors.filter(e => e.type === 'incomplete-module')
-      assert.strictEqual(incompleteErrors.length, 1)
-      assert.ok(incompleteErrors[0].message.includes('Agent'))
     })
   })
 
@@ -388,9 +254,7 @@ describe('validateReferences', () => {
           ['Core', {
             id: 'Core',
             categories: ['Base', 'Derived'],
-            properties: ['CoreProp', 'ChildProp'],
-            subobjects: [],
-            templates: [],
+            dashboards: [],
           }]
         ]),
         bundles: new Map([
@@ -426,9 +290,7 @@ describe('validateReferences', () => {
           ['Core', {
             id: 'Core',
             categories: ['MultiRef'],
-            properties: ['Prop1', 'Prop2', 'Prop3'],
-            subobjects: [],
-            templates: [],
+            dashboards: [],
           }]
         ])
       })
@@ -457,5 +319,11 @@ describe('REFERENCE_FIELDS', () => {
   test('properties has expected reference fields', () => {
     assert.strictEqual(REFERENCE_FIELDS.properties.parent_property, 'properties')
     assert.strictEqual(REFERENCE_FIELDS.properties.has_display_template, 'templates')
+  })
+
+  test('modules only references categories and dashboards', () => {
+    assert.strictEqual(REFERENCE_FIELDS.modules.categories, 'categories')
+    assert.strictEqual(REFERENCE_FIELDS.modules.dashboards, 'dashboards')
+    assert.strictEqual(Object.keys(REFERENCE_FIELDS.modules).length, 2)
   })
 })

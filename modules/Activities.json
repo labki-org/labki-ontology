@@ -3,50 +3,10 @@
   "label": "Activities",
   "description": "Time-bound efforts such as projects, experiments, tasks, and events that have participants, outputs, and lifecycle states.",
   "categories": [
-    "Activity",
     "Event",
     "Experiment",
     "Project",
     "Task"
   ],
-  "properties": [
-    "Has_PI",
-    "Has_SOP",
-    "Has_activity_status",
-    "Has_assignee",
-    "Has_attachment",
-    "Has_description",
-    "Has_deviation",
-    "Has_due_date",
-    "Has_effort_fraction",
-    "Has_end_date",
-    "Has_equipment_used",
-    "Has_event_type",
-    "Has_funding",
-    "Has_goal",
-    "Has_location",
-    "Has_material_used",
-    "Has_notes",
-    "Has_operator",
-    "Has_participant",
-    "Has_person",
-    "Has_priority",
-    "Has_project",
-    "Has_protocol",
-    "Has_responsible_party",
-    "Has_result",
-    "Has_role_type",
-    "Has_start_date"
-  ],
-  "subobjects": [
-    "Has_project_role"
-  ],
-  "templates": [],
-  "manual_categories": [
-    "Event",
-    "Experiment",
-    "Project",
-    "Task"
-  ],
-  "resources": []
+  "dashboards": []
 }

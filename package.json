@@ -6,7 +6,6 @@
   "private": true,
   "scripts": {
     "validate": "node scripts/validate.js",
-    "sync-modules": "node scripts/sync-modules.js",
     "test": "node --test scripts/lib/*.test.js",
     "test:integration": "node --test scripts/__integration__/*.test.js",
     "test:all": "node --test scripts/lib/*.test.js scripts/__integration__/*.test.js",
