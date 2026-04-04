@@ -7,7 +7,7 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import {
-  extractAnnotations,
+  extractTemplateCall,
   extractCategories,
   toPageName,
   toEntityKey,
@@ -18,96 +18,80 @@ import {
   parseFilePath,
 } from './wikitext-parser.js'
 
-// ─── extractAnnotations edge cases ──────────────────────────────────────────
+// ─── extractTemplateCall edge cases ────────────────────────────────────────
 
-describe('extractAnnotations edge cases', () => {
-  it('returns empty map for empty string', () => {
-    const result = extractAnnotations('')
-    assert.strictEqual(result.size, 0)
+describe('extractTemplateCall edge cases', () => {
+  it('returns null for empty string', () => {
+    const result = extractTemplateCall('')
+    assert.strictEqual(result, null)
   })
 
-  it('returns empty map for wikitext with no annotation block', () => {
-    const result = extractAnnotations('Just some text\nNo markers here\n')
-    assert.strictEqual(result.size, 0)
+  it('returns null for wikitext with no annotation block', () => {
+    const result = extractTemplateCall('Just some text\nNo markers here\n')
+    assert.strictEqual(result, null)
   })
 
-  it('ignores annotations outside the OntologySync block', () => {
+  it('ignores content outside the OntologySync block', () => {
     const wikitext = `
-[[Has description::Outside annotation]]
+some random text before
 <!-- OntologySync Start -->
-[[Has description::Inside annotation]]
+{{Property
+|has_description=Inside annotation
+}}
 <!-- OntologySync End -->
-[[Has description::After annotation]]
+some random text after
 `
-    const result = extractAnnotations(wikitext)
-    assert.deepStrictEqual(result.get('Has description'), ['Inside annotation'])
+    const result = extractTemplateCall(wikitext)
+    assert.strictEqual(result.params.get('has_description'), 'Inside annotation')
   })
 
   it('handles empty annotation block', () => {
     const wikitext = `<!-- OntologySync Start -->
 <!-- OntologySync End -->`
-    const result = extractAnnotations(wikitext)
-    assert.strictEqual(result.size, 0)
+    const result = extractTemplateCall(wikitext)
+    assert.strictEqual(result, null)
   })
 
-  it('collects multiple values for same annotation property', () => {
+  it('extracts multiple params correctly', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Allows value::Active]]
-[[Allows value::Inactive]]
-[[Allows value::Pending]]
+{{Property
+|allows_value=Active, Inactive, Pending
+}}
 <!-- OntologySync End -->`
-    const result = extractAnnotations(wikitext)
-    assert.deepStrictEqual(result.get('Allows value'), ['Active', 'Inactive', 'Pending'])
+    const result = extractTemplateCall(wikitext)
+    assert.strictEqual(result.params.get('allows_value'), 'Active, Inactive, Pending')
   })
 
   it('handles lines with leading/trailing whitespace', () => {
     const wikitext = `<!-- OntologySync Start -->
-  [[Has description::Indented]]
-\t[[Has type::Text]]\t
+  {{Property
+  |has_description=Indented
+  |has_type=Text
+  }}
 <!-- OntologySync End -->`
-    const result = extractAnnotations(wikitext)
-    assert.deepStrictEqual(result.get('Has description'), ['Indented'])
-    assert.deepStrictEqual(result.get('Has type'), ['Text'])
+    const result = extractTemplateCall(wikitext)
+    assert.strictEqual(result.params.get('has_description'), 'Indented')
+    assert.strictEqual(result.params.get('has_type'), 'Text')
   })
 
-  it('ignores malformed annotations (missing ::)', () => {
+  it('handles parameter values containing equals signs', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Valid]]
-[[MalformedNoSeparator]]
-[[Also Valid::Value]]
+{{Property
+|has_description=Value with: colons in it
+}}
 <!-- OntologySync End -->`
-    const result = extractAnnotations(wikitext)
-    assert.strictEqual(result.size, 2)
-    assert.ok(result.has('Has description'))
-    assert.ok(result.has('Also Valid'))
+    const result = extractTemplateCall(wikitext)
+    assert.strictEqual(result.params.get('has_description'), 'Value with: colons in it')
   })
 
-  it('handles annotation values containing colons', () => {
+  it('handles template with no params', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Value with: colons in it]]
+{{Category
+}}
 <!-- OntologySync End -->`
-    const result = extractAnnotations(wikitext)
-    assert.deepStrictEqual(result.get('Has description'), ['Value with: colons in it'])
-  })
-
-  it('handles annotation values containing double colons', () => {
-    const wikitext = `<!-- OntologySync Start -->
-[[Has description::Value with :: double colons]]
-<!-- OntologySync End -->`
-    const result = extractAnnotations(wikitext)
-    // The regex matches first :: only, rest is value
-    assert.ok(result.has('Has description'))
-  })
-
-  it('ignores non-annotation lines in the block', () => {
-    const wikitext = `<!-- OntologySync Start -->
-[[Has description::Valid]]
-This is just text, not an annotation
-<!-- some comment -->
-[[Has type::Text]]
-<!-- OntologySync End -->`
-    const result = extractAnnotations(wikitext)
-    assert.strictEqual(result.size, 2)
+    const result = extractTemplateCall(wikitext)
+    assert.strictEqual(result.templateName, 'Category')
+    assert.strictEqual(result.params.size, 0)
   })
 })
 
@@ -116,7 +100,9 @@ This is just text, not an annotation
 describe('extractCategories edge cases', () => {
   it('extracts categories outside the block only', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Test]]
+{{Category
+|has_description=Test
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]
 [[Category:Person]]`
@@ -126,7 +112,9 @@ describe('extractCategories edge cases', () => {
 
   it('ignores Category annotations inside the block', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Category:ShouldBeIgnored]]
+{{Category
+|has_description=Test
+}}
 <!-- OntologySync End -->
 [[Category:Visible]]`
     const cats = extractCategories(wikitext)
@@ -176,19 +164,23 @@ describe('toEntityKey', () => {
 // ─── parseCategory edge cases ───────────────────────────────────────────────
 
 describe('parseCategory edge cases', () => {
-  it('derives label from entity key when Display label is absent', () => {
+  it('derives label from entity key when display_label is absent', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Test]]
+{{Category
+|has_description=Test
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]`
     const result = parseCategory(wikitext, 'Research_student')
     assert.strictEqual(result.label, 'Research student')
   })
 
-  it('uses Display label when present', () => {
+  it('uses display_label when present', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Test]]
-[[Display label::Custom Label]]
+{{Category
+|has_description=Test
+|display_label=Custom Label
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]`
     const result = parseCategory(wikitext, 'Something')
@@ -197,27 +189,33 @@ describe('parseCategory edge cases', () => {
 
   it('omits parents field when no parent categories', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Root]]
+{{Category
+|has_description=Root
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]`
     const result = parseCategory(wikitext, 'Root')
     assert.strictEqual(result.parents, undefined)
   })
 
-  it('strips namespace prefix from parent category references', () => {
+  it('parses parent category reference without namespace prefix', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Test]]
-[[Has parent category::Category:Agent]]
+{{Category
+|has_description=Test
+|has_parent_category=Agent
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]`
     const result = parseCategory(wikitext, 'Person')
     assert.deepStrictEqual(result.parents, ['Agent'])
   })
 
-  it('strips namespace prefix from property references', () => {
+  it('converts comma-separated property references to entity keys', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Test]]
-[[Has required property::Property:Has first name]]
+{{Category
+|has_description=Test
+|has_required_property=Has first name
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]`
     const result = parseCategory(wikitext, 'Person')
@@ -226,13 +224,15 @@ describe('parseCategory edge cases', () => {
 
   it('handles category with all fields populated', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Full category]]
-[[Display label::Full]]
-[[Has parent category::Category:Base]]
-[[Has required property::Property:Has name]]
-[[Has optional property::Property:Has email]]
-[[Has required subobject::Subobject:Required sub]]
-[[Has optional subobject::Subobject:Optional sub]]
+{{Category
+|has_description=Full category
+|display_label=Full
+|has_parent_category=Base
+|has_required_property=Has name
+|has_optional_property=Has email
+|has_required_subobject=Required sub
+|has_optional_subobject=Optional sub
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]`
     const result = parseCategory(wikitext, 'Full')
@@ -249,32 +249,38 @@ describe('parseCategory edge cases', () => {
 // ─── parseProperty edge cases ───────────────────────────────────────────────
 
 describe('parseProperty edge cases', () => {
-  it('defaults cardinality to single when Allows multiple values is absent', () => {
+  it('defaults cardinality to single when allows_multiple_values is absent', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Simple]]
+{{Property
+|has_type=Text
+|has_description=Simple
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]`
     const result = parseProperty(wikitext, 'Has_simple')
     assert.strictEqual(result.cardinality, 'single')
   })
 
-  it('sets cardinality to multiple when flag is true', () => {
+  it('sets cardinality to multiple when flag is Yes', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Multi]]
-[[Allows multiple values::true]]
+{{Property
+|has_type=Page
+|has_description=Multi
+|allows_multiple_values=Yes
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]`
     const result = parseProperty(wikitext, 'Has_multi')
     assert.strictEqual(result.cardinality, 'multiple')
   })
 
-  it('handles Allows value from category with namespace stripping', () => {
+  it('handles allows_value_from_category', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Person ref]]
-[[Allows value from category::Category:Person]]
+{{Property
+|has_type=Page
+|has_description=Person ref
+|allows_value_from_category=Person
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]`
     const result = parseProperty(wikitext, 'Has_person')
@@ -283,9 +289,11 @@ describe('parseProperty edge cases', () => {
 
   it('parses subproperty reference', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has type::Email]]
-[[Has description::Work email]]
-[[Subproperty of::Property:Has email]]
+{{Property
+|has_type=Email
+|has_description=Work email
+|subproperty_of=Has email
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]`
     const result = parseProperty(wikitext, 'Has_work_email')
@@ -294,7 +302,9 @@ describe('parseProperty edge cases', () => {
 
   it('handles missing datatype (validation catches this)', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::No type]]
+{{Property
+|has_description=No type
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]`
     const result = parseProperty(wikitext, 'Bad_prop')
@@ -307,7 +317,9 @@ describe('parseProperty edge cases', () => {
 describe('parseSubobject edge cases', () => {
   it('handles subobject with no properties', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Empty subobject]]
+{{Subobject
+|has_description=Empty subobject
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-subobject]]`
     const result = parseSubobject(wikitext, 'Empty_sub')
@@ -315,11 +327,13 @@ describe('parseSubobject edge cases', () => {
     assert.strictEqual(result.optional_properties, undefined)
   })
 
-  it('strips namespace from property references', () => {
+  it('converts comma-separated property references to entity keys', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Test]]
-[[Has required property::Property:Has start date]]
-[[Has optional property::Property:Has end date]]
+{{Subobject
+|has_description=Test
+|has_required_property=Has start date
+|has_optional_property=Has end date
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-subobject]]`
     const result = parseSubobject(wikitext, 'Test_sub')
@@ -333,8 +347,10 @@ describe('parseSubobject edge cases', () => {
 describe('parseResource edge cases', () => {
   it('finds non-management category', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Test]]
-[[Has name::John]]
+{{Person
+|has_description=Test
+|has_name=John
+}}
 <!-- OntologySync End -->
 [[Category:Person]]
 [[Category:OntologySync-managed-resource]]`
@@ -344,18 +360,22 @@ describe('parseResource edge cases', () => {
 
   it('handles resource with no category', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::No category]]
+{{Resource
+|has_description=No category
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-resource]]`
     const result = parseResource(wikitext, 'Unknown/Item')
     assert.strictEqual(result.category, '')
   })
 
-  it('converts property names to entity keys', () => {
+  it('converts property param names to entity keys', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Test]]
-[[Has first name::John]]
-[[Has last name::Doe]]
+{{Person
+|has_description=Test
+|has_first_name=John
+|has_last_name=Doe
+}}
 <!-- OntologySync End -->
 [[Category:Person]]
 [[Category:OntologySync-managed-resource]]`

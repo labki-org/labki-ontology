@@ -2,7 +2,7 @@
  * Generates OntologySync wikitext files from structured entity dicts.
  *
  * This is the inverse of wikitext-parser.js. Given a dict in the same format
- * as the old JSON entity files, it produces wikitext with semantic annotations.
+ * as the old JSON entity files, it produces wikitext with {{Template|param=value}} calls.
  */
 
 import { toPageName, NAMESPACE_TO_ENTITY_TYPE } from './wikitext-parser.js'
@@ -13,13 +13,39 @@ const ENTITY_TYPE_TO_NAMESPACE = Object.fromEntries(
 )
 
 /**
- * Add a namespace prefix to an entity key for use in wikitext annotations.
+ * Convert an entity key to a template parameter name (lowercase, underscored).
  * @param {string} entityKey - e.g. "Has_name"
- * @param {string} ns - e.g. "Property"
- * @returns {string} e.g. "Property:Has name"
+ * @returns {string} e.g. "has_name"
  */
-function withNamespace(entityKey, ns) {
-  return `${ns}:${toPageName(entityKey)}`
+function toParam(entityKey) {
+  return entityKey.toLowerCase().replace(/ /g, '_')
+}
+
+/**
+ * Join an array of entity keys as comma-separated page names (with spaces).
+ * @param {string[]} keys - e.g. ["Has_first_name", "Has_last_name"]
+ * @returns {string} e.g. "Has first name, Has last name"
+ */
+function commaJoin(keys) {
+  return keys.map(toPageName).join(', ')
+}
+
+/**
+ * Build a {{TemplateName|param=value}} template call string.
+ * @param {string} templateName - e.g. "Category"
+ * @param {Array<[string, string]>} params - Array of [key, value] pairs
+ * @returns {string} The formatted template call (multi-line)
+ */
+function buildTemplateCall(templateName, params) {
+  if (params.length === 0) {
+    return `{{${templateName}\n}}`
+  }
+  const lines = [`{{${templateName}`]
+  for (const [key, value] of params) {
+    lines.push(`|${key}=${value}`)
+  }
+  lines.push('}}')
+  return lines.join('\n')
 }
 
 // ─── Entity-specific generators ─────────────────────────────────────────────
@@ -30,33 +56,37 @@ function withNamespace(entityKey, ns) {
  * @returns {string} Wikitext content
  */
 export function generateCategory(entity) {
-  const lines = ['<!-- OntologySync Start -->']
+  const params = []
 
   if (entity.description) {
-    lines.push(`[[Has description::${entity.description}]]`)
+    params.push(['has_description', entity.description])
   }
   if (entity.label && entity.label !== toPageName(entity.id)) {
-    lines.push(`[[Display label::${entity.label}]]`)
+    params.push(['display_label', entity.label])
   }
 
-  for (const parent of entity.parents || []) {
-    lines.push(`[[Has parent category::${withNamespace(parent, 'Category')}]]`)
+  if (entity.parents?.length > 0) {
+    params.push(['has_parent_category', commaJoin(entity.parents)])
   }
-  for (const prop of entity.required_properties || []) {
-    lines.push(`[[Has required property::${withNamespace(prop, 'Property')}]]`)
+  if (entity.required_properties?.length > 0) {
+    params.push(['has_required_property', commaJoin(entity.required_properties)])
   }
-  for (const prop of entity.optional_properties || []) {
-    lines.push(`[[Has optional property::${withNamespace(prop, 'Property')}]]`)
+  if (entity.optional_properties?.length > 0) {
+    params.push(['has_optional_property', commaJoin(entity.optional_properties)])
   }
-  for (const sub of entity.required_subobjects || []) {
-    lines.push(`[[Has required subobject::${withNamespace(sub, 'Subobject')}]]`)
+  if (entity.required_subobjects?.length > 0) {
+    params.push(['has_required_subobject', commaJoin(entity.required_subobjects)])
   }
-  for (const sub of entity.optional_subobjects || []) {
-    lines.push(`[[Has optional subobject::${withNamespace(sub, 'Subobject')}]]`)
+  if (entity.optional_subobjects?.length > 0) {
+    params.push(['has_optional_subobject', commaJoin(entity.optional_subobjects)])
   }
 
-  lines.push('<!-- OntologySync End -->')
-  lines.push('[[Category:OntologySync-managed]]')
+  const lines = [
+    '<!-- OntologySync Start -->',
+    buildTemplateCall('Category', params),
+    '<!-- OntologySync End -->',
+    '[[Category:OntologySync-managed]]',
+  ]
 
   return lines.join('\n') + '\n'
 }
@@ -67,74 +97,73 @@ export function generateCategory(entity) {
  * @returns {string} Wikitext content
  */
 export function generateProperty(entity) {
-  const lines = ['<!-- OntologySync Start -->']
-
-  if (entity.datatype) {
-    lines.push(`[[Has type::${entity.datatype}]]`)
-  }
+  const params = []
 
   if (entity.description) {
-    lines.push(`[[Has description::${entity.description}]]`)
+    params.push(['has_description', entity.description])
+  }
+  if (entity.datatype) {
+    params.push(['has_type', entity.datatype])
   }
   if (entity.label && entity.label !== toPageName(entity.id)) {
-    lines.push(`[[Display label::${entity.label}]]`)
+    params.push(['display_label', entity.label])
   }
 
   if (entity.cardinality === 'multiple') {
-    lines.push('[[Allows multiple values::true]]')
+    params.push(['allows_multiple_values', 'Yes'])
   }
 
   // Allowed values (enumerated)
-  if (Array.isArray(entity.allowed_values)) {
-    for (const value of entity.allowed_values) {
-      lines.push(`[[Allows value::${value}]]`)
-    }
+  if (Array.isArray(entity.allowed_values) && entity.allowed_values.length > 0) {
+    params.push(['allows_value', entity.allowed_values.join(', ')])
   }
 
   // Allowed values from category
   if (entity.Allows_value_from_category) {
-    lines.push(`[[Allows value from category::${withNamespace(entity.Allows_value_from_category, 'Category')}]]`)
+    params.push(['allows_value_from_category', toPageName(entity.Allows_value_from_category)])
   }
 
   // Allowed pattern
   if (entity.allowed_pattern) {
-    lines.push(`[[Allows pattern::${entity.allowed_pattern}]]`)
+    params.push(['allows_pattern', entity.allowed_pattern])
   }
 
   // Allowed value list
   if (entity.allowed_value_list) {
-    lines.push(`[[Allows value list::${entity.allowed_value_list}]]`)
+    params.push(['allows_value_list', entity.allowed_value_list])
   }
 
   // Display units
-  if (entity.display_units) {
-    for (const unit of entity.display_units) {
-      lines.push(`[[Display units::${unit}]]`)
-    }
+  if (entity.display_units?.length > 0) {
+    params.push(['display_units', entity.display_units.join(', ')])
   }
 
   // Display precision
   if (entity.display_precision !== undefined && entity.display_precision !== null) {
-    lines.push(`[[Display precision::${entity.display_precision}]]`)
+    params.push(['display_precision', String(entity.display_precision)])
   }
 
   // Unique values
   if (entity.unique_values === true) {
-    lines.push('[[Has unique values::true]]')
+    params.push(['has_unique_values', 'Yes'])
   }
 
   // Display template
   if (entity.has_display_template) {
-    lines.push(`[[Has template::${withNamespace(entity.has_display_template, 'Template')}]]`)
+    params.push(['has_template', toPageName(entity.has_display_template)])
   }
 
   // Subproperty
   if (entity.parent_property) {
-    lines.push(`[[Subproperty of::${withNamespace(entity.parent_property, 'Property')}]]`)
+    params.push(['subproperty_of', toPageName(entity.parent_property)])
   }
 
-  lines.push('<!-- OntologySync End -->')
-  lines.push('[[Category:OntologySync-managed-property]]')
+  const lines = [
+    '<!-- OntologySync Start -->',
+    buildTemplateCall('Property', params),
+    '<!-- OntologySync End -->',
+    '[[Category:OntologySync-managed-property]]',
+  ]
 
   return lines.join('\n') + '\n'
 }
@@ -145,24 +174,28 @@ export function generateProperty(entity) {
  * @returns {string} Wikitext content
  */
 export function generateSubobject(entity) {
-  const lines = ['<!-- OntologySync Start -->']
+  const params = []
 
   if (entity.description) {
-    lines.push(`[[Has description::${entity.description}]]`)
+    params.push(['has_description', entity.description])
   }
   if (entity.label && entity.label !== toPageName(entity.id)) {
-    lines.push(`[[Display label::${entity.label}]]`)
+    params.push(['display_label', entity.label])
   }
 
-  for (const prop of entity.required_properties || []) {
-    lines.push(`[[Has required property::${withNamespace(prop, 'Property')}]]`)
+  if (entity.required_properties?.length > 0) {
+    params.push(['has_required_property', commaJoin(entity.required_properties)])
   }
-  for (const prop of entity.optional_properties || []) {
-    lines.push(`[[Has optional property::${withNamespace(prop, 'Property')}]]`)
+  if (entity.optional_properties?.length > 0) {
+    params.push(['has_optional_property', commaJoin(entity.optional_properties)])
   }
 
-  lines.push('<!-- OntologySync End -->')
-  lines.push('[[Category:OntologySync-managed-subobject]]')
+  const lines = [
+    '<!-- OntologySync Start -->',
+    buildTemplateCall('Subobject', params),
+    '<!-- OntologySync End -->',
+    '[[Category:OntologySync-managed-subobject]]',
+  ]
 
   return lines.join('\n') + '\n'
 }
@@ -191,31 +224,36 @@ export function generateDashboardPage(wikitext) {
  * @returns {string} Wikitext content
  */
 export function generateResource(entity) {
-  const lines = ['<!-- OntologySync Start -->']
+  const params = []
 
   // Metadata properties
   if (entity.description) {
-    lines.push(`[[Has description::${entity.description}]]`)
+    params.push(['has_description', entity.description])
   }
   if (entity.label) {
-    lines.push(`[[Display label::${entity.label}]]`)
+    params.push(['display_label', entity.label])
   }
 
   // Dynamic property fields (everything that's not metadata)
   const metadataKeys = new Set(['id', 'label', 'description', 'category'])
   for (const [key, value] of Object.entries(entity)) {
     if (metadataKeys.has(key)) continue
-    const pageName = toPageName(key)
+    const paramName = toParam(key)
     if (Array.isArray(value)) {
-      for (const v of value) {
-        lines.push(`[[${pageName}::${v}]]`)
-      }
+      params.push([paramName, value.join(', ')])
     } else {
-      lines.push(`[[${pageName}::${value}]]`)
+      params.push([paramName, String(value)])
     }
   }
 
-  lines.push('<!-- OntologySync End -->')
+  // Template name = first content category (or entity type from id)
+  const templateName = entity.category || 'Resource'
+
+  const lines = [
+    '<!-- OntologySync Start -->',
+    buildTemplateCall(templateName, params),
+    '<!-- OntologySync End -->',
+  ]
 
   // Category membership
   if (entity.category) {

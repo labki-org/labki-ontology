@@ -110,7 +110,7 @@ describe('buildEntityIndex', () => {
       categories: [{ id: 'Agent', label: 'Agent', description: 'An agent' }]
     })
     // Write file in unknown directory
-    tempDir.writeFile('unknown/Something.wikitext', '[[Has description::test]]')
+    tempDir.writeFile('unknown/Something.wikitext', '<!-- OntologySync Start -->\n{{Unknown\n|has_description=test\n}}\n<!-- OntologySync End -->')
 
     const index = await buildEntityIndex(tempDir.path)
 

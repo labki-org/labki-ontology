@@ -11,7 +11,7 @@ import {
   buildEntityPaths,
   generateBundleVocab,
 } from './wikitext-generator.js'
-import { extractAnnotations, parseCategory, parseProperty, parseSubobject } from './wikitext-parser.js'
+import { extractTemplateCall, parseCategory, parseProperty, parseSubobject } from './wikitext-parser.js'
 
 // ─── generateCategory ───────────────────────────────────────────────────────
 
@@ -21,37 +21,37 @@ describe('generateCategory', () => {
 
     assert.ok(wikitext.includes('<!-- OntologySync Start -->'))
     assert.ok(wikitext.includes('<!-- OntologySync End -->'))
-    assert.ok(wikitext.includes('[[Has description::An agent]]'))
+    assert.ok(wikitext.includes('|has_description=An agent'))
     assert.ok(wikitext.includes('[[Category:OntologySync-managed]]'))
+    assert.ok(wikitext.includes('{{Category'))
   })
 
-  it('omits Display label when it matches default page name', () => {
+  it('omits display_label when it matches default page name', () => {
     // toPageName('Research_student') = 'Research student', which matches the label
     const wikitext = generateCategory({ id: 'Research_student', label: 'Research student', description: 'A student' })
 
-    assert.ok(!wikitext.includes('Display label'))
+    assert.ok(!wikitext.includes('display_label'))
   })
 
-  it('includes Display label when it differs from default', () => {
+  it('includes display_label when it differs from default', () => {
     const wikitext = generateCategory({ id: 'Agent', label: 'Custom Label', description: 'An agent' })
 
-    assert.ok(wikitext.includes('[[Display label::Custom Label]]'))
+    assert.ok(wikitext.includes('|display_label=Custom Label'))
   })
 
-  it('generates parent category references with namespace prefix', () => {
+  it('generates parent category references without namespace prefix', () => {
     const wikitext = generateCategory({ id: 'Person', description: 'A person', parents: ['Agent'] })
 
-    assert.ok(wikitext.includes('[[Has parent category::Category:Agent]]'))
+    assert.ok(wikitext.includes('|has_parent_category=Agent'))
   })
 
-  it('generates multiple parent categories', () => {
+  it('generates multiple parent categories as comma-separated', () => {
     const wikitext = generateCategory({ id: 'Hybrid', description: 'Both', parents: ['TypeA', 'TypeB'] })
 
-    assert.ok(wikitext.includes('Category:TypeA'))
-    assert.ok(wikitext.includes('Category:TypeB'))
+    assert.ok(wikitext.includes('|has_parent_category=TypeA, TypeB'))
   })
 
-  it('generates required and optional properties with namespace', () => {
+  it('generates required and optional properties as comma-separated', () => {
     const wikitext = generateCategory({
       id: 'Person',
       description: 'A person',
@@ -59,11 +59,11 @@ describe('generateCategory', () => {
       optional_properties: ['Has_birthday'],
     })
 
-    assert.ok(wikitext.includes('[[Has required property::Property:Has first name]]'))
-    assert.ok(wikitext.includes('[[Has optional property::Property:Has birthday]]'))
+    assert.ok(wikitext.includes('|has_required_property=Has first name'))
+    assert.ok(wikitext.includes('|has_optional_property=Has birthday'))
   })
 
-  it('generates required and optional subobjects with namespace', () => {
+  it('generates required and optional subobjects as comma-separated', () => {
     const wikitext = generateCategory({
       id: 'Equipment',
       description: 'Equipment',
@@ -71,8 +71,8 @@ describe('generateCategory', () => {
       optional_subobjects: ['Has_maintenance_record'],
     })
 
-    assert.ok(wikitext.includes('[[Has required subobject::Subobject:Has address]]'))
-    assert.ok(wikitext.includes('[[Has optional subobject::Subobject:Has maintenance record]]'))
+    assert.ok(wikitext.includes('|has_required_subobject=Has address'))
+    assert.ok(wikitext.includes('|has_optional_subobject=Has maintenance record'))
   })
 
   it('handles empty arrays for all fields', () => {
@@ -86,9 +86,9 @@ describe('generateCategory', () => {
       optional_subobjects: [],
     })
 
-    assert.ok(!wikitext.includes('Has parent category'))
-    assert.ok(!wikitext.includes('Has required property'))
-    assert.ok(!wikitext.includes('Has optional property'))
+    assert.ok(!wikitext.includes('has_parent_category'))
+    assert.ok(!wikitext.includes('has_required_property'))
+    assert.ok(!wikitext.includes('has_optional_property'))
   })
 
   it('round-trips through parser correctly', () => {
@@ -119,19 +119,19 @@ describe('generateProperty', () => {
   it('generates simple text property', () => {
     const wikitext = generateProperty({ id: 'Has_name', description: 'A name', datatype: 'Text' })
 
-    assert.ok(wikitext.includes('[[Has type::Text]]'))
-    assert.ok(wikitext.includes('[[Has description::A name]]'))
+    assert.ok(wikitext.includes('|has_type=Text'))
+    assert.ok(wikitext.includes('|has_description=A name'))
     assert.ok(wikitext.includes('[[Category:OntologySync-managed-property]]'))
-    assert.ok(!wikitext.includes('Allows multiple values'))
+    assert.ok(!wikitext.includes('allows_multiple_values'))
   })
 
   it('generates multi-value property', () => {
     const wikitext = generateProperty({ id: 'Has_email', description: 'Email', datatype: 'Email', cardinality: 'multiple' })
 
-    assert.ok(wikitext.includes('[[Allows multiple values::true]]'))
+    assert.ok(wikitext.includes('|allows_multiple_values=Yes'))
   })
 
-  it('generates enumerated allowed values', () => {
+  it('generates enumerated allowed values as comma-separated', () => {
     const wikitext = generateProperty({
       id: 'Has_status',
       description: 'Status',
@@ -139,9 +139,7 @@ describe('generateProperty', () => {
       allowed_values: ['Active', 'Inactive', 'Pending'],
     })
 
-    assert.ok(wikitext.includes('[[Allows value::Active]]'))
-    assert.ok(wikitext.includes('[[Allows value::Inactive]]'))
-    assert.ok(wikitext.includes('[[Allows value::Pending]]'))
+    assert.ok(wikitext.includes('|allows_value=Active, Inactive, Pending'))
   })
 
   it('generates allowed value from category', () => {
@@ -152,7 +150,7 @@ describe('generateProperty', () => {
       Allows_value_from_category: 'Person',
     })
 
-    assert.ok(wikitext.includes('[[Allows value from category::Category:Person]]'))
+    assert.ok(wikitext.includes('|allows_value_from_category=Person'))
   })
 
   it('generates allowed pattern', () => {
@@ -163,7 +161,7 @@ describe('generateProperty', () => {
       allowed_pattern: '^\\d{4}-\\d{4}-\\d{4}-\\d{3}[\\dX]$',
     })
 
-    assert.ok(wikitext.includes('[[Allows pattern::'))
+    assert.ok(wikitext.includes('|allows_pattern='))
   })
 
   it('generates unique values flag', () => {
@@ -174,7 +172,7 @@ describe('generateProperty', () => {
       unique_values: true,
     })
 
-    assert.ok(wikitext.includes('[[Has unique values::true]]'))
+    assert.ok(wikitext.includes('|has_unique_values=Yes'))
   })
 
   it('generates display template reference', () => {
@@ -185,7 +183,7 @@ describe('generateProperty', () => {
       has_display_template: 'Property/URL',
     })
 
-    assert.ok(wikitext.includes('[[Has template::Template:Property/URL]]'))
+    assert.ok(wikitext.includes('|has_template=Property/URL'))
   })
 
   it('generates subproperty reference', () => {
@@ -196,10 +194,10 @@ describe('generateProperty', () => {
       parent_property: 'Has_email',
     })
 
-    assert.ok(wikitext.includes('[[Subproperty of::Property:Has email]]'))
+    assert.ok(wikitext.includes('|subproperty_of=Has email'))
   })
 
-  it('generates display units', () => {
+  it('generates display units as comma-separated', () => {
     const wikitext = generateProperty({
       id: 'Has_weight',
       description: 'Weight',
@@ -207,8 +205,7 @@ describe('generateProperty', () => {
       display_units: ['kg', 'lb'],
     })
 
-    assert.ok(wikitext.includes('[[Display units::kg]]'))
-    assert.ok(wikitext.includes('[[Display units::lb]]'))
+    assert.ok(wikitext.includes('|display_units=kg, lb'))
   })
 
   it('generates display precision', () => {
@@ -219,7 +216,7 @@ describe('generateProperty', () => {
       display_precision: 2,
     })
 
-    assert.ok(wikitext.includes('[[Display precision::2]]'))
+    assert.ok(wikitext.includes('|display_precision=2'))
   })
 
   it('round-trips through parser correctly', () => {
@@ -254,25 +251,24 @@ describe('generateSubobject', () => {
       optional_properties: ['Has_end_date'],
     })
 
-    assert.ok(wikitext.includes('[[Has description::A role record]]'))
-    assert.ok(wikitext.includes('[[Has required property::Property:Has organization]]'))
-    assert.ok(wikitext.includes('[[Has required property::Property:Has start date]]'))
-    assert.ok(wikitext.includes('[[Has optional property::Property:Has end date]]'))
+    assert.ok(wikitext.includes('|has_description=A role record'))
+    assert.ok(wikitext.includes('|has_required_property=Has organization, Has start date'))
+    assert.ok(wikitext.includes('|has_optional_property=Has end date'))
     assert.ok(wikitext.includes('[[Category:OntologySync-managed-subobject]]'))
   })
 
   it('generates minimal subobject with only description', () => {
     const wikitext = generateSubobject({ id: 'Simple', description: 'Simple sub' })
 
-    assert.ok(wikitext.includes('[[Has description::Simple sub]]'))
-    assert.ok(!wikitext.includes('Has required property'))
-    assert.ok(!wikitext.includes('Has optional property'))
+    assert.ok(wikitext.includes('|has_description=Simple sub'))
+    assert.ok(!wikitext.includes('has_required_property'))
+    assert.ok(!wikitext.includes('has_optional_property'))
   })
 
-  it('includes Display label when it differs from default', () => {
+  it('includes display_label when it differs from default', () => {
     const wikitext = generateSubobject({ id: 'Has_role', label: 'Custom Role Label', description: 'A role' })
 
-    assert.ok(wikitext.includes('[[Display label::Custom Role Label]]'))
+    assert.ok(wikitext.includes('|display_label=Custom Role Label'))
   })
 
   it('round-trips through parser correctly', () => {
@@ -337,12 +333,13 @@ describe('generateResource', () => {
       Has_email: 'john@example.com',
     })
 
-    assert.ok(wikitext.includes('[[Display label::John Doe]]'))
-    assert.ok(wikitext.includes('[[Has description::Example person]]'))
-    assert.ok(wikitext.includes('[[Has name::John Doe]]'))
-    assert.ok(wikitext.includes('[[Has email::john@example.com]]'))
+    assert.ok(wikitext.includes('|display_label=John Doe'))
+    assert.ok(wikitext.includes('|has_description=Example person'))
+    assert.ok(wikitext.includes('|has_name=John Doe'))
+    assert.ok(wikitext.includes('|has_email=john@example.com'))
     assert.ok(wikitext.includes('[[Category:Person]]'))
     assert.ok(wikitext.includes('[[Category:OntologySync-managed-resource]]'))
+    assert.ok(wikitext.includes('{{Person'))
   })
 
   it('handles multi-valued dynamic properties', () => {
@@ -354,9 +351,7 @@ describe('generateResource', () => {
       Has_skill: ['Python', 'JavaScript', 'Rust'],
     })
 
-    assert.ok(wikitext.includes('[[Has skill::Python]]'))
-    assert.ok(wikitext.includes('[[Has skill::JavaScript]]'))
-    assert.ok(wikitext.includes('[[Has skill::Rust]]'))
+    assert.ok(wikitext.includes('|has_skill=Python, JavaScript, Rust'))
   })
 
   it('skips metadata keys (id, label, description, category)', () => {
@@ -367,10 +362,10 @@ describe('generateResource', () => {
       category: 'Thing',
     })
 
-    // id and category should not appear as annotations
-    const ann = extractAnnotations(wikitext)
-    assert.ok(!ann.has('id'))
-    assert.ok(!ann.has('category'))
+    // id and category should not appear as template params
+    const tc = extractTemplateCall(wikitext)
+    assert.ok(!tc.params.has('id'))
+    assert.ok(!tc.params.has('category'))
   })
 })
 

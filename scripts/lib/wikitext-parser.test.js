@@ -3,7 +3,7 @@ import assert from 'node:assert'
 import {
   toPageName,
   toEntityKey,
-  extractAnnotations,
+  extractTemplateCall,
   extractCategories,
   parseCategory,
   parseProperty,
@@ -32,56 +32,61 @@ describe('toEntityKey', () => {
   })
 })
 
-describe('extractAnnotations', () => {
-  it('extracts annotations from OntologySync block', () => {
+describe('extractTemplateCall', () => {
+  it('extracts template call from OntologySync block', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::The name of an entity]]
-[[Display label::Name]]
+{{Property
+|has_description=The name of an entity
+|has_type=Text
+|display_label=Name
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]`
 
-    const ann = extractAnnotations(wikitext)
-    assert.deepStrictEqual(ann.get('Has type'), ['Text'])
-    assert.deepStrictEqual(ann.get('Has description'), ['The name of an entity'])
-    assert.deepStrictEqual(ann.get('Display label'), ['Name'])
+    const tc = extractTemplateCall(wikitext)
+    assert.strictEqual(tc.templateName, 'Property')
+    assert.strictEqual(tc.params.get('has_type'), 'Text')
+    assert.strictEqual(tc.params.get('has_description'), 'The name of an entity')
+    assert.strictEqual(tc.params.get('display_label'), 'Name')
   })
 
-  it('collects multiple values for same property', () => {
+  it('extracts template call with comma-separated values', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has required property::Property:Has name]]
-[[Has required property::Property:Has email]]
+{{Category
+|has_required_property=Has name, Has email
+}}
 <!-- OntologySync End -->`
 
-    const ann = extractAnnotations(wikitext)
-    assert.deepStrictEqual(ann.get('Has required property'), [
-      'Property:Has name',
-      'Property:Has email',
-    ])
+    const tc = extractTemplateCall(wikitext)
+    assert.strictEqual(tc.params.get('has_required_property'), 'Has name, Has email')
   })
 
-  it('ignores annotations outside the block', () => {
-    const wikitext = `[[Outside::annotation]]
+  it('ignores content outside the block', () => {
+    const wikitext = `some text before
 <!-- OntologySync Start -->
-[[Inside::annotation]]
+{{Property
+|has_description=Inside
+}}
 <!-- OntologySync End -->
-[[Also outside::annotation]]`
+some text after`
 
-    const ann = extractAnnotations(wikitext)
-    assert.strictEqual(ann.size, 1)
-    assert.deepStrictEqual(ann.get('Inside'), ['annotation'])
+    const tc = extractTemplateCall(wikitext)
+    assert.strictEqual(tc.templateName, 'Property')
+    assert.strictEqual(tc.params.get('has_description'), 'Inside')
   })
 
-  it('returns empty map for no annotations', () => {
-    const ann = extractAnnotations('just plain text')
-    assert.strictEqual(ann.size, 0)
+  it('returns null for no template call', () => {
+    const tc = extractTemplateCall('just plain text')
+    assert.strictEqual(tc, null)
   })
 })
 
 describe('extractCategories', () => {
   it('extracts categories outside the annotation block', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has type::Text]]
+{{Property
+|has_type=Text
+}}
 <!-- OntologySync End -->
 [[Category:Person]]
 [[Category:OntologySync-managed-resource]]`
@@ -94,12 +99,14 @@ describe('extractCategories', () => {
 describe('parseCategory', () => {
   it('parses a full category', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::A human being]]
-[[Display label::Person]]
-[[Has parent category::Category:Agent]]
-[[Has required property::Property:Has name]]
-[[Has optional property::Property:Has email]]
-[[Has optional subobject::Subobject:Address]]
+{{Category
+|has_description=A human being
+|display_label=Person
+|has_parent_category=Agent
+|has_required_property=Has name
+|has_optional_property=Has email
+|has_optional_subobject=Address
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]`
 
@@ -117,7 +124,9 @@ describe('parseCategory', () => {
 
   it('handles minimal category', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Base agent type]]
+{{Category
+|has_description=Base agent type
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]`
 
@@ -132,9 +141,11 @@ describe('parseCategory', () => {
 describe('parseProperty', () => {
   it('parses a simple text property', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::The name of an entity]]
-[[Display label::Name]]
+{{Property
+|has_description=The name of an entity
+|has_type=Text
+|display_label=Name
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]`
 
@@ -146,10 +157,12 @@ describe('parseProperty', () => {
 
   it('parses a multi-value email property', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has type::Email]]
-[[Has description::Email address for contact]]
-[[Display label::Email]]
-[[Allows multiple values::true]]
+{{Property
+|has_description=Email address for contact
+|has_type=Email
+|display_label=Email
+|allows_multiple_values=Yes
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]`
 
@@ -159,12 +172,12 @@ describe('parseProperty', () => {
 
   it('parses property with allowed values', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Status of an item]]
-[[Display label::Status]]
-[[Allows value::Active]]
-[[Allows value::Inactive]]
-[[Allows value::Archived]]
+{{Property
+|has_description=Status of an item
+|has_type=Text
+|display_label=Status
+|allows_value=Active, Inactive, Archived
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]`
 
@@ -174,9 +187,11 @@ describe('parseProperty', () => {
 
   it('parses property with display template', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Related page]]
-[[Has template::Template:Property/Page]]
+{{Property
+|has_description=Related page
+|has_type=Page
+|has_template=Property/Page
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]`
 
@@ -188,11 +203,11 @@ describe('parseProperty', () => {
 describe('parseSubobject', () => {
   it('parses a subobject with properties', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::A physical or mailing address]]
-[[Has required property::Property:Has street]]
-[[Has required property::Property:Has city]]
-[[Has required property::Property:Has country]]
-[[Has optional property::Property:Has postal code]]
+{{Subobject
+|has_description=A physical or mailing address
+|has_required_property=Has street, Has city, Has country
+|has_optional_property=Has postal code
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-subobject]]`
 
@@ -223,10 +238,12 @@ describe('parseDashboardPage', () => {
 describe('parseResource', () => {
   it('parses a resource with category and properties', () => {
     const wikitext = `<!-- OntologySync Start -->
-[[Has description::Example person resource]]
-[[Display label::John Doe]]
-[[Has name::John Doe]]
-[[Has email::john.doe@example.com]]
+{{Person
+|has_description=Example person resource
+|display_label=John Doe
+|has_name=John Doe
+|has_email=john.doe@example.com
+}}
 <!-- OntologySync End -->
 [[Category:Person]]
 [[Category:OntologySync-managed-resource]]`

@@ -56,7 +56,7 @@ describe('category round-trip', () => {
     const parsed = parseCategory(wikitext, 'Person')
 
     assert.strictEqual(parsed.label, 'Person')
-    assert.ok(!wikitext.includes('Display label'))
+    assert.ok(!wikitext.includes('display_label'))
   })
 })
 

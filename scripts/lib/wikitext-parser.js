@@ -1,8 +1,8 @@
 /**
  * Parses OntologySync wikitext files into structured entity dicts.
  *
- * Wikitext files use semantic annotations within <!-- OntologySync Start/End --> blocks.
- * Each annotation is a [[Property::Value]] pair on its own line.
+ * Wikitext files use {{TemplateName|param=value}} template calls within
+ * <!-- OntologySync Start/End --> blocks.
  *
  * This parser produces dicts in the same format as the old JSON entity files,
  * so downstream code (validation, artifact generation) works unchanged.
@@ -45,29 +45,36 @@ export function toEntityKey(pageName) {
 }
 
 /**
- * Strip a namespace prefix from a value and convert to entity key.
- * @param {string} value - e.g. "Property:Has name" or "Category:Agent"
- * @param {string} expectedNs - e.g. "Property" or "Category"
- * @returns {string} e.g. "Has_name" or "Agent"
+ * Split a comma-separated value string into trimmed items.
+ * @param {string} value - e.g. "Has first name, Has last name"
+ * @returns {string[]} e.g. ["Has first name", "Has last name"]
  */
-function stripNamespace(value, expectedNs) {
-  const prefix = expectedNs + ':'
-  const stripped = value.startsWith(prefix) ? value.slice(prefix.length) : value
-  return toEntityKey(stripped)
+function splitComma(value) {
+  if (!value) return []
+  return value.split(',').map(s => s.trim()).filter(Boolean)
 }
 
 /**
- * Extract semantic annotations from wikitext content.
- * Parses lines between <!-- OntologySync Start --> and <!-- OntologySync End --> markers.
+ * Split a comma-separated value string into entity keys (underscored).
+ * @param {string} value - e.g. "Has first name, Has last name"
+ * @returns {string[]} e.g. ["Has_first_name", "Has_last_name"]
+ */
+function commaToKeys(value) {
+  return splitComma(value).map(toEntityKey)
+}
+
+/**
+ * Extract a template call from within the OntologySync block.
+ * Parses {{TemplateName|param1=value1|param2=value2}} syntax.
  *
  * @param {string} wikitext - Full wikitext content
- * @returns {Map<string, string[]>} Map of property name -> array of values
+ * @returns {{ templateName: string, params: Map<string, string> } | null}
  */
-export function extractAnnotations(wikitext) {
-  const annotations = new Map()
+export function extractTemplateCall(wikitext) {
   const lines = wikitext.split('\n')
 
   let inBlock = false
+  let templateLines = []
   for (const line of lines) {
     const trimmed = line.trim()
 
@@ -80,20 +87,35 @@ export function extractAnnotations(wikitext) {
       continue
     }
 
-    if (!inBlock) continue
-
-    // Match [[Property::Value]] pattern
-    const match = trimmed.match(/^\[\[([^:[\]]+)::(.+)\]\]$/)
-    if (match) {
-      const [, property, value] = match
-      if (!annotations.has(property)) {
-        annotations.set(property, [])
-      }
-      annotations.get(property).push(value)
+    if (inBlock) {
+      templateLines.push(line)
     }
   }
 
-  return annotations
+  // Join all lines inside the block
+  const blockContent = templateLines.join('\n').trim()
+  if (!blockContent) return null
+
+  // Match {{ ... }} template call (may span multiple lines)
+  const match = blockContent.match(/^\{\{([^|}\n]+)([\s\S]*)\}\}$/m)
+  if (!match) return null
+
+  const templateName = match[1].trim()
+  const paramBlock = match[2]
+
+  const params = new Map()
+
+  // Parse |param=value entries (each on its own line typically)
+  // The lookahead handles optional leading whitespace before | or }}
+  const paramRegex = /\|([^=]+)=([^\n|]*(?:\n(?!\s*\||\s*\}\}).*)*)/g
+  let paramMatch
+  while ((paramMatch = paramRegex.exec(paramBlock)) !== null) {
+    const key = paramMatch[1].trim()
+    const value = paramMatch[2].trim()
+    params.set(key, value)
+  }
+
+  return { templateName, params }
 }
 
 /**
@@ -121,22 +143,6 @@ export function extractCategories(wikitext) {
   return categories
 }
 
-/**
- * Get first value from annotations map, or default.
- */
-function first(annotations, property, defaultValue = '') {
-  const values = annotations.get(property)
-  return values && values.length > 0 ? values[0] : defaultValue
-}
-
-/**
- * Get all values for a property, stripping a namespace prefix and converting to entity keys.
- */
-function allStripped(annotations, property, ns) {
-  const values = annotations.get(property) || []
-  return values.map(v => stripNamespace(v, ns))
-}
-
 // ─── Entity-specific parsers ────────────────────────────────────────────────
 
 /**
@@ -146,27 +152,28 @@ function allStripped(annotations, property, ns) {
  * @returns {object} Dict matching the old JSON format
  */
 export function parseCategory(wikitext, entityKey) {
-  const ann = extractAnnotations(wikitext)
+  const tc = extractTemplateCall(wikitext)
+  const p = tc ? tc.params : new Map()
 
   const result = {
     id: entityKey,
-    label: first(ann, 'Display label', toPageName(entityKey)),
-    description: first(ann, 'Has description', ''),
+    label: p.get('display_label') || toPageName(entityKey),
+    description: p.get('has_description') || '',
   }
 
-  const parents = allStripped(ann, 'Has parent category', 'Category')
+  const parents = commaToKeys(p.get('has_parent_category'))
   if (parents.length > 0) result.parents = parents
 
-  const requiredProps = allStripped(ann, 'Has required property', 'Property')
+  const requiredProps = commaToKeys(p.get('has_required_property'))
   if (requiredProps.length > 0) result.required_properties = requiredProps
 
-  const optionalProps = allStripped(ann, 'Has optional property', 'Property')
+  const optionalProps = commaToKeys(p.get('has_optional_property'))
   if (optionalProps.length > 0) result.optional_properties = optionalProps
 
-  const requiredSubs = allStripped(ann, 'Has required subobject', 'Subobject')
+  const requiredSubs = commaToKeys(p.get('has_required_subobject'))
   if (requiredSubs.length > 0) result.required_subobjects = requiredSubs
 
-  const optionalSubs = allStripped(ann, 'Has optional subobject', 'Subobject')
+  const optionalSubs = commaToKeys(p.get('has_optional_subobject'))
   if (optionalSubs.length > 0) result.optional_subobjects = optionalSubs
 
   return result
@@ -179,60 +186,61 @@ export function parseCategory(wikitext, entityKey) {
  * @returns {object}
  */
 export function parseProperty(wikitext, entityKey) {
-  const ann = extractAnnotations(wikitext)
+  const tc = extractTemplateCall(wikitext)
+  const p = tc ? tc.params : new Map()
 
   const result = {
     id: entityKey,
-    label: first(ann, 'Display label', toPageName(entityKey)),
-    description: first(ann, 'Has description', ''),
-    datatype: first(ann, 'Has type', ''),
-    cardinality: first(ann, 'Allows multiple values') === 'true' ? 'multiple' : 'single',
+    label: p.get('display_label') || toPageName(entityKey),
+    description: p.get('has_description') || '',
+    datatype: p.get('has_type') || '',
+    cardinality: p.get('allows_multiple_values') === 'Yes' ? 'multiple' : 'single',
   }
 
-  // Allowed values (enumerated)
-  const allowedValues = ann.get('Allows value')
-  if (allowedValues && allowedValues.length > 0) {
-    result.allowed_values = allowedValues
+  // Allowed values (enumerated, comma-separated)
+  const allowsValue = p.get('allows_value')
+  if (allowsValue) {
+    result.allowed_values = splitComma(allowsValue)
   }
 
   // Allowed values from category
-  const fromCategory = first(ann, 'Allows value from category')
+  const fromCategory = p.get('allows_value_from_category')
   if (fromCategory) {
-    result.Allows_value_from_category = stripNamespace(fromCategory, 'Category')
+    result.Allows_value_from_category = toEntityKey(fromCategory)
   }
 
   // Allowed pattern
-  const pattern = first(ann, 'Allows pattern')
+  const pattern = p.get('allows_pattern')
   if (pattern) result.allowed_pattern = pattern
 
   // Allowed value list
-  const valueList = first(ann, 'Allows value list')
+  const valueList = p.get('allows_value_list')
   if (valueList) result.allowed_value_list = valueList
 
-  // Display units
-  const displayUnits = ann.get('Display units')
-  if (displayUnits && displayUnits.length > 0) {
-    result.display_units = displayUnits
+  // Display units (comma-separated)
+  const displayUnits = p.get('display_units')
+  if (displayUnits) {
+    result.display_units = splitComma(displayUnits)
   }
 
   // Display precision
-  const precision = first(ann, 'Display precision')
+  const precision = p.get('display_precision')
   if (precision) result.display_precision = parseInt(precision, 10)
 
   // Unique values
-  const unique = first(ann, 'Has unique values')
-  if (unique === 'true') result.unique_values = true
+  const unique = p.get('has_unique_values')
+  if (unique === 'Yes') result.unique_values = true
 
   // Display template
-  const template = first(ann, 'Has template')
+  const template = p.get('has_template')
   if (template) {
-    result.has_display_template = stripNamespace(template, 'Template')
+    result.has_display_template = toEntityKey(template)
   }
 
   // Subproperty
-  const parent = first(ann, 'Subproperty of')
+  const parent = p.get('subproperty_of')
   if (parent) {
-    result.parent_property = stripNamespace(parent, 'Property')
+    result.parent_property = toEntityKey(parent)
   }
 
   return result
@@ -245,18 +253,19 @@ export function parseProperty(wikitext, entityKey) {
  * @returns {object}
  */
 export function parseSubobject(wikitext, entityKey) {
-  const ann = extractAnnotations(wikitext)
+  const tc = extractTemplateCall(wikitext)
+  const p = tc ? tc.params : new Map()
 
   const result = {
     id: entityKey,
-    label: first(ann, 'Display label', toPageName(entityKey)),
-    description: first(ann, 'Has description', ''),
+    label: p.get('display_label') || toPageName(entityKey),
+    description: p.get('has_description') || '',
   }
 
-  const requiredProps = allStripped(ann, 'Has required property', 'Property')
+  const requiredProps = commaToKeys(p.get('has_required_property'))
   if (requiredProps.length > 0) result.required_properties = requiredProps
 
-  const optionalProps = allStripped(ann, 'Has optional property', 'Property')
+  const optionalProps = commaToKeys(p.get('has_optional_property'))
   if (optionalProps.length > 0) result.optional_properties = optionalProps
 
   return result
@@ -295,15 +304,16 @@ export function parseDashboardPage(wikitext, pageName) {
 
 /**
  * Parse a resource wikitext file into a structured dict.
- * Resources have semantic annotations for their property values
- * and a [[Category:X]] to identify their category.
+ * Resources have a template call for their property values
+ * and [[Category:X]] to identify their category.
  *
  * @param {string} wikitext
  * @param {string} entityKey - e.g. "Person/John_doe"
  * @returns {object}
  */
 export function parseResource(wikitext, entityKey) {
-  const ann = extractAnnotations(wikitext)
+  const tc = extractTemplateCall(wikitext)
+  const p = tc ? tc.params : new Map()
   const categories = extractCategories(wikitext)
 
   // Find the category (non-management category)
@@ -311,18 +321,27 @@ export function parseResource(wikitext, entityKey) {
 
   const result = {
     id: entityKey,
-    label: first(ann, 'Display label', toPageName(entityKey.split('/').pop())),
-    description: first(ann, 'Has description', ''),
+    label: p.get('display_label') || toPageName(entityKey.split('/').pop()),
+    description: p.get('has_description') || '',
     category: category || '',
   }
 
-  // Add all property annotations as dynamic fields
-  for (const [property, values] of ann) {
-    // Skip metadata properties
-    if (['Display label', 'Has description'].includes(property)) continue
+  // Add all dynamic property parameters as fields
+  for (const [key, value] of p) {
+    // Skip metadata parameters
+    if (['display_label', 'has_description'].includes(key)) continue
 
-    const key = toEntityKey(property)
-    result[key] = values.length === 1 ? values[0] : values
+    // Convert param name (lowercase_underscored) back to entity key format
+    // toParam lowercases everything, so we just capitalize the first letter
+    const entityKeyName = key.charAt(0).toUpperCase() + key.slice(1)
+
+    // Check if it's a comma-separated multi-value
+    const values = splitComma(value)
+    if (values.length > 1) {
+      result[entityKeyName] = values
+    } else {
+      result[entityKeyName] = value
+    }
   }
 
   return result
