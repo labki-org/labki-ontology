@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Emergency and incident response procedures]]
-[[Display label::Emergency Procedures]]
+{{Property
+|has_description=Emergency and incident response procedures
+|has_type=Text
+|display_label=Emergency Procedures
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

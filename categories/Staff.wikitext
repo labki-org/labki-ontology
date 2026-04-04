@@ -1,8 +1,9 @@
 <!-- OntologySync Start -->
-[[Has description::Non-research staff member]]
-[[Has parent category::Category:Person]]
-[[Has required property::Property:Has job title]]
-[[Has optional property::Property:Has department]]
-[[Has optional property::Property:Has hire date]]
+{{Category
+|has_description=Non-research staff member
+|has_parent_category=Person
+|has_required_property=Has job title
+|has_optional_property=Has department, Has hire date
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

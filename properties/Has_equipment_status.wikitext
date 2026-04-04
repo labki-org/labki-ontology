@@ -1,10 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::The status of a piece of equipment]]
-[[Display label::Status]]
-[[Allows value::Available]]
-[[Allows value::In Use]]
-[[Allows value::Maintenance]]
-[[Allows value::Retired]]
+{{Property
+|has_description=The status of a piece of equipment
+|has_type=Text
+|display_label=Status
+|allows_value=Available, In Use, Maintenance, Retired
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

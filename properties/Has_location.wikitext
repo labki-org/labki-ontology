@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Physical location]]
-[[Display label::Location]]
-[[Allows value from category::Category:Location]]
+{{Property
+|has_description=Physical location
+|has_type=Page
+|display_label=Location
+|allows_value_from_category=Location
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

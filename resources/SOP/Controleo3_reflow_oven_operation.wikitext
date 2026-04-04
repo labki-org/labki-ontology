@@ -1,11 +1,12 @@
 <!-- OntologySync Start -->
-[[Has description::Operating procedures for the DIY Controleo3-based toaster oven reflow oven]]
-[[Has document type::SOP]]
-[[Has SOP type::Equipment Operation]]
-[[Has purpose::Covers setup, profile selection, operation, and maintenance of the lab's DIY reflow oven built from a modified toaster oven with a Controleo3 controller from Whizoo Electronics. For general reflow safety, PPE, and waste disposal, refer to the Solder Reflow Oven Safety SOP.]]
-[[Has safety precautions::Review the Solder Reflow Oven Safety SOP before first use. This is a modified consumer toaster oven — the enclosure gets extremely hot during operation. Do not touch any exterior surface during or after a cycle without heat-resistant gloves. The door servo opens automatically during cooling — keep hands and objects clear of the door path. The oven is not UL-listed; do not leave it unattended during operation. Ensure the oven is plugged into a GFCI-protected outlet.]]
-[[Has technique::Reflow soldering]]
-[[Has technique::SMD assembly]]
+{{SOP
+|has_description=Operating procedures for the DIY Controleo3-based toaster oven reflow oven
+|has_document_type=SOP
+|has_sop_type=Equipment Operation
+|has_purpose=Covers setup, profile selection, operation, and maintenance of the lab's DIY reflow oven built from a modified toaster oven with a Controleo3 controller from Whizoo Electronics. For general reflow safety, PPE, and waste disposal, refer to the Solder Reflow Oven Safety SOP.
+|has_safety_precautions=Review the Solder Reflow Oven Safety SOP before first use. This is a modified consumer toaster oven — the enclosure gets extremely hot during operation. Do not touch any exterior surface during or after a cycle without heat-resistant gloves. The door servo opens automatically during cooling — keep hands and objects clear of the door path. The oven is not UL-listed; do not leave it unattended during operation. Ensure the oven is plugged into a GFCI-protected outlet.
+|has_technique=Reflow soldering, SMD assembly
+}}
 <!-- OntologySync End -->
 [[Category:SOP]]
 [[Category:OntologySync-managed-resource]]

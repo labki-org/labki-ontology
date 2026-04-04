@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Additional notes]]
-[[Display label::Notes]]
+{{Property
+|has_description=Additional notes
+|has_type=Text
+|display_label=Notes
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

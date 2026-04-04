@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Specific program type code]]
-[[Display label::Program Type]]
+{{Property
+|has_description=Specific program type code
+|has_type=Text
+|display_label=Program Type
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

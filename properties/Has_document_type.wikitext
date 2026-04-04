@@ -1,11 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Type of document]]
-[[Display label::Document Type]]
-[[Allows value::Protocol]]
-[[Allows value::Publication]]
-[[Allows value::Dataset]]
-[[Allows value::Report]]
-[[Allows value::SOP]]
+{{Property
+|has_description=Type of document
+|has_type=Text
+|display_label=Document Type
+|allows_value=Protocol, Publication, Dataset, Report, SOP
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

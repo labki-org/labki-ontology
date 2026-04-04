@@ -1,11 +1,12 @@
 <!-- OntologySync Start -->
-[[Has description::Operating procedures for the Pixel Pump manual SMD pick-and-place tool by Robin's Tools]]
-[[Has document type::SOP]]
-[[Has SOP type::Equipment Operation]]
-[[Has purpose::Covers setup, nozzle selection, operation, and maintenance of the Pixel Pump vacuum pick-and-place tool for manual SMD (surface-mount device) assembly. Suitable for prototype builds and small production runs.]]
-[[Has safety precautions::The Pixel Pump operates at 12V DC and poses no significant electrical hazard. Use ESD precautions when handling sensitive components — wear an ESD wrist strap and work on a grounded ESD mat. Use tweezers or the vacuum nozzle to handle components; avoid touching small SMD parts with bare fingers as skin oils can affect solderability. If using the Pixel Pump alongside a reflow oven or hot plate, observe standard thermal safety precautions for those tools.]]
-[[Has technique::SMD assembly]]
-[[Has technique::Pick and place]]
+{{SOP
+|has_description=Operating procedures for the Pixel Pump manual SMD pick-and-place tool by Robin's Tools
+|has_document_type=SOP
+|has_sop_type=Equipment Operation
+|has_purpose=Covers setup, nozzle selection, operation, and maintenance of the Pixel Pump vacuum pick-and-place tool for manual SMD (surface-mount device) assembly. Suitable for prototype builds and small production runs.
+|has_safety_precautions=The Pixel Pump operates at 12V DC and poses no significant electrical hazard. Use ESD precautions when handling sensitive components — wear an ESD wrist strap and work on a grounded ESD mat. Use tweezers or the vacuum nozzle to handle components; avoid touching small SMD parts with bare fingers as skin oils can affect solderability. If using the Pixel Pump alongside a reflow oven or hot plate, observe standard thermal safety precautions for those tools.
+|has_technique=SMD assembly, Pick and place
+}}
 <!-- OntologySync End -->
 [[Category:SOP]]
 [[Category:OntologySync-managed-resource]]

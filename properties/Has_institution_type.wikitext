@@ -1,16 +1,10 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::The type of thing this is]]
-[[Display label::Institution Type]]
-[[Allows multiple values::true]]
-[[Allows value::University]]
-[[Allows value::Company]]
-[[Allows value::Government Agency]]
-[[Allows value::Funding Agency]]
-[[Allows value::Research Institute]]
-[[Allows value::Hospital]]
-[[Allows value::Non-Profit]]
-[[Allows value::Core Facility]]
-[[Allows value::Community Organization]]
+{{Property
+|has_description=The type of thing this is
+|has_type=Text
+|display_label=Institution Type
+|allows_multiple_values=Yes
+|allows_value=University, Company, Government Agency, Funding Agency, Research Institute, Hospital, Non-Profit, Core Facility, Community Organization
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,10 +1,12 @@
 <!-- OntologySync Start -->
-[[Has description::Operating procedures for the Bambu Lab X1 Carbon FDM 3D printer]]
-[[Has document type::SOP]]
-[[Has SOP type::Equipment Operation]]
-[[Has purpose::Covers setup, print preparation, operation, and maintenance of the Bambu Lab X1 Carbon with AMS (Automatic Material System). Applicable to standard and engineering-grade filaments.]]
-[[Has safety precautions::Review the FDM 3D Printing Safety SOP before first use. The heated bed reaches up to 120C and the nozzle up to 300C — do not touch during or immediately after printing. Keep the enclosure closed when printing ABS, ASA, or engineering materials. Ensure the activated carbon filter is installed. Keep fingers clear of the AMS filament drive gears.]]
-[[Has technique::FDM 3D printing]]
+{{SOP
+|has_description=Operating procedures for the Bambu Lab X1 Carbon FDM 3D printer
+|has_document_type=SOP
+|has_sop_type=Equipment Operation
+|has_purpose=Covers setup, print preparation, operation, and maintenance of the Bambu Lab X1 Carbon with AMS (Automatic Material System). Applicable to standard and engineering-grade filaments.
+|has_safety_precautions=Review the FDM 3D Printing Safety SOP before first use. The heated bed reaches up to 120C and the nozzle up to 300C — do not touch during or immediately after printing. Keep the enclosure closed when printing ABS, ASA, or engineering materials. Ensure the activated carbon filter is installed. Keep fingers clear of the AMS filament drive gears.
+|has_technique=FDM 3D printing
+}}
 <!-- OntologySync End -->
 [[Category:SOP]]
 [[Category:OntologySync-managed-resource]]

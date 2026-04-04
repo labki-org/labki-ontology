@@ -1,11 +1,12 @@
 <!-- OntologySync Start -->
-[[Has description::Operating procedures for the Formlabs Form 4 resin 3D printer]]
-[[Has document type::SOP]]
-[[Has SOP type::Equipment Operation]]
-[[Has purpose::Covers setup, print preparation, operation, and maintenance of the Formlabs Form 4. For resin safety, PPE, and waste disposal, refer to the Resin 3D Printing Safety SOP.]]
-[[Has safety precautions::Review the Resin 3D Printing Safety SOP before first use. Wear nitrile gloves whenever the printer enclosure is open or when handling the build platform, resin tank, or resin cartridge. The Form 4 uses a high-powered UV light engine — do not bypass the lid interlock.]]
-[[Has technique::SLA 3D printing]]
-[[Has technique::MSLA 3D printing]]
+{{SOP
+|has_description=Operating procedures for the Formlabs Form 4 resin 3D printer
+|has_document_type=SOP
+|has_sop_type=Equipment Operation
+|has_purpose=Covers setup, print preparation, operation, and maintenance of the Formlabs Form 4. For resin safety, PPE, and waste disposal, refer to the Resin 3D Printing Safety SOP.
+|has_safety_precautions=Review the Resin 3D Printing Safety SOP before first use. Wear nitrile gloves whenever the printer enclosure is open or when handling the build platform, resin tank, or resin cartridge. The Form 4 uses a high-powered UV light engine — do not bypass the lid interlock.
+|has_technique=SLA 3D printing, MSLA 3D printing
+}}
 <!-- OntologySync End -->
 [[Category:SOP]]
 [[Category:OntologySync-managed-resource]]

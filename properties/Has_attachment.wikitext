@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::An attached file or document]]
-[[Display label::Attachment]]
-[[Allows multiple values::true]]
+{{Property
+|has_description=An attached file or document
+|has_type=Page
+|display_label=Attachment
+|allows_multiple_values=Yes
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

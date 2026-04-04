@@ -1,10 +1,8 @@
 <!-- OntologySync Start -->
-[[Has description::Abstract base for anything with a lifecycle.]]
-[[Has required property::Property:Has description]]
-[[Has required property::Property:Has activity status]]
-[[Has optional property::Property:Has start date]]
-[[Has optional property::Property:Has end date]]
-[[Has optional property::Property:Has responsible party]]
-[[Has optional property::Property:Has SOP]]
+{{Category
+|has_description=Abstract base for anything with a lifecycle.
+|has_required_property=Has description, Has activity status
+|has_optional_property=Has start date, Has end date, Has responsible party, Has SOP
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

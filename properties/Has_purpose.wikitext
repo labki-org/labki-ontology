@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::The purpose or scope statement]]
-[[Display label::Purpose]]
+{{Property
+|has_description=The purpose or scope statement
+|has_type=Text
+|display_label=Purpose
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

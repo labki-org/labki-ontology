@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Technique or method this equipment supports]]
-[[Display label::Technique]]
-[[Allows multiple values::true]]
+{{Property
+|has_description=Technique or method this equipment supports
+|has_type=Text
+|display_label=Technique
+|allows_multiple_values=Yes
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

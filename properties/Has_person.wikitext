@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::A person associated with this]]
-[[Display label::Person]]
-[[Allows value from category::Category:Person]]
+{{Property
+|has_description=A person associated with this
+|has_type=Page
+|display_label=Person
+|allows_value_from_category=Person
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

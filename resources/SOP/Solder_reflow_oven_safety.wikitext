@@ -1,13 +1,14 @@
 <!-- OntologySync Start -->
-[[Has description::Safety and operating procedures for solder reflow ovens used in PCB assembly]]
-[[Has document type::SOP]]
-[[Has SOP type::Safety]]
-[[Has purpose::Establishes safe operating, loading, and maintenance practices for solder reflow ovens. Applies to all reflow ovens (convection, infrared, toaster-oven conversions) used for SMD PCB assembly. Covers both leaded and lead-free solder paste profiles.]]
-[[Has safety precautions::Reflow ovens reach temperatures of 250C+ (480F+). Never touch the oven chamber, door, heating elements, or PCBs during or immediately after a reflow cycle. Wear heat-resistant gloves when loading or unloading boards. Wear safety glasses to protect against flux splashes. Flux fumes are released during reflow and can irritate the respiratory system and eyes — operate the oven in a well-ventilated area or with a fume extraction system. Do not leave a reflow oven unattended during operation. Keep the area around the oven clear of flammable materials, solvents, and paper. Only trained personnel should operate the reflow oven.]]
-[[Has emergency procedures::For thermal burns, cool under running water for at least 10 minutes and seek medical attention for serious burns. If flux fumes cause respiratory distress, move to fresh air immediately. In case of fire, use a Class C (electrical) fire extinguisher — never use water on an electrical fire. If the oven behaves abnormally (smoke, burning smell, unusual noises), power it off immediately at the wall outlet or breaker. Keep a first aid kit with burn treatment supplies near the oven workstation.]]
-[[Has waste disposal::Used solder paste containers and expired solder paste are hazardous waste due to lead content (leaded paste) or flux chemistry. Dispose through EHS hazardous waste channels. Cleaning wipes and swabs contaminated with flux or solder paste should be collected in labeled waste containers. Used flux residue scraped from the oven interior is hazardous waste. Empty solder paste jars should be treated as hazardous waste if they contained leaded paste.]]
-[[Has technique::Reflow soldering]]
-[[Has technique::SMD assembly]]
+{{SOP
+|has_description=Safety and operating procedures for solder reflow ovens used in PCB assembly
+|has_document_type=SOP
+|has_sop_type=Safety
+|has_purpose=Establishes safe operating, loading, and maintenance practices for solder reflow ovens. Applies to all reflow ovens (convection, infrared, toaster-oven conversions) used for SMD PCB assembly. Covers both leaded and lead-free solder paste profiles.
+|has_safety_precautions=Reflow ovens reach temperatures of 250C+ (480F+). Never touch the oven chamber, door, heating elements, or PCBs during or immediately after a reflow cycle. Wear heat-resistant gloves when loading or unloading boards. Wear safety glasses to protect against flux splashes. Flux fumes are released during reflow and can irritate the respiratory system and eyes — operate the oven in a well-ventilated area or with a fume extraction system. Do not leave a reflow oven unattended during operation. Keep the area around the oven clear of flammable materials, solvents, and paper. Only trained personnel should operate the reflow oven.
+|has_emergency_procedures=For thermal burns, cool under running water for at least 10 minutes and seek medical attention for serious burns. If flux fumes cause respiratory distress, move to fresh air immediately. In case of fire, use a Class C (electrical) fire extinguisher — never use water on an electrical fire. If the oven behaves abnormally (smoke, burning smell, unusual noises), power it off immediately at the wall outlet or breaker. Keep a first aid kit with burn treatment supplies near the oven workstation.
+|has_waste_disposal=Used solder paste containers and expired solder paste are hazardous waste due to lead content (leaded paste) or flux chemistry. Dispose through EHS hazardous waste channels. Cleaning wipes and swabs contaminated with flux or solder paste should be collected in labeled waste containers. Used flux residue scraped from the oven interior is hazardous waste. Empty solder paste jars should be treated as hazardous waste if they contained leaded paste.
+|has_technique=Reflow soldering, SMD assembly
+}}
 <!-- OntologySync End -->
 [[Category:SOP]]
 [[Category:OntologySync-managed-resource]]

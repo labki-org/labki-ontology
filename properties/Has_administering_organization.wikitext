@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Organization that administers this program]]
-[[Display label::Administering Organization]]
-[[Allows value from category::Category:Organization]]
+{{Property
+|has_description=Organization that administers this program
+|has_type=Page
+|display_label=Administering Organization
+|allows_value_from_category=Organization
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

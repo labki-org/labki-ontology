@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::The protocol followed]]
-[[Display label::Protocol]]
-[[Allows value from category::Category:Document]]
+{{Property
+|has_description=The protocol followed
+|has_type=Page
+|display_label=Protocol
+|allows_value_from_category=Document
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

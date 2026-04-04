@@ -1,8 +1,10 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::The organization something belongs to]]
-[[Display label::Organization]]
-[[Allows multiple values::true]]
-[[Allows value from category::Category:Organization]]
+{{Property
+|has_description=The organization something belongs to
+|has_type=Page
+|display_label=Organization
+|allows_multiple_values=Yes
+|allows_value_from_category=Organization
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Version identifier]]
-[[Display label::Version]]
+{{Property
+|has_description=Version identifier
+|has_type=Text
+|display_label=Version
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,12 +1,9 @@
 <!-- OntologySync Start -->
-[[Has description::A person's completion record for a training or certification]]
-[[Display label::Training Record]]
-[[Has required property::Property:Has training]]
-[[Has required property::Property:Has completion date]]
-[[Has optional property::Property:Has expiration date]]
-[[Has optional property::Property:Has training status]]
-[[Has optional property::Property:Has url]]
-[[Has optional property::Property:Has notes]]
-[[Has optional property::Property:Has attachment]]
+{{Subobject
+|has_description=A person's completion record for a training or certification
+|display_label=Training Record
+|has_required_property=Has training, Has completion date
+|has_optional_property=Has expiration date, Has training status, Has url, Has notes, Has attachment
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-subobject]]

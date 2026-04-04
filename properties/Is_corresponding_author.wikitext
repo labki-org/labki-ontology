@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Boolean]]
-[[Has description::Whether this person is the corresponding author]]
-[[Display label::Corresponding Author]]
+{{Property
+|has_description=Whether this person is the corresponding author
+|has_type=Boolean
+|display_label=Corresponding Author
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

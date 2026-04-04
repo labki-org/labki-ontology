@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Waste disposal and cleanup instructions]]
-[[Display label::Waste Disposal]]
+{{Property
+|has_description=Waste disposal and cleanup instructions
+|has_type=Text
+|display_label=Waste Disposal
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,9 +1,8 @@
 <!-- OntologySync Start -->
-[[Has description::A funding mechanism or program]]
-[[Has required property::Property:Has name]]
-[[Has required property::Property:Has administering organization]]
-[[Has optional property::Property:Has funding program type]]
-[[Has optional property::Property:Has website]]
-[[Has optional property::Property:Has description]]
+{{Category
+|has_description=A funding mechanism or program
+|has_required_property=Has name, Has administering organization
+|has_optional_property=Has funding program type, Has website, Has description
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

@@ -1,13 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Type of role in a project]]
-[[Display label::Role]]
-[[Allows value::PI]]
-[[Allows value::Co-PI]]
-[[Allows value::Co-Investigator]]
-[[Allows value::Postdoc]]
-[[Allows value::Graduate Student]]
-[[Allows value::Technician]]
-[[Allows value::Collaborator]]
+{{Property
+|has_description=Type of role in a project
+|has_type=Text
+|display_label=Role
+|allows_value=PI, Co-PI, Co-Investigator, Postdoc, Graduate Student, Technician, Collaborator
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

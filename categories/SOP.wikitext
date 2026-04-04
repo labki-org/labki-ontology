@@ -1,12 +1,9 @@
 <!-- OntologySync Start -->
-[[Has description::A standard operating procedure]]
-[[Has parent category::Category:Document]]
-[[Has required property::Property:Has purpose]]
-[[Has required property::Property:Has SOP type]]
-[[Has optional property::Property:Has safety precautions]]
-[[Has optional property::Property:Has emergency procedures]]
-[[Has optional property::Property:Has waste disposal]]
-[[Has optional property::Property:Has technique]]
-[[Has optional property::Property:Has equipment used]]
+{{Category
+|has_description=A standard operating procedure
+|has_parent_category=Document
+|has_required_property=Has purpose, Has SOP type
+|has_optional_property=Has safety precautions, Has emergency procedures, Has waste disposal, Has technique, Has equipment used
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

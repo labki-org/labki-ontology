@@ -1,11 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::The status of an activity]]
-[[Display label::Status]]
-[[Allows value::Planning]]
-[[Allows value::Active]]
-[[Allows value::Completed]]
-[[Allows value::On Hold]]
-[[Allows value::Cancelled]]
+{{Property
+|has_description=The status of an activity
+|has_type=Text
+|display_label=Status
+|allows_value=Planning, Active, Completed, On Hold, Cancelled
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

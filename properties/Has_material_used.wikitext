@@ -1,8 +1,10 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Material consumed in this activity]]
-[[Display label::Material Used]]
-[[Allows multiple values::true]]
-[[Allows value from category::Category:Material]]
+{{Property
+|has_description=Material consumed in this activity
+|has_type=Page
+|display_label=Material Used
+|allows_multiple_values=Yes
+|allows_value_from_category=Material
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

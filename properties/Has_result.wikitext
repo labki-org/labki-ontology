@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Summary of outcome or result]]
-[[Display label::Result]]
+{{Property
+|has_description=Summary of outcome or result
+|has_type=Text
+|display_label=Result
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

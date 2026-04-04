@@ -1,10 +1,9 @@
 <!-- OntologySync Start -->
-[[Has description::An inventory lot entry for a material]]
-[[Display label::Stock Entry]]
-[[Has required property::Property:Has quantity]]
-[[Has required property::Property:Has unit]]
-[[Has optional property::Property:Has lot number]]
-[[Has optional property::Property:Has expiration date]]
-[[Has optional property::Property:Has received date]]
+{{Subobject
+|has_description=An inventory lot entry for a material
+|display_label=Stock Entry
+|has_required_property=Has quantity, Has unit
+|has_optional_property=Has lot number, Has expiration date, Has received date
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-subobject]]

@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Date]]
-[[Has description::Next scheduled maintenance date]]
-[[Display label::Next Maintenance]]
+{{Property
+|has_description=Next scheduled maintenance date
+|has_type=Date
+|display_label=Next Maintenance
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

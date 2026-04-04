@@ -1,8 +1,10 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Funding source for a project]]
-[[Display label::Funding]]
-[[Allows multiple values::true]]
-[[Allows value from category::Category:Funding]]
+{{Property
+|has_description=Funding source for a project
+|has_type=Page
+|display_label=Funding
+|allows_multiple_values=Yes
+|allows_value_from_category=Funding
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

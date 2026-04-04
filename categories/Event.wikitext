@@ -1,10 +1,9 @@
 <!-- OntologySync Start -->
-[[Has description::A scheduled event such as a meeting, seminar, or workshop]]
-[[Has parent category::Category:Activity]]
-[[Has required property::Property:Has event type]]
-[[Has optional property::Property:Has location]]
-[[Has optional property::Property:Has participant]]
-[[Has optional property::Property:Has attachment]]
-[[Has optional property::Property:Has notes]]
+{{Category
+|has_description=A scheduled event such as a meeting, seminar, or workshop
+|has_parent_category=Activity
+|has_required_property=Has event type
+|has_optional_property=Has location, Has participant, Has attachment, Has notes
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

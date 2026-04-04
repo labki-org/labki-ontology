@@ -1,8 +1,10 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Equipment used in this activity]]
-[[Display label::Equipment Used]]
-[[Allows multiple values::true]]
-[[Allows value from category::Category:Equipment]]
+{{Property
+|has_description=Equipment used in this activity
+|has_type=Page
+|display_label=Equipment Used
+|allows_multiple_values=Yes
+|allows_value_from_category=Equipment
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

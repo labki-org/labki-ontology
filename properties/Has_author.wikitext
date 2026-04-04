@@ -1,8 +1,10 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Author of a document]]
-[[Display label::Author]]
-[[Allows multiple values::true]]
-[[Allows value from category::Category:Agent]]
+{{Property
+|has_description=Author of a document
+|has_type=Page
+|display_label=Author
+|allows_multiple_values=Yes
+|allows_value_from_category=Agent
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Date]]
-[[Has description::Date of the document]]
-[[Display label::Date]]
+{{Property
+|has_description=Date of the document
+|has_type=Date
+|display_label=Date
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

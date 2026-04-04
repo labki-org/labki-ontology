@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Parent location in the hierarchy]]
-[[Display label::Parent Location]]
-[[Allows value from category::Category:Location]]
+{{Property
+|has_description=Parent location in the hierarchy
+|has_type=Page
+|display_label=Parent Location
+|allows_value_from_category=Location
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

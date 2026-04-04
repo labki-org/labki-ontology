@@ -1,8 +1,10 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::A standard operating procedure associated with this entity]]
-[[Display label::SOP]]
-[[Allows multiple values::true]]
-[[Allows value from category::Category:SOP]]
+{{Property
+|has_description=A standard operating procedure associated with this entity
+|has_type=Page
+|display_label=SOP
+|allows_multiple_values=Yes
+|allows_value_from_category=SOP
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

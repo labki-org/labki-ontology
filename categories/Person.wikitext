@@ -1,10 +1,10 @@
 <!-- OntologySync Start -->
-[[Has description::A human person involved in research activities]]
-[[Has parent category::Category:Agent]]
-[[Has required property::Property:Has first name]]
-[[Has required property::Property:Has last name]]
-[[Has optional property::Property:Has birthday]]
-[[Has optional property::Property:Has middle name]]
-[[Has optional subobject::Subobject:Has training record]]
+{{Category
+|has_description=A human person involved in research activities
+|has_parent_category=Agent
+|has_required_property=Has first name, Has last name
+|has_optional_property=Has birthday, Has middle name
+|has_optional_subobject=Has training record
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

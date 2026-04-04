@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::URL]]
-[[Has description::A URL associated with this entity]]
-[[Display label::URL]]
-[[Allows multiple values::true]]
+{{Property
+|has_description=A URL associated with this entity
+|has_type=URL
+|display_label=URL
+|allows_multiple_values=Yes
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Grant or award number]]
-[[Display label::Grant Number]]
+{{Property
+|has_description=Grant or award number
+|has_type=Text
+|display_label=Grant Number
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,8 +1,10 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::A participant in this activity]]
-[[Display label::Participant]]
-[[Allows multiple values::true]]
-[[Allows value from category::Category:Agent]]
+{{Property
+|has_description=A participant in this activity
+|has_type=Page
+|display_label=Participant
+|allows_multiple_values=Yes
+|allows_value_from_category=Agent
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

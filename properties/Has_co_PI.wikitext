@@ -1,8 +1,10 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::A co-principal investigator]]
-[[Display label::Co-PI]]
-[[Allows multiple values::true]]
-[[Allows value from category::Category:Person]]
+{{Property
+|has_description=A co-principal investigator
+|has_type=Page
+|display_label=Co-PI
+|allows_multiple_values=Yes
+|allows_value_from_category=Person
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

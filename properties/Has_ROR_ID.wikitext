@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Research Organization Registry identifier]]
-[[Display label::ROR ID]]
+{{Property
+|has_description=Research Organization Registry identifier
+|has_type=Text
+|display_label=ROR ID
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

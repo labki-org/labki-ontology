@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Number]]
-[[Has description::Number of months between required renewals]]
-[[Display label::Renewal Period (Months)]]
+{{Property
+|has_description=Number of months between required renewals
+|has_type=Number
+|display_label=Renewal Period (Months)
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

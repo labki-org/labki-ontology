@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::The journal a publication appeared in]]
-[[Display label::Journal]]
+{{Property
+|has_description=The journal a publication appeared in
+|has_type=Text
+|display_label=Journal
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

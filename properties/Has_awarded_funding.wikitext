@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::The funding entity resulting from an awarded proposal]]
-[[Display label::Awarded Funding]]
-[[Allows value from category::Category:Funding]]
+{{Property
+|has_description=The funding entity resulting from an awarded proposal
+|has_type=Page
+|display_label=Awarded Funding
+|allows_value_from_category=Funding
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

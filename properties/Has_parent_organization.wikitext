@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::The parent organization]]
-[[Display label::Parent Organization]]
-[[Allows value from category::Category:Organization]]
+{{Property
+|has_description=The parent organization
+|has_type=Page
+|display_label=Parent Organization
+|allows_value_from_category=Organization
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

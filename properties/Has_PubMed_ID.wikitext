@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::PubMed identifier]]
-[[Display label::PubMed ID]]
+{{Property
+|has_description=PubMed identifier
+|has_type=Text
+|display_label=PubMed ID
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,9 +1,9 @@
 <!-- OntologySync Start -->
-[[Has description::A role within an organization]]
-[[Display label::Organizational Role]]
-[[Has required property::Property:Has organization]]
-[[Has required property::Property:Has research role]]
-[[Has required property::Property:Has start date]]
-[[Has optional property::Property:Has end date]]
+{{Subobject
+|has_description=A role within an organization
+|display_label=Organizational Role
+|has_required_property=Has organization, Has research role, Has start date
+|has_optional_property=Has end date
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-subobject]]

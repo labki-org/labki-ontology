@@ -1,12 +1,9 @@
 <!-- OntologySync Start -->
-[[Has description::A specific experimental run]]
-[[Has parent category::Category:Activity]]
-[[Has required property::Property:Has project]]
-[[Has required property::Property:Has operator]]
-[[Has optional property::Property:Has protocol]]
-[[Has optional property::Property:Has equipment used]]
-[[Has optional property::Property:Has material used]]
-[[Has optional property::Property:Has result]]
-[[Has optional property::Property:Has deviation]]
+{{Category
+|has_description=A specific experimental run
+|has_parent_category=Activity
+|has_required_property=Has project, Has operator
+|has_optional_property=Has protocol, Has equipment used, Has material used, Has result, Has deviation
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Supplier catalog number for reordering]]
-[[Display label::Catalog Number]]
+{{Property
+|has_description=Supplier catalog number for reordering
+|has_type=Text
+|display_label=Catalog Number
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

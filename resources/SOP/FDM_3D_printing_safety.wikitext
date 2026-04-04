@@ -1,13 +1,14 @@
 <!-- OntologySync Start -->
-[[Has description::Safety and handling procedures for FDM (fused deposition modeling) 3D printing]]
-[[Has document type::SOP]]
-[[Has SOP type::Safety]]
-[[Has purpose::Establishes safe operating, material handling, and post-processing practices for FDM 3D printers. Applies to all FDM/FFF printers regardless of manufacturer.]]
-[[Has safety precautions::The nozzle and heated bed are severe burn hazards — do not touch during or after printing until fully cooled. Print ABS, ASA, nylon, and polycarbonate only in an enclosed printer with activated carbon filtration or in a ventilated area. Even PLA and PETG emit ultrafine particles (UFPs) — ensure the room has adequate general ventilation. Use heat-resistant gloves when handling the build plate immediately after printing. Wear safety glasses when removing supports with flush cutters to protect against flying fragments.]]
-[[Has emergency procedures::For thermal burns from the nozzle or bed, cool under running water for at least 10 minutes. If fumes cause respiratory irritation, ventilate the room immediately and move to fresh air. Power off the printer using the main switch if smoke, burning smell, or abnormal behavior occurs and contact facilities.]]
-[[Has waste disposal::Failed prints and support material from PLA are not readily recyclable in most municipal streams — collect for general solid waste. ABS, ASA, and nylon waste should be collected separately and disposed of per local plastic waste guidelines. Do not burn filament waste. Spent nozzles and worn printer components go in general waste.]]
-[[Has technique::FDM 3D printing]]
-[[Has technique::FFF 3D printing]]
+{{SOP
+|has_description=Safety and handling procedures for FDM (fused deposition modeling) 3D printing
+|has_document_type=SOP
+|has_sop_type=Safety
+|has_purpose=Establishes safe operating, material handling, and post-processing practices for FDM 3D printers. Applies to all FDM/FFF printers regardless of manufacturer.
+|has_safety_precautions=The nozzle and heated bed are severe burn hazards — do not touch during or after printing until fully cooled. Print ABS, ASA, nylon, and polycarbonate only in an enclosed printer with activated carbon filtration or in a ventilated area. Even PLA and PETG emit ultrafine particles (UFPs) — ensure the room has adequate general ventilation. Use heat-resistant gloves when handling the build plate immediately after printing. Wear safety glasses when removing supports with flush cutters to protect against flying fragments.
+|has_emergency_procedures=For thermal burns from the nozzle or bed, cool under running water for at least 10 minutes. If fumes cause respiratory irritation, ventilate the room immediately and move to fresh air. Power off the printer using the main switch if smoke, burning smell, or abnormal behavior occurs and contact facilities.
+|has_waste_disposal=Failed prints and support material from PLA are not readily recyclable in most municipal streams — collect for general solid waste. ABS, ASA, and nylon waste should be collected separately and disposed of per local plastic waste guidelines. Do not burn filament waste. Spent nozzles and worn printer components go in general waste.
+|has_technique=FDM 3D printing, FFF 3D printing
+}}
 <!-- OntologySync End -->
 [[Category:SOP]]
 [[Category:OntologySync-managed-resource]]

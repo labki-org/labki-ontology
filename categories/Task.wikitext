@@ -1,9 +1,9 @@
 <!-- OntologySync Start -->
-[[Has description::An actionable task]]
-[[Has parent category::Category:Activity]]
-[[Has required property::Property:Has assignee]]
-[[Has optional property::Property:Has project]]
-[[Has optional property::Property:Has priority]]
-[[Has optional property::Property:Has due date]]
+{{Category
+|has_description=An actionable task
+|has_parent_category=Activity
+|has_required_property=Has assignee
+|has_optional_property=Has project, Has priority, Has due date
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

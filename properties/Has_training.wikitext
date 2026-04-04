@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::A training course or certification]]
-[[Display label::Training]]
-[[Allows value from category::Category:Training]]
+{{Property
+|has_description=A training course or certification
+|has_type=Page
+|display_label=Training
+|allows_value_from_category=Training
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

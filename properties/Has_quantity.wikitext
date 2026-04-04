@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Number]]
-[[Has description::Quantity amount]]
-[[Display label::Quantity]]
+{{Property
+|has_description=Quantity amount
+|has_type=Number
+|display_label=Quantity
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

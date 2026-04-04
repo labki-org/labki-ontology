@@ -1,10 +1,8 @@
 <!-- OntologySync Start -->
-[[Has description::A physical space]]
-[[Has required property::Property:Has location type]]
-[[Has optional property::Property:Has building]]
-[[Has optional property::Property:Has room number]]
-[[Has optional property::Property:Has floor]]
-[[Has optional property::Property:Has capacity]]
-[[Has optional property::Property:Has parent location]]
+{{Category
+|has_description=A physical space
+|has_required_property=Has location type
+|has_optional_property=Has building, Has room number, Has floor, Has capacity, Has parent location
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

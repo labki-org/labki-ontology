@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Date]]
-[[Has description::The submission deadline]]
-[[Display label::Submission Deadline]]
+{{Property
+|has_description=The submission deadline
+|has_type=Date
+|display_label=Submission Deadline
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

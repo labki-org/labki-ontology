@@ -1,10 +1,9 @@
 <!-- OntologySync Start -->
-[[Has description::An organization]]
-[[Has parent category::Category:Agent]]
-[[Has required property::Property:Has name]]
-[[Has optional property::Property:Has acronym]]
-[[Has optional property::Property:Has institution type]]
-[[Has optional property::Property:Has parent organization]]
-[[Has optional property::Property:Has required training]]
+{{Category
+|has_description=An organization
+|has_parent_category=Agent
+|has_required_property=Has name
+|has_optional_property=Has acronym, Has institution type, Has parent organization, Has required training
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

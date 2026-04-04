@@ -1,10 +1,10 @@
 <!-- OntologySync Start -->
-[[Has description::A research project]]
-[[Has parent category::Category:Activity]]
-[[Has required property::Property:Has PI]]
-[[Has optional property::Property:Has funding]]
-[[Has optional property::Property:Has goal]]
-[[Has optional property::Property:Has participant]]
-[[Has optional subobject::Subobject:Has project role]]
+{{Category
+|has_description=A research project
+|has_parent_category=Activity
+|has_required_property=Has PI
+|has_optional_property=Has funding, Has goal, Has participant
+|has_optional_subobject=Has project role
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

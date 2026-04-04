@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::The first name of a person]]
-[[Display label::First Name]]
+{{Property
+|has_description=The first name of a person
+|has_type=Text
+|display_label=First Name
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

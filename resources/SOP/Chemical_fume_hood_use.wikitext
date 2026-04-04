@@ -1,11 +1,13 @@
 <!-- OntologySync Start -->
-[[Has description::Standard procedure for safe use of chemical fume hoods]]
-[[Has document type::SOP]]
-[[Has SOP type::Safety]]
-[[Has purpose::Establishes safe operating practices for chemical fume hoods to protect personnel from exposure to hazardous vapors, fumes, and aerosols.]]
-[[Has safety precautions::Always verify airflow before beginning work. The sash should be at or below the indicated safe operating height. Wear appropriate PPE: lab coat, safety glasses, and chemical-resistant gloves. Do not use the fume hood for perchloric acid or radioisotope work unless it is specifically designated for that purpose.]]
-[[Has emergency procedures::If the fume hood alarm sounds, immediately lower the sash, stop work, and evacuate if instructed. For chemical spills inside the hood, lower the sash and follow the lab-specific spill response plan. Contact EHS for large or hazardous spills.]]
-[[Has waste disposal::Collect liquid waste in appropriate labeled containers inside the hood. Do not pour chemicals down the hood drain. Segregate waste by compatibility (acids, bases, organics, halogenated organics). Request waste pickup through EHS when containers are 80% full.]]
+{{SOP
+|has_description=Standard procedure for safe use of chemical fume hoods
+|has_document_type=SOP
+|has_sop_type=Safety
+|has_purpose=Establishes safe operating practices for chemical fume hoods to protect personnel from exposure to hazardous vapors, fumes, and aerosols.
+|has_safety_precautions=Always verify airflow before beginning work. The sash should be at or below the indicated safe operating height. Wear appropriate PPE: lab coat, safety glasses, and chemical-resistant gloves. Do not use the fume hood for perchloric acid or radioisotope work unless it is specifically designated for that purpose.
+|has_emergency_procedures=If the fume hood alarm sounds, immediately lower the sash, stop work, and evacuate if instructed. For chemical spills inside the hood, lower the sash and follow the lab-specific spill response plan. Contact EHS for large or hazardous spills.
+|has_waste_disposal=Collect liquid waste in appropriate labeled containers inside the hood. Do not pour chemicals down the hood drain. Segregate waste by compatibility (acids, bases, organics, halogenated organics). Request waste pickup through EHS when containers are 80% full.
+}}
 <!-- OntologySync End -->
 [[Category:SOP]]
 [[Category:OntologySync-managed-resource]]

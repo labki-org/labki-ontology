@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Where this material is stored]]
-[[Display label::Storage Location]]
-[[Allows value from category::Category:Location]]
+{{Property
+|has_description=Where this material is stored
+|has_type=Page
+|display_label=Storage Location
+|allows_value_from_category=Location
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

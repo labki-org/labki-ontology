@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Serial number of equipment]]
-[[Display label::Serial Number]]
+{{Property
+|has_description=Serial number of equipment
+|has_type=Text
+|display_label=Serial Number
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

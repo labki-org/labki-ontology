@@ -1,12 +1,12 @@
 <!-- OntologySync Start -->
-[[Has description::Operating procedures for the Pace ADS200 AccuDrive soldering station]]
-[[Has document type::SOP]]
-[[Has SOP type::Equipment Operation]]
-[[Has purpose::Covers operation, temperature presets, tip cartridge management, and maintenance of the Pace ADS200 AccuDrive production soldering station with TD-200 tip-heater cartridge iron. For general soldering safety, PPE, and technique guidance, refer to the Soldering Iron Safety SOP.]]
-[[Has safety precautions::Review the Soldering Iron Safety SOP before first use. The TD-200 iron delivers up to 120W and heats rapidly — the tip reaches operating temperature within seconds of power-on. Always return the iron to the tool stand when not actively soldering. The aluminum Cool Touch handle stays cool during use, but the tip cartridge and barrel are extremely hot. Do not pull or twist the tip cartridge while hot without heat-resistant protection.]]
-[[Has technique::Soldering]]
-[[Has technique::SMD assembly]]
-[[Has technique::Through-hole soldering]]
+{{SOP
+|has_description=Operating procedures for the Pace ADS200 AccuDrive soldering station
+|has_document_type=SOP
+|has_sop_type=Equipment Operation
+|has_purpose=Covers operation, temperature presets, tip cartridge management, and maintenance of the Pace ADS200 AccuDrive production soldering station with TD-200 tip-heater cartridge iron. For general soldering safety, PPE, and technique guidance, refer to the Soldering Iron Safety SOP.
+|has_safety_precautions=Review the Soldering Iron Safety SOP before first use. The TD-200 iron delivers up to 120W and heats rapidly — the tip reaches operating temperature within seconds of power-on. Always return the iron to the tool stand when not actively soldering. The aluminum Cool Touch handle stays cool during use, but the tip cartridge and barrel are extremely hot. Do not pull or twist the tip cartridge while hot without heat-resistant protection.
+|has_technique=Soldering, SMD assembly, Through-hole soldering
+}}
 <!-- OntologySync End -->
 [[Category:SOP]]
 [[Category:OntologySync-managed-resource]]

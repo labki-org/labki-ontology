@@ -1,14 +1,14 @@
 <!-- OntologySync Start -->
-[[Has description::Safety and operating procedures for soldering irons and soldering stations]]
-[[Has document type::SOP]]
-[[Has SOP type::Safety]]
-[[Has purpose::Establishes safe operating, tip care, and workspace practices for soldering irons and temperature-controlled soldering stations. Applies to all soldering irons regardless of manufacturer. Covers hand soldering of through-hole and SMD components.]]
-[[Has safety precautions::The soldering iron tip reaches temperatures of 200-450C (390-840F) and causes severe burns on contact. Never touch the tip or metal barrel of the iron. Always return the iron to its stand when not actively soldering — never set it down on the workbench. Work in a ventilated area or with a fume extractor; solder flux fumes irritate the respiratory system and eyes. Wear safety glasses to protect against solder splashes. Use an ESD wrist strap and grounded ESD mat when soldering ESD-sensitive components. Do not use a soldering iron near flammable materials, solvents, or open chemical containers. Inspect the power cord and iron for damage before each use — do not use equipment with frayed cords or cracked housings. Wash hands after soldering, especially if using leaded solder.]]
-[[Has emergency procedures::For burns, cool under running water for at least 10 minutes. For eye contact with flux or solder splash, flush with water for 15 minutes and seek medical attention. If fumes cause respiratory irritation, move to fresh air and ventilate the area. If the iron or station malfunctions (sparks, burning smell, smoke from the handle), unplug it immediately.]]
-[[Has waste disposal::Leaded solder waste (dross, solder wick, used sponge tips saturated with leaded solder) should be collected and disposed of as hazardous waste. Lead-free solder waste can go in general waste but check local regulations. Used flux and flux-contaminated cleaning materials should be disposed of per EHS guidelines. Spent soldering tips can go in general waste.]]
-[[Has technique::Soldering]]
-[[Has technique::SMD assembly]]
-[[Has technique::Through-hole soldering]]
+{{SOP
+|has_description=Safety and operating procedures for soldering irons and soldering stations
+|has_document_type=SOP
+|has_sop_type=Safety
+|has_purpose=Establishes safe operating, tip care, and workspace practices for soldering irons and temperature-controlled soldering stations. Applies to all soldering irons regardless of manufacturer. Covers hand soldering of through-hole and SMD components.
+|has_safety_precautions=The soldering iron tip reaches temperatures of 200-450C (390-840F) and causes severe burns on contact. Never touch the tip or metal barrel of the iron. Always return the iron to its stand when not actively soldering — never set it down on the workbench. Work in a ventilated area or with a fume extractor; solder flux fumes irritate the respiratory system and eyes. Wear safety glasses to protect against solder splashes. Use an ESD wrist strap and grounded ESD mat when soldering ESD-sensitive components. Do not use a soldering iron near flammable materials, solvents, or open chemical containers. Inspect the power cord and iron for damage before each use — do not use equipment with frayed cords or cracked housings. Wash hands after soldering, especially if using leaded solder.
+|has_emergency_procedures=For burns, cool under running water for at least 10 minutes. For eye contact with flux or solder splash, flush with water for 15 minutes and seek medical attention. If fumes cause respiratory irritation, move to fresh air and ventilate the area. If the iron or station malfunctions (sparks, burning smell, smoke from the handle), unplug it immediately.
+|has_waste_disposal=Leaded solder waste (dross, solder wick, used sponge tips saturated with leaded solder) should be collected and disposed of as hazardous waste. Lead-free solder waste can go in general waste but check local regulations. Used flux and flux-contaminated cleaning materials should be disposed of per EHS guidelines. Spent soldering tips can go in general waste.
+|has_technique=Soldering, SMD assembly, Through-hole soldering
+}}
 <!-- OntologySync End -->
 [[Category:SOP]]
 [[Category:OntologySync-managed-resource]]

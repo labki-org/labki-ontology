@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Digital Object Identifier]]
-[[Display label::DOI]]
+{{Property
+|has_description=Digital Object Identifier
+|has_type=Text
+|display_label=DOI
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::The acronym of a thing]]
-[[Display label::Acronym]]
-[[Allows multiple values::true]]
+{{Property
+|has_description=The acronym of a thing
+|has_type=Text
+|display_label=Acronym
+|allows_multiple_values=Yes
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,13 +1,9 @@
 <!-- OntologySync Start -->
-[[Has description::Consumable material, reagent, or sample]]
-[[Has optional property::Property:Has description]]
-[[Has required property::Property:Has storage location]]
-[[Has optional property::Property:Has supplier]]
-[[Has optional property::Property:Has catalog number]]
-[[Has optional property::Property:Has CAS number]]
-[[Has optional property::Property:Has hazard level]]
-[[Has optional property::Property:Has RRID]]
-[[Has optional property::Property:Has SOP]]
-[[Has optional subobject::Subobject:Has stock entry]]
+{{Category
+|has_description=Consumable material, reagent, or sample
+|has_required_property=Has storage location
+|has_optional_property=Has description, Has supplier, Has catalog number, Has CAS number, Has hazard level, Has RRID, Has SOP
+|has_optional_subobject=Has stock entry
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

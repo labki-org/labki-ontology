@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::The manufacturer]]
-[[Display label::Manufacturer]]
-[[Allows value from category::Category:Organization]]
+{{Property
+|has_description=The manufacturer
+|has_type=Page
+|display_label=Manufacturer
+|allows_value_from_category=Organization
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

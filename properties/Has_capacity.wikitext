@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Number]]
-[[Has description::Capacity of a location]]
-[[Display label::Capacity]]
+{{Property
+|has_description=Capacity of a location
+|has_type=Number
+|display_label=Capacity
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Date]]
-[[Has description::Date of hire]]
-[[Display label::Hire Date]]
+{{Property
+|has_description=Date of hire
+|has_type=Date
+|display_label=Hire Date
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

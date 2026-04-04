@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Job title]]
-[[Display label::Job Title]]
+{{Property
+|has_description=Job title
+|has_type=Text
+|display_label=Job Title
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

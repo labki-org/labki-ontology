@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::The person assigned to this task]]
-[[Display label::Assignee]]
-[[Allows value from category::Category:Person]]
+{{Property
+|has_description=The person assigned to this task
+|has_type=Page
+|display_label=Assignee
+|allows_value_from_category=Person
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

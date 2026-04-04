@@ -1,20 +1,9 @@
 <!-- OntologySync Start -->
-[[Has description::Trackable physical equipment or instrument]]
-[[Has required property::Property:Has location]]
-[[Has required property::Property:Has responsible party]]
-[[Has required property::Property:Has equipment status]]
-[[Has optional property::Property:Has attachment]]
-[[Has optional property::Property:Has description]]
-[[Has optional property::Property:Has manufacturer]]
-[[Has optional property::Property:Has model]]
-[[Has optional property::Property:Has next maintenance date]]
-[[Has optional property::Property:Has purchase date]]
-[[Has optional property::Property:Has RRID]]
-[[Has optional property::Property:Has required training]]
-[[Has optional property::Property:Has SOP]]
-[[Has optional property::Property:Has serial number]]
-[[Has optional property::Property:Has technique]]
-[[Has optional property::Property:Has url]]
-[[Has optional subobject::Subobject:Has maintenance record]]
+{{Category
+|has_description=Trackable physical equipment or instrument
+|has_required_property=Has location, Has responsible party, Has equipment status
+|has_optional_property=Has attachment, Has description, Has manufacturer, Has model, Has next maintenance date, Has purchase date, Has RRID, Has required training, Has SOP, Has serial number, Has technique, Has url
+|has_optional_subobject=Has maintenance record
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

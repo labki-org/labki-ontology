@@ -1,14 +1,14 @@
 <!-- OntologySync Start -->
-[[Has description::Safety and operating procedures for hot air rework stations used in SMD soldering and desoldering]]
-[[Has document type::SOP]]
-[[Has SOP type::Safety]]
-[[Has purpose::Establishes safe operating practices for hot air rework stations used to solder, desolder, and rework surface-mount components on PCBs. Applies to all hot air rework stations regardless of manufacturer.]]
-[[Has safety precautions::The hot air nozzle and airflow reach temperatures of 100-480C (212-900F) and cause severe burns. Never touch the nozzle during or after use — it remains hot for several minutes after shutdown while the station runs its cool-down cycle. Do not point the hot air stream at anything other than the target work area. Work on a heat-resistant surface (silicone mat, ceramic tile, or fire-resistant board). Flux fumes are generated during rework — use a fume extractor or work in a ventilated area. Wear safety glasses to protect against flux splashes and small components that can be blown off the board by the airstream. Use an ESD wrist strap when handling ESD-sensitive boards and components. Keep flammable materials, solvents, and loose papers away from the work area. Never leave a hot air station running unattended.]]
-[[Has emergency procedures::For burns, cool under running water for at least 10 minutes. If flux fumes cause respiratory irritation, move to fresh air. If a component or board ignites (rare, but possible with excessive temperature), power off the station and smother with a fire-resistant cloth or use a Class C fire extinguisher. Do not blow on a burning board — the flux is the fuel.]]
-[[Has waste disposal::Flux-contaminated cleaning materials and used solder wick are hazardous waste if leaded solder is involved. Desoldered components that will not be reused go in electronic waste. IPA wash solution contaminated with flux residue should be collected in labeled waste containers.]]
-[[Has technique::SMD rework]]
-[[Has technique::SMD desoldering]]
-[[Has technique::SMD assembly]]
+{{SOP
+|has_description=Safety and operating procedures for hot air rework stations used in SMD soldering and desoldering
+|has_document_type=SOP
+|has_sop_type=Safety
+|has_purpose=Establishes safe operating practices for hot air rework stations used to solder, desolder, and rework surface-mount components on PCBs. Applies to all hot air rework stations regardless of manufacturer.
+|has_safety_precautions=The hot air nozzle and airflow reach temperatures of 100-480C (212-900F) and cause severe burns. Never touch the nozzle during or after use — it remains hot for several minutes after shutdown while the station runs its cool-down cycle. Do not point the hot air stream at anything other than the target work area. Work on a heat-resistant surface (silicone mat, ceramic tile, or fire-resistant board). Flux fumes are generated during rework — use a fume extractor or work in a ventilated area. Wear safety glasses to protect against flux splashes and small components that can be blown off the board by the airstream. Use an ESD wrist strap when handling ESD-sensitive boards and components. Keep flammable materials, solvents, and loose papers away from the work area. Never leave a hot air station running unattended.
+|has_emergency_procedures=For burns, cool under running water for at least 10 minutes. If flux fumes cause respiratory irritation, move to fresh air. If a component or board ignites (rare, but possible with excessive temperature), power off the station and smother with a fire-resistant cloth or use a Class C fire extinguisher. Do not blow on a burning board — the flux is the fuel.
+|has_waste_disposal=Flux-contaminated cleaning materials and used solder wick are hazardous waste if leaded solder is involved. Desoldered components that will not be reused go in electronic waste. IPA wash solution contaminated with flux residue should be collected in labeled waste containers.
+|has_technique=SMD rework, SMD desoldering, SMD assembly
+}}
 <!-- OntologySync End -->
 [[Category:SOP]]
 [[Category:OntologySync-managed-resource]]

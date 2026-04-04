@@ -1,12 +1,13 @@
 <!-- OntologySync Start -->
-[[Has description::Standard procedure for operating a fluorescence microscope]]
-[[Has document type::SOP]]
-[[Has SOP type::Equipment Operation]]
-[[Has purpose::Describes safe startup, imaging, and shutdown procedures for fluorescence microscopes. Covers epifluorescence and basic confocal operation.]]
-[[Has safety precautions::Wear laser safety goggles when using confocal laser lines. Never look directly into the beam path. Ensure the interlock is engaged before powering on laser modules. Avoid prolonged UV exposure from mercury arc lamps.]]
-[[Has emergency procedures::If laser exposure to eyes occurs, flush with water for 15 minutes and seek immediate medical attention. For mercury lamp breakage, evacuate the room and contact EHS for mercury spill cleanup.]]
-[[Has technique::Fluorescence microscopy]]
-[[Has technique::Confocal microscopy]]
+{{SOP
+|has_description=Standard procedure for operating a fluorescence microscope
+|has_document_type=SOP
+|has_sop_type=Equipment Operation
+|has_purpose=Describes safe startup, imaging, and shutdown procedures for fluorescence microscopes. Covers epifluorescence and basic confocal operation.
+|has_safety_precautions=Wear laser safety goggles when using confocal laser lines. Never look directly into the beam path. Ensure the interlock is engaged before powering on laser modules. Avoid prolonged UV exposure from mercury arc lamps.
+|has_emergency_procedures=If laser exposure to eyes occurs, flush with water for 15 minutes and seek immediate medical attention. For mercury lamp breakage, evacuate the room and contact EHS for mercury spill cleanup.
+|has_technique=Fluorescence microscopy, Confocal microscopy
+}}
 <!-- OntologySync End -->
 [[Category:SOP]]
 [[Category:OntologySync-managed-resource]]

@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::The person who performed this]]
-[[Display label::Operator]]
-[[Allows value from category::Category:Person]]
+{{Property
+|has_description=The person who performed this
+|has_type=Page
+|display_label=Operator
+|allows_value_from_category=Person
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

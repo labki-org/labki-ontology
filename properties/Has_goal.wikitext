@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::The goal or objective]]
-[[Display label::Goal]]
+{{Property
+|has_description=The goal or objective
+|has_type=Text
+|display_label=Goal
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,6 +1,8 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::Floor number or name]]
-[[Display label::Floor]]
+{{Property
+|has_description=Floor number or name
+|has_type=Text
+|display_label=Floor
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

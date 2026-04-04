@@ -1,14 +1,14 @@
 <!-- OntologySync Start -->
-[[Has description::Safety and handling procedures for resin-based (SLA/MSLA/DLP) 3D printing]]
-[[Has document type::SOP]]
-[[Has SOP type::Safety]]
-[[Has purpose::Establishes safe handling, post-processing, and disposal practices for photopolymer resin 3D printing. Applies to all SLA, MSLA, and DLP printers regardless of manufacturer.]]
-[[Has safety precautions::Always wear nitrile gloves when handling uncured resin or resin-coated parts. Wear safety glasses to protect against splashes. Work in a well-ventilated area or use a fume hood when pouring resin. Avoid skin contact — photopolymer resins are skin sensitizers and repeated exposure can cause allergic contact dermatitis. If resin contacts skin, wash immediately with soap and water (do not use IPA on skin). Wear a lab coat or apron to protect clothing.]]
-[[Has emergency procedures::Skin contact: wash immediately with soap and water. Eye contact: flush with water for 15 minutes and seek medical attention. Resin spill: absorb with paper towels, clean surface with IPA, dispose of contaminated materials as hazardous waste. If symptoms of sensitization develop (rash, respiratory irritation), stop working with resin and consult occupational health.]]
-[[Has waste disposal::Uncured liquid resin is hazardous waste — never pour down the drain. Cure residual resin by exposing to sunlight or a UV lamp before disposal. Used IPA wash solution becomes hazardous waste after resin contamination; collect in labeled waste containers. Cured solid resin (fully post-cured) can be disposed of as regular solid waste. Used FEP films, contaminated gloves, and paper towels go in hazardous waste.]]
-[[Has technique::SLA 3D printing]]
-[[Has technique::MSLA 3D printing]]
-[[Has technique::DLP 3D printing]]
+{{SOP
+|has_description=Safety and handling procedures for resin-based (SLA/MSLA/DLP) 3D printing
+|has_document_type=SOP
+|has_sop_type=Safety
+|has_purpose=Establishes safe handling, post-processing, and disposal practices for photopolymer resin 3D printing. Applies to all SLA, MSLA, and DLP printers regardless of manufacturer.
+|has_safety_precautions=Always wear nitrile gloves when handling uncured resin or resin-coated parts. Wear safety glasses to protect against splashes. Work in a well-ventilated area or use a fume hood when pouring resin. Avoid skin contact — photopolymer resins are skin sensitizers and repeated exposure can cause allergic contact dermatitis. If resin contacts skin, wash immediately with soap and water (do not use IPA on skin). Wear a lab coat or apron to protect clothing.
+|has_emergency_procedures=Skin contact: wash immediately with soap and water. Eye contact: flush with water for 15 minutes and seek medical attention. Resin spill: absorb with paper towels, clean surface with IPA, dispose of contaminated materials as hazardous waste. If symptoms of sensitization develop (rash, respiratory irritation), stop working with resin and consult occupational health.
+|has_waste_disposal=Uncured liquid resin is hazardous waste — never pour down the drain. Cure residual resin by exposing to sunlight or a UV lamp before disposal. Used IPA wash solution becomes hazardous waste after resin contamination; collect in labeled waste containers. Cured solid resin (fully post-cured) can be disposed of as regular solid waste. Used FEP films, contaminated gloves, and paper towels go in hazardous waste.
+|has_technique=SLA 3D printing, MSLA 3D printing, DLP 3D printing
+}}
 <!-- OntologySync End -->
 [[Category:SOP]]
 [[Category:OntologySync-managed-resource]]

@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::The skills of a person]]
-[[Display label::Skill]]
-[[Allows multiple values::true]]
+{{Property
+|has_description=The skills of a person
+|has_type=Page
+|display_label=Skill
+|allows_multiple_values=Yes
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

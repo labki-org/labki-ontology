@@ -1,8 +1,10 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Training required to use this equipment or work at this organization]]
-[[Display label::Required Training]]
-[[Allows multiple values::true]]
-[[Allows value from category::Category:Training]]
+{{Property
+|has_description=Training required to use this equipment or work at this organization
+|has_type=Page
+|display_label=Required Training
+|allows_multiple_values=Yes
+|allows_value_from_category=Training
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,13 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Text]]
-[[Has description::The type of standard operating procedure]]
-[[Display label::SOP Type]]
-[[Allows value::Equipment Operation]]
-[[Allows value::Chemical Handling]]
-[[Allows value::Biosafety]]
-[[Allows value::Analytical Method]]
-[[Allows value::General Procedure]]
-[[Allows value::Safety]]
-[[Allows value::Training]]
+{{Property
+|has_description=The type of standard operating procedure
+|has_type=Text
+|display_label=SOP Type
+|allows_value=Equipment Operation, Chemical Handling, Biosafety, Analytical Method, General Procedure, Safety, Training
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

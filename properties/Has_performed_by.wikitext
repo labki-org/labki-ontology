@@ -1,7 +1,9 @@
 <!-- OntologySync Start -->
-[[Has type::Page]]
-[[Has description::Who performed this action]]
-[[Display label::Performed By]]
-[[Allows value from category::Category:Agent]]
+{{Property
+|has_description=Who performed this action
+|has_type=Page
+|display_label=Performed By
+|allows_value_from_category=Agent
+}}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]
