@@ -2,7 +2,7 @@
 {{Category
 |has_description=A physical space
 |has_required_property=Has location type
-|has_optional_property=Has building, Has room number, Has floor, Has capacity, Has parent location
+|has_optional_property=Has building, Has capacity, Has floor, Has parent location, Has room number, Has safety classification, Has responsible party
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

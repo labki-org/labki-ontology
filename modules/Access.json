@@ -1,0 +1,11 @@
+{
+  "id": "Access",
+  "label": "Access",
+  "description": "Physical access management \u2014 keys, keycards, keypads, and access authorization tracking",
+  "categories": [
+    "Access_point"
+  ],
+  "properties": [],
+  "subobjects": [],
+  "templates": []
+}

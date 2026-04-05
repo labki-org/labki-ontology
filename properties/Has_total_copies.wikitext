@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Total number of copies that exist 
+|has_type=Number
+|display_label=Total Copies
+|display_precision=0
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

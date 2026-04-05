@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The date something was returned or revoked
+|has_type=Date
+|display_label=Return Date
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The safety classification of a location or item
+|has_type=Text
+|display_label=Safety Classification
+|allows_multiple_values=Yes
+|allows_value=BSL-1, BSL-2, Chemical, Radiation, Laser
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

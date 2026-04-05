@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The identifier stamped on a physical key set (e.g., K-4521). Not used for keypad codes.
+|has_type=Text
+|display_label=Key Identifier
+|allows_multiple_values=Yes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

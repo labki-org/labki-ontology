@@ -4,7 +4,7 @@
 |has_parent_category=Agent
 |has_required_property=Has first name, Has last name
 |has_optional_property=Has birthday, Has middle name
-|has_optional_subobject=Has training record
+|has_optional_subobject=Has training record, Has access record
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]
