@@ -3,7 +3,7 @@
 |has_description=The type of access mechanism
 |has_type=Text
 |display_label=Access Type
-|allows_value=Physical Key, Keypad Code, Card Reader, Combination Lock
+|allows_value=Keypad Code, Card Reader, Combination Lock, Physical Keyed Lock
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

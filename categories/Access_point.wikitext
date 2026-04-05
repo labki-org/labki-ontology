@@ -3,7 +3,7 @@
 |has_description=A specific access mechanism (lock, keypad, card reader) controlling entry to a location
 |display_label=Access Point
 |has_required_property=Has name, Has location, Has access type
-|has_optional_property=Has key identifier, Has total copies, Has description, Has responsible party, Has required training
+|has_optional_property=Has description, Has key identifier, Has required training, Has responsible party, Has total keys issued
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]
