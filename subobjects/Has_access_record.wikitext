@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Subobject
+|has_description=A record of a person's access grant to a specific access point
+|display_label=Access Record
+|has_required_property=Has access point, Has date issued
+|has_optional_property=Has return date, Has notes, Has access status
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-subobject]]

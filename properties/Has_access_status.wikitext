@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Current status of an access grant
+|has_type=Text
+|display_label=Access Status
+|allows_value=Active, Returned, Revoked
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The date something was granted or issued
+|has_type=Date
+|display_label=Date Issued
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

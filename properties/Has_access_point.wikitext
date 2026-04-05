@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The access point (lock, keypad, card reader) that this record pertains to.
+|has_type=Page
+|display_label=Access Point
+|allows_value_from_category=Access point
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
