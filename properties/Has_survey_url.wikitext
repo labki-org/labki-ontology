@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Link to a feedback survey
+|has_type=URL
+|display_label=Survey URL
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

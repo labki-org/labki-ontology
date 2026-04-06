@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Who this resource is intended for
+|has_type=Text
+|display_label=Target Audience
+|allows_multiple_values=Yes
+|allows_value=new_user, experienced_user, developer, educator
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

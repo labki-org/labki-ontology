@@ -1,0 +1,11 @@
+{
+  "id": "Knowledge",
+  "label": "Knowledge",
+  "description": "Guides, curricula, and training events for tools and projects — documentation, structured learning paths, and community workshops",
+  "categories": [
+    "Guide",
+    "Curriculum",
+    "Workshop",
+    "Certificate"
+  ]
+}

@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=URL to badge image or digital credential
+|has_type=URL
+|display_label=Badge URL
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

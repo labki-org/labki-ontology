@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Category
+|has_description=A documentation or learning resource for a tool, technique, or workflow
+|has_required_property=Has name, Has guide type
+|has_optional_property=Has description, Has author, Has difficulty level, Has target audience, Has content format, Has component, Has project, Has version, Has url, Has prerequisite, Has recording url, Has SOP, Has equipment used, Has technique, Has attachment, Has notes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

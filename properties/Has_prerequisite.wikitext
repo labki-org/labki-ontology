@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=A guide, curriculum, or training that should be completed first
+|has_type=Page
+|display_label=Prerequisite
+|allows_multiple_values=Yes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

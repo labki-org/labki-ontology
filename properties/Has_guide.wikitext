@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Reference to a guide
+|has_type=Page
+|display_label=Guide
+|allows_value_from_category=Guide
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

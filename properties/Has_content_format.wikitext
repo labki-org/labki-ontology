@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Medium or format of the resource
+|has_type=Text
+|display_label=Content Format
+|allows_value=text, video, interactive, slides, mixed
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

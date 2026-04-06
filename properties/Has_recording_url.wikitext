@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Link to a recording of the event or resource
+|has_type=URL
+|display_label=Recording URL
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

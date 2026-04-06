@@ -3,7 +3,7 @@
 |has_description=The type of event
 |has_type=Text
 |display_label=Event Type
-|allows_value=Lab Meeting, Seminar, Workshop, Symposium, Conference, Community Meeting, Training, Defense, Social
+|allows_value=Lab Meeting, Seminar, Workshop, Symposium, Conference, Community Meeting, Training, Defense, Social, Webinar, Office Hours
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]
