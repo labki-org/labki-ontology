@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Reference to an Equipment or Material entity in a bill of materials
+|has_type=Page
+|display_label=Item
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

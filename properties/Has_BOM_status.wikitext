@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Procurement status of a BOM line item
+|has_type=Text
+|display_label=BOM Status
+|allows_value=needed, ordered, received, backordered
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

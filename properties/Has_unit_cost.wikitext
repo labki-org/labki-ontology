@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Cost per unit for a BOM line item
+|has_type=Number
+|display_label=Unit Cost
+|display_precision=2
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

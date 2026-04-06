@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The type of hardware component
+|has_type=Text
+|display_label=Hardware Type
+|allows_value=PCB, optical, mechanical, electrical, microfluidic, 3D_printed, machined, sensor, actuator, enclosure, custom_apparatus
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

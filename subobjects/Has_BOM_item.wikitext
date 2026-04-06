@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Subobject
+|has_description=A line item in a bill of materials — links to an Equipment or Material with quantity and procurement status
+|display_label=BOM Item
+|has_required_property=Has item, Has quantity, Has unit
+|has_optional_property=Has unit cost, Has BOM status, Has supplier, Has catalog number, Has notes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-subobject]]

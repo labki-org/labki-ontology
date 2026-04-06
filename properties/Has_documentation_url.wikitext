@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=URL to external documentation or user guide
+|has_type=URL
+|display_label=Documentation URL
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
