@@ -1,6 +1,7 @@
 <!-- OntologySync Start -->
 {{Dashboard
 |has_description=Project components, development status, and bill of materials tracking
+|has_dashboard_scope=module
 }}
 <!-- OntologySync End -->
 [[Category:Dashboard]]
