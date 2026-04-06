@@ -1,0 +1,81 @@
+<!-- OntologySync Start -->
+{{Dashboard
+|has_description=Central hub for guides, curricula, workshops, and certificates
+}}
+<!-- OntologySync End -->
+[[Category:Dashboard]]
+[[Category:OntologySync-managed-dashboard]]
+
+== Guides ==
+
+=== Recently Added ===
+{{#ask:
+ [[Category:Guide]]
+ |?Has guide type=Type
+ |?Has difficulty level=Level
+ |?Has component=Tool
+ |?Has content format=Format
+ |sort=Modification date
+ |order=desc
+ |limit=10
+ |format=table
+}}
+
+=== By Type ===
+{{#ask:
+ [[Category:Guide]]
+ |?Has guide type=Type
+ |?Has difficulty level=Level
+ |?Has component=Tool
+ |format=table
+ |sort=Has guide type
+}}
+
+== Curricula ==
+{{#ask:
+ [[Category:Curriculum]]
+ |?Has difficulty level=Level
+ |?Has target audience=Audience
+ |?Has component=Tool
+ |?Has description
+ |format=table
+}}
+
+== Certificates ==
+{{#ask:
+ [[Category:Certificate]]
+ |?Has criteria=Requirements
+ |?Has curriculum
+ |?Has badge url=Badge
+ |?Has organization=Issued By
+ |format=table
+}}
+
+== Workshops ==
+
+=== Upcoming ===
+{{#ask:
+ [[Category:Workshop]]
+ [[Has start date::>{{CURRENTYEAR}}-{{CURRENTMONTH}}-{{CURRENTDAY2}}]]
+ |?Has start date=Date
+ |?Has workshop format=Format
+ |?Has location
+ |?Has registration url=Register
+ |sort=Has start date
+ |order=asc
+ |format=table
+}}
+
+=== Recent ===
+{{#ask:
+ [[Category:Workshop]]
+ [[Has start date::<{{CURRENTYEAR}}-{{CURRENTMONTH}}-{{CURRENTDAY2}}]]
+ |?Has start date=Date
+ |?Has workshop format=Format
+ |?Has location
+ |?Has recording url=Recording
+ |sort=Has start date
+ |order=desc
+ |limit=10
+ |format=table
+}}

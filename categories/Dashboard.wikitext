@@ -1,0 +1,7 @@
+<!-- OntologySync Start -->
+{{Category
+|has_description=A wiki overview page with SMW queries for navigating and managing entities
+|has_optional_property=Has description, Has parent dashboard, Has sequence number, Has notes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

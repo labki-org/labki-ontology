@@ -1,0 +1,38 @@
+<!-- OntologySync Start -->
+{{Dashboard
+|has_description=All guides and curricula organized by the tool or component they document
+|has_parent_dashboard=Knowledge overview
+|has_sequence_number=1
+}}
+<!-- OntologySync End -->
+[[Category:Dashboard]]
+[[Category:OntologySync-managed-dashboard]]
+
+== Guides by Component ==
+
+This page lists all documentation resources grouped by the tool or component they cover. Use this to find everything available for a specific Miniscope or tool.
+
+{{#ask:
+ [[Category:Guide]]
+ [[Has component::+]]
+ |?Has component=Tool
+ |?Has guide type=Type
+ |?Has difficulty level=Level
+ |?Has content format=Format
+ |format=table
+ |sort=Has component, Has difficulty level
+ |headers=show
+}}
+
+== Components Without Guides ==
+
+Tools and components that do not yet have any associated documentation.
+
+{{#ask:
+ [[Category:Component]]
+ [[Has guide::!+]]
+ |?Has name
+ |?Has status
+ |format=table
+ |intro=''The following components have no guides yet:''
+}}
