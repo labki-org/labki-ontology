@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Software or content license
+|has_type=Text
+|display_label=License
+|allows_value=MIT, GPL-2.0, GPL-3.0, BSD-2-Clause, BSD-3-Clause, Apache-2.0, LGPL-3.0, CC-BY-4.0, CC-BY-SA-4.0, CC0-1.0, proprietary, other
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

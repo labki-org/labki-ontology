@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+{{Category
+|has_description=Software developed as part of a project — applications, libraries, firmware, scripts, plugins
+|display_label=Software Component
+|has_parent_category=Component
+|has_required_property=Has repository url
+|has_optional_property=Has programming language, Has license, Has documentation url
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

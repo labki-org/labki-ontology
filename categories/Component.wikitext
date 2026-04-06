@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Category
+|has_description=A distinct deliverable within a project — hardware, software, or computational
+|has_required_property=Has name, Has project
+|has_optional_property=Has description, Has version, Has status, Has responsible party, Has url, Has notes, Has SOP
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

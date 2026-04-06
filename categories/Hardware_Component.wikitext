@@ -1,0 +1,11 @@
+<!-- OntologySync Start -->
+{{Category
+|has_description=A physical component of a project — circuit boards, optics, mechanical assemblies, 3D printed parts, custom apparatus
+|display_label=Hardware Component
+|has_parent_category=Component
+|has_required_property=Has hardware type
+|has_optional_property=Has fabrication vendor, Has design file url
+|has_optional_subobject=Has BOM item
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

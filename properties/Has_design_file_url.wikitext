@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=URL to design files — CAD models, schematics, Gerber files, STL files
+|has_type=URL
+|display_label=Design File URL
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

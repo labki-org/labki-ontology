@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The type or format of input data (e.g., TIFF stack, CSV, NWB, FASTQ)
+|has_type=Text
+|display_label=Input Data Type
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Category
+|has_description=A data processing or analysis workflow — image processing, electrophysiology analysis, genomics, statistical modeling, machine learning
+|has_parent_category=Component
+|has_optional_property=Has input data type, Has output data type, Has programming language, Has repository url, Has computing environment, Has documentation url
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

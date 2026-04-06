@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The type or format of output data produced
+|has_type=Text
+|display_label=Output Data Type
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

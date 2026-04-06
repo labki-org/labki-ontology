@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=URL of the source code repository (e.g., GitHub, GitLab)
+|has_type=URL
+|display_label=Repository URL
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

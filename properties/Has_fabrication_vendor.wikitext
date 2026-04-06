@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The vendor or facility that fabricates or manufactures this component (e.g., JLCPCB, Protolabs, university machine shop)
+|has_type=Text
+|display_label=Fabrication Vendor
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

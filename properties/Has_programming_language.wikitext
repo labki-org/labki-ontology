@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Programming language(s) used
+|has_type=Text
+|display_label=Programming Language
+|allows_multiple_values=Yes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
