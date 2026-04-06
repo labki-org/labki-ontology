@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The kind of guide or documentation resource
+|has_type=Text
+|display_label=Guide Type
+|allows_value=tutorial, how-to, reference, troubleshooting, quickstart, video_walkthrough
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

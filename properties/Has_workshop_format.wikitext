@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=How the workshop or training event is delivered
+|has_type=Text
+|display_label=Workshop Format
+|allows_value=in_person, virtual, hybrid
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

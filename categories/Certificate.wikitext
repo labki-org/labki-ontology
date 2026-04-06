@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Category
+|has_description=A credential or badge earned by completing a curriculum or demonstrating proficiency with a tool
+|has_required_property=Has name, Has criteria
+|has_optional_property=Has description, Has curriculum, Has badge url, Has organization, Has url, Has notes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

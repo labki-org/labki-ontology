@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Requirements to earn a certificate or badge
+|has_type=Text
+|display_label=Criteria
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

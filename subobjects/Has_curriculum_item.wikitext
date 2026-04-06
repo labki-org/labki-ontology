@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Subobject
+|has_description=An ordered entry in a curriculum linking to a guide
+|display_label=Curriculum Item
+|has_required_property=Has guide, Has sequence number
+|has_optional_property=Has notes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-subobject]]

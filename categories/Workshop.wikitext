@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Category
+|has_description=A training event — in-person workshop, virtual webinar, hybrid session, or office hours
+|has_parent_category=Event
+|has_required_property=Has workshop format
+|has_optional_property=Has capacity, Has registration url, Has survey url, Has recording url, Has curriculum, Has target audience, Has url, Has notes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

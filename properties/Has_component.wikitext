@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The tool or component this resource documents or relates to
+|has_type=Page
+|display_label=Component
+|allows_multiple_values=Yes
+|allows_value_from_category=Component
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Link to event registration
+|has_type=URL
+|display_label=Registration URL
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

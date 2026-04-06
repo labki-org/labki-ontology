@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Link to a curriculum or learning path
+|has_type=Page
+|display_label=Curriculum
+|allows_value_from_category=Curriculum
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]
