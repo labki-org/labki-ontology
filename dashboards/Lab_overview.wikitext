@@ -1,7 +1,7 @@
 <!-- OntologySync Start -->
 {{Dashboard
 |has_description=Top-level overview of the research lab — people, projects, tools, equipment, and resources at a glance
-|has_dashboard_scope=bundle
+|has_dashboard_scope=Bundle
 }}
 <!-- OntologySync End -->
 [[Category:Dashboard]]
