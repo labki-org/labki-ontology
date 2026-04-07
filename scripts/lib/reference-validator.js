@@ -127,6 +127,38 @@ export function validateMediaReferences(entityIndex) {
           message: `Media file "${filename}" is ${(meta.sizeBytes / 1024 / 1024).toFixed(1)}MB (max 5MB recommended)`
         })
       }
+
+      // Validate JSON sidecar metadata
+      if (!meta.hasJsonFile) {
+        errors.push({
+          file: meta._filePath,
+          type: 'missing-media-metadata',
+          message: `Media file "${filename}" has no matching .json sidecar metadata file`
+        })
+      } else if (!meta.metadata) {
+        // JSON file exists but could not be parsed
+        errors.push({
+          file: meta._filePath,
+          type: 'malformed-media-metadata',
+          message: `Media file "${filename}" has a malformed .json sidecar metadata file`
+        })
+      } else {
+        // JSON parsed successfully — check required fields
+        if (!meta.metadata.source) {
+          errors.push({
+            file: meta._filePath,
+            type: 'missing-media-metadata-field',
+            message: `Media file "${filename}" metadata is missing required field "source"`
+          })
+        }
+        if (!meta.metadata.license) {
+          errors.push({
+            file: meta._filePath,
+            type: 'missing-media-metadata-field',
+            message: `Media file "${filename}" metadata is missing required field "license"`
+          })
+        }
+      }
     }
   }
 

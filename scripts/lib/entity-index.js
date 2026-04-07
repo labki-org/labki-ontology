@@ -125,11 +125,28 @@ export async function buildEntityIndex(rootDir = process.cwd()) {
       const ext = path.extname(filename).toLowerCase()
       if (!MEDIA_EXTENSIONS.has(ext)) continue
       const stat = fs.statSync(path.join(mediaDir, filename))
+
+      // Look for matching .json sidecar metadata file
+      const baseName = path.basename(filename, ext)
+      const jsonPath = path.join(mediaDir, baseName + '.json')
+      let metadata = null
+      let hasJsonFile = false
+      if (fs.existsSync(jsonPath)) {
+        hasJsonFile = true
+        try {
+          metadata = JSON.parse(fs.readFileSync(jsonPath, 'utf8'))
+        } catch (e) {
+          // JSON parse error — will be caught by validation
+        }
+      }
+
       index.media.set(filename, {
         id: filename,
         filename,
         extension: ext,
         sizeBytes: stat.size,
+        metadata,
+        hasJsonFile,
         _filePath: `media/${filename}`,
       })
     }

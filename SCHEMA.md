@@ -419,6 +419,38 @@ In the free-form body text of a resource (outside `<!-- OntologySync Start/End -
 
 On import, OntologySync rewrites references to `[[File:OntologySync-filename.png]]` to avoid collisions in the wiki's flat `File:` namespace.
 
+### JSON Sidecar Metadata
+
+Each media file **must** have a matching `.json` sidecar file with the same base name (e.g., `grin_lens_diagram.png` → `grin_lens_diagram.json`).
+
+#### Format
+
+```json
+{
+  "description": "Diagram showing GRIN lens refractive index gradient",
+  "source": "Aharoni Lab, UCLA",
+  "license": "CC-BY-4.0",
+  "author": "Daniel Aharoni"
+}
+```
+
+#### Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `source` | string | Yes | Where the file came from (e.g. lab name, URL) |
+| `license` | string | Yes | License identifier for the file |
+| `description` | string | No | Human-readable description of the file content |
+| `author` | string | No | Creator of the file |
+
+#### Common License Values
+
+- `CC-BY-4.0` — Creative Commons Attribution 4.0
+- `CC-BY-SA-4.0` — Creative Commons Attribution-ShareAlike 4.0
+- `CC0-1.0` — Creative Commons Zero (public domain dedication)
+- `original` — Lab-created content (no external license)
+- `public-domain` — Public domain
+
 ### Maximum File Size
 
 Maximum recommended file size: **5MB**

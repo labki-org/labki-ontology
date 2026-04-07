@@ -357,6 +357,8 @@ describe('validateMediaReferences', () => {
           filename: 'large_image.png',
           extension: '.png',
           sizeBytes: 6 * 1024 * 1024, // 6MB
+          metadata: { source: 'Test', license: 'CC0-1.0' },
+          hasJsonFile: true,
           _filePath: 'media/large_image.png'
         }]
       ])
@@ -385,6 +387,8 @@ describe('validateMediaReferences', () => {
           filename: 'photo.png',
           extension: '.png',
           sizeBytes: 1024,
+          metadata: { source: 'Test', license: 'CC0-1.0' },
+          hasJsonFile: true,
           _filePath: 'media/photo.png'
         }]
       ])
@@ -411,5 +415,173 @@ describe('validateMediaReferences', () => {
 
     assert.strictEqual(result.errors.length, 0)
     assert.strictEqual(result.warnings.length, 0)
+  })
+
+  describe('Media metadata validation', () => {
+    test('error when media file has no matching JSON sidecar', () => {
+      const index = createMockEntityIndex({
+        resources: new Map(),
+        media: new Map([
+          ['photo.png', {
+            id: 'photo.png',
+            filename: 'photo.png',
+            extension: '.png',
+            sizeBytes: 1024,
+            metadata: null,
+            hasJsonFile: false,
+            _filePath: 'media/photo.png'
+          }]
+        ])
+      })
+
+      const result = validateMediaReferences(index)
+
+      const metaErrors = result.errors.filter(e => e.type === 'missing-media-metadata')
+      assert.strictEqual(metaErrors.length, 1)
+      assert.ok(metaErrors[0].message.includes('photo.png'))
+      assert.ok(metaErrors[0].message.includes('no matching .json sidecar'))
+    })
+
+    test('error when JSON sidecar is malformed', () => {
+      const index = createMockEntityIndex({
+        resources: new Map(),
+        media: new Map([
+          ['photo.png', {
+            id: 'photo.png',
+            filename: 'photo.png',
+            extension: '.png',
+            sizeBytes: 1024,
+            metadata: null,
+            hasJsonFile: true,
+            _filePath: 'media/photo.png'
+          }]
+        ])
+      })
+
+      const result = validateMediaReferences(index)
+
+      const metaErrors = result.errors.filter(e => e.type === 'malformed-media-metadata')
+      assert.strictEqual(metaErrors.length, 1)
+      assert.ok(metaErrors[0].message.includes('malformed'))
+    })
+
+    test('error when JSON is missing source field', () => {
+      const index = createMockEntityIndex({
+        resources: new Map(),
+        media: new Map([
+          ['photo.png', {
+            id: 'photo.png',
+            filename: 'photo.png',
+            extension: '.png',
+            sizeBytes: 1024,
+            metadata: { license: 'CC-BY-4.0' },
+            hasJsonFile: true,
+            _filePath: 'media/photo.png'
+          }]
+        ])
+      })
+
+      const result = validateMediaReferences(index)
+
+      const fieldErrors = result.errors.filter(e => e.type === 'missing-media-metadata-field')
+      assert.strictEqual(fieldErrors.length, 1)
+      assert.ok(fieldErrors[0].message.includes('"source"'))
+    })
+
+    test('error when JSON is missing license field', () => {
+      const index = createMockEntityIndex({
+        resources: new Map(),
+        media: new Map([
+          ['photo.png', {
+            id: 'photo.png',
+            filename: 'photo.png',
+            extension: '.png',
+            sizeBytes: 1024,
+            metadata: { source: 'Aharoni Lab, UCLA' },
+            hasJsonFile: true,
+            _filePath: 'media/photo.png'
+          }]
+        ])
+      })
+
+      const result = validateMediaReferences(index)
+
+      const fieldErrors = result.errors.filter(e => e.type === 'missing-media-metadata-field')
+      assert.strictEqual(fieldErrors.length, 1)
+      assert.ok(fieldErrors[0].message.includes('"license"'))
+    })
+
+    test('pass when all metadata is valid with required fields only', () => {
+      const index = createMockEntityIndex({
+        resources: new Map(),
+        media: new Map([
+          ['photo.png', {
+            id: 'photo.png',
+            filename: 'photo.png',
+            extension: '.png',
+            sizeBytes: 1024,
+            metadata: { source: 'Aharoni Lab, UCLA', license: 'CC-BY-4.0' },
+            hasJsonFile: true,
+            _filePath: 'media/photo.png'
+          }]
+        ])
+      })
+
+      const result = validateMediaReferences(index)
+
+      assert.strictEqual(result.errors.length, 0)
+      assert.strictEqual(result.warnings.length, 0)
+    })
+
+    test('optional fields (description, author) do not cause errors when missing', () => {
+      const index = createMockEntityIndex({
+        resources: new Map(),
+        media: new Map([
+          ['photo.png', {
+            id: 'photo.png',
+            filename: 'photo.png',
+            extension: '.png',
+            sizeBytes: 1024,
+            metadata: { source: 'Aharoni Lab, UCLA', license: 'CC-BY-4.0' },
+            hasJsonFile: true,
+            _filePath: 'media/photo.png'
+          }]
+        ])
+      })
+
+      const result = validateMediaReferences(index)
+
+      assert.strictEqual(result.errors.length, 0)
+      // Verify no errors about description or author
+      const fieldErrors = result.errors.filter(e => e.type === 'missing-media-metadata-field')
+      assert.strictEqual(fieldErrors.length, 0)
+    })
+
+    test('pass when all metadata fields are present including optional', () => {
+      const index = createMockEntityIndex({
+        resources: new Map(),
+        media: new Map([
+          ['photo.png', {
+            id: 'photo.png',
+            filename: 'photo.png',
+            extension: '.png',
+            sizeBytes: 1024,
+            metadata: {
+              source: 'Aharoni Lab, UCLA',
+              license: 'CC-BY-4.0',
+              description: 'A test photo',
+              author: 'Daniel Aharoni'
+            },
+            hasJsonFile: true,
+            _filePath: 'media/photo.png'
+          }]
+        ])
+      })
+
+      const result = validateMediaReferences(index)
+
+      assert.strictEqual(result.errors.length, 0)
+      assert.strictEqual(result.warnings.length, 0)
+    })
   })
 })
