@@ -1,7 +1,7 @@
 <!-- OntologySync Start -->
 {{Dashboard
 |has_description=Guides and curricula organized by difficulty level for structured learning
-|has_parent_dashboard=Knowledge overview
+|has_parent_dashboard=OntologyDashboard:Knowledge overview
 |has_sequence_number=2
 }}
 <!-- OntologySync End -->

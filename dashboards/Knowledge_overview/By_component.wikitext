@@ -1,7 +1,7 @@
 <!-- OntologySync Start -->
 {{Dashboard
 |has_description=All guides and curricula organized by the tool or component they document
-|has_parent_dashboard=Knowledge overview
+|has_parent_dashboard=OntologyDashboard:Knowledge overview
 |has_sequence_number=1
 }}
 <!-- OntologySync End -->
