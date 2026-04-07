@@ -1,7 +1,7 @@
 <!-- OntologySync Start -->
 {{Dashboard
 |has_description=Workshop and training event tracking for planning and NIH progress reporting
-|has_dashboard_scope=module
+|has_dashboard_scope=Module
 }}
 <!-- OntologySync End -->
 [[Category:Dashboard]]
