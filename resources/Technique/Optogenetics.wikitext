@@ -1,0 +1,17 @@
+<!-- OntologySync Start -->
+{{Technique
+|has_description=Genetically targeted control of neural activity using light-sensitive proteins
+}}
+<!-- OntologySync End -->
+[[Category:Technique]]
+[[Category:OntologySync-managed-resource]]
+
+Optogenetics uses light-sensitive proteins (opsins) expressed in specific neuron populations to activate or silence those neurons with light. This allows causal manipulation of neural circuits during behavior.
+
+== Common Opsins ==
+* '''Channelrhodopsin (ChR2)''' — activates neurons with blue light
+* '''Halorhodopsin (NpHR)''' — inhibits neurons with yellow light
+* '''Archaerhodopsin (Arch)''' — inhibits neurons with green light
+
+== Relation to Miniscope ==
+Integrated Miniscope designs can combine calcium imaging with optogenetic stimulation, enabling simultaneous observation and manipulation of neural circuits in freely behaving animals. Spectral separation between the imaging indicator and the opsin is critical to avoid crosstalk.

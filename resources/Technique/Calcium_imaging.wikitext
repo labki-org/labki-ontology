@@ -1,0 +1,17 @@
+<!-- OntologySync Start -->
+{{Technique
+|has_description=Optical recording of neural activity using fluorescent calcium indicators
+}}
+<!-- OntologySync End -->
+[[Category:Technique]]
+[[Category:OntologySync-managed-resource]]
+
+Calcium imaging uses fluorescent indicators (chemical dyes or genetically encoded sensors like GCaMP) to visualize changes in intracellular calcium concentration, which serves as a proxy for neural activity. When a neuron fires, calcium floods the cell and the indicator fluoresces, allowing optical detection of activity across large populations of neurons simultaneously.
+
+== Key Variants ==
+* '''One-photon (widefield) calcium imaging''' — used by Miniscopes for deep-brain imaging in freely behaving animals
+* '''Two-photon calcium imaging''' — higher spatial resolution, typically requires head fixation
+* '''Fiber photometry''' — bulk fluorescence signal through an optical fiber, no single-cell resolution
+
+== Relation to Miniscope ==
+The Miniscope platform is designed primarily for one-photon calcium imaging in freely moving animals. A GRIN lens is implanted above the brain region of interest, and the Miniscope sits on top to capture fluorescence changes in real time.

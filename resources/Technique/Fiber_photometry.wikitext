@@ -1,0 +1,20 @@
+<!-- OntologySync Start -->
+{{Technique
+|has_description=Bulk fluorescence measurement of neural activity through an implanted optical fiber
+}}
+<!-- OntologySync End -->
+[[Category:Technique]]
+[[Category:OntologySync-managed-resource]]
+
+Fiber photometry measures aggregate fluorescence signals from a population of neurons through a single optical fiber. Unlike calcium imaging with a Miniscope, it does not provide single-cell resolution, but it is simpler to implement and can record from multiple brain regions simultaneously using multi-fiber setups.
+
+== Typical Setup ==
+* An optical fiber is implanted above the target brain region
+* Excitation light is delivered through the fiber
+* Emitted fluorescence travels back through the same fiber to a photodetector
+* Signal reflects the summed activity of all labeled neurons in the field of view
+
+== Use Cases ==
+* Monitoring activity in genetically defined cell populations during behavior
+* Multi-region recordings with low surgical complexity
+* Experiments where single-cell resolution is not required

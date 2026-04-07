@@ -1,10 +1,10 @@
 <!-- OntologySync Start -->
 {{Property
-|has_description=Technique or method this equipment supports
+|has_description=Reference to a glossary term
 |has_type=Page
-|display_label=Technique
+|display_label=Glossary Term
 |allows_multiple_values=Yes
-|allows_value_from_category=Technique
+|allows_value_from_category=Glossary
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

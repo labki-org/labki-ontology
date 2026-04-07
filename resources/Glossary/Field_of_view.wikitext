@@ -1,0 +1,14 @@
+<!-- OntologySync Start -->
+{{Glossary
+|has_definition=The area of brain tissue visible through the Miniscope at a given time, determined by the optics and GRIN lens diameter
+}}
+<!-- OntologySync End -->
+[[Category:Glossary]]
+[[Category:OntologySync-managed-resource]]
+
+The field of view (FOV) defines how much tissue the Miniscope can image simultaneously. It is primarily determined by the diameter of the GRIN lens and the Miniscope's optical magnification. A larger FOV captures more neurons but may reduce spatial resolution.
+
+== Typical Values ==
+* 0.5 mm GRIN lens: ~350 um FOV
+* 1.0 mm GRIN lens: ~700 um FOV
+* Miniscope V4 with 1.0 mm GRIN: approximately 600-700 um diameter

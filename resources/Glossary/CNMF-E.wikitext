@@ -1,0 +1,12 @@
+<!-- OntologySync Start -->
+{{Glossary
+|has_definition=Constrained non-negative matrix factorization for endoscopic data — an algorithm for extracting individual neuron signals from one-photon calcium imaging recordings
+}}
+<!-- OntologySync End -->
+[[Category:Glossary]]
+[[Category:OntologySync-managed-resource]]
+
+CNMF-E is a computational method designed specifically for one-photon (Miniscope) calcium imaging data. It separates the fluorescence signal of individual neurons from the large, fluctuating background that is characteristic of single-photon widefield imaging through a GRIN lens.
+
+== Why It Matters ==
+One-photon imaging produces more background contamination than two-photon imaging. Standard cell extraction methods (e.g., PCA/ICA) struggle with this. CNMF-E models the background explicitly, enabling reliable extraction of individual neuron traces from Miniscope recordings.

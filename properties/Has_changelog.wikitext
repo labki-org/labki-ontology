@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Summary of changes in this release
+|has_type=Text
+|display_label=Changelog
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

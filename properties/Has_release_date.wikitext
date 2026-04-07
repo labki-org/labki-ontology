@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The date a release was published
+|has_type=Date
+|display_label=Release Date
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

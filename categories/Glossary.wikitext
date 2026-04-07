@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Category
+|has_description=A defined term or concept in the Miniscope and neuroscience domain
+|has_required_property=Has name, Has definition
+|has_optional_property=Has description, Has component, Has technique, Has related guide, Has url, Has notes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

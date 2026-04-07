@@ -1,10 +1,9 @@
 <!-- OntologySync Start -->
 {{Property
-|has_description=Technique or method this equipment supports
-|has_type=Page
-|display_label=Technique
+|has_description=URL to download this release
+|has_type=URL
+|display_label=Download URL
 |allows_multiple_values=Yes
-|allows_value_from_category=Technique
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

@@ -1,0 +1,12 @@
+<!-- OntologySync Start -->
+{{Glossary
+|has_definition=A small mounting plate cemented to the skull that allows repeatable attachment and detachment of the Miniscope
+}}
+<!-- OntologySync End -->
+[[Category:Glossary]]
+[[Category:OntologySync-managed-resource]]
+
+The base plate is permanently fixed to the animal's skull above the implanted GRIN lens. It provides a mechanical interface for snapping the Miniscope on and off between recording sessions. Proper base plate positioning during the initial attachment is critical — it determines the focal plane the Miniscope will image from for the life of the implant.
+
+== Base Plating Procedure ==
+The base plate is typically attached while the animal is under anesthesia. The Miniscope is connected, live imaging is used to find the optimal focal plane, and the base plate is then cemented in place with dental acrylic.
