@@ -3,7 +3,7 @@
 |has_description=Whether this dashboard belongs to a module or a bundle
 |has_type=Text
 |display_label=Dashboard Scope
-|allows_value=module, bundle
+|allows_value=Module, Bundle
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]
