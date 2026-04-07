@@ -1,0 +1,143 @@
+<!-- OntologySync Start -->
+{{Dashboard
+|has_description=Top-level overview of the research lab — people, projects, tools, equipment, and resources at a glance
+|has_dashboard_scope=bundle
+}}
+<!-- OntologySync End -->
+[[Category:Dashboard]]
+[[Category:OntologySync-managed-dashboard]]
+
+== Projects ==
+{{#ask:
+ [[Category:Project]]
+ |?Has PI=PI
+ |?Has activity status=Status
+ |?Has funding
+ |?Has goal
+ |format=table
+ |sort=Has activity status
+}}
+
+== People ==
+
+=== Researchers ===
+{{#ask:
+ [[Category:Researcher]]
+ |?Has first name=First
+ |?Has last name=Last
+ |?Has job title=Title
+ |?Has email
+ |format=table
+ |sort=Has last name
+}}
+
+=== Staff ===
+{{#ask:
+ [[Category:Staff]]
+ |?Has first name=First
+ |?Has last name=Last
+ |?Has job title=Title
+ |?Has email
+ |format=table
+ |sort=Has last name
+}}
+
+== Equipment ==
+{{#ask:
+ [[Category:Equipment]]
+ |?Has location
+ |?Has equipment status=Status
+ |?Has responsible party=Owner
+ |?Has manufacturer
+ |?Has model
+ |format=table
+ |sort=Has equipment status
+}}
+
+== Components ==
+
+=== Hardware ===
+{{#ask:
+ [[Category:Hardware Component]]
+ |?Has project=Project
+ |?Has hardware type=Type
+ |?Has status
+ |format=table
+ |limit=10
+}}
+
+=== Software ===
+{{#ask:
+ [[Category:Software Component]]
+ |?Has project=Project
+ |?Has repository url=Repository
+ |?Has status
+ |format=table
+ |limit=10
+}}
+
+== Knowledge & Training ==
+
+=== Recent Guides ===
+{{#ask:
+ [[Category:Guide]]
+ |?Has guide type=Type
+ |?Has difficulty level=Level
+ |?Has component=Tool
+ |sort=Modification date
+ |order=desc
+ |limit=5
+ |format=table
+}}
+
+=== Upcoming Workshops ===
+{{#ask:
+ [[Category:Workshop]]
+ [[Has start date::>{{CURRENTYEAR}}-{{CURRENTMONTH}}-{{CURRENTDAY2}}]]
+ |?Has start date=Date
+ |?Has workshop format=Format
+ |?Has location
+ |?Has registration url=Register
+ |sort=Has start date
+ |order=asc
+ |limit=5
+ |format=table
+}}
+
+=== Curricula ===
+{{#ask:
+ [[Category:Curriculum]]
+ |?Has difficulty level=Level
+ |?Has target audience=Audience
+ |?Has component=Tool
+ |format=table
+}}
+
+== Locations ==
+{{#ask:
+ [[Category:Location]]
+ |?Has location type=Type
+ |?Has building
+ |?Has room number=Room
+ |?Has parent location=Within
+ |format=table
+ |sort=Has building
+}}
+
+== Funding ==
+{{#ask:
+ [[Category:Funding]]
+ |?Has funder
+ |?Has funding amount=Amount
+ |?Has funding status=Status
+ |?Has start date=Start
+ |?Has end date=End
+ |format=table
+ |sort=Has funding status
+}}
+
+== Quick Links ==
+
+* [[OntologyDashboard:Knowledge overview|Knowledge Hub]] — Guides, curricula, certificates
+* [[OntologyDashboard:Workshop tracker|Workshop Tracker]] — Training events and surveys
+* [[OntologyDashboard:Engineering overview|Engineering]] — Components and BOMs

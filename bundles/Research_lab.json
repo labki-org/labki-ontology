@@ -15,5 +15,7 @@
     "Engineering",
     "Knowledge"
   ],
-  "dashboards": []
+  "dashboards": [
+    "Lab_overview"
+  ]
 }

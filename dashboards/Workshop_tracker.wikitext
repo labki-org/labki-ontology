@@ -1,0 +1,79 @@
+<!-- OntologySync Start -->
+{{Dashboard
+|has_description=Workshop and training event tracking for planning and NIH progress reporting
+|has_dashboard_scope=Module
+}}
+<!-- OntologySync End -->
+[[Category:Dashboard]]
+[[Category:OntologySync-managed-dashboard]]
+
+== Upcoming Workshops ==
+{{#ask:
+ [[Category:Workshop]]
+ [[Has start date::>{{CURRENTYEAR}}-{{CURRENTMONTH}}-{{CURRENTDAY2}}]]
+ |?Has start date=Date
+ |?Has end date=End
+ |?Has workshop format=Format
+ |?Has location
+ |?Has capacity
+ |?Has curriculum
+ |?Has registration url=Registration
+ |sort=Has start date
+ |order=asc
+ |format=table
+}}
+
+== Past Workshops ==
+{{#ask:
+ [[Category:Workshop]]
+ [[Has start date::<{{CURRENTYEAR}}-{{CURRENTMONTH}}-{{CURRENTDAY2}}]]
+ |?Has start date=Date
+ |?Has end date=End
+ |?Has workshop format=Format
+ |?Has location
+ |?Has participant=Participants
+ |?Has survey url=Survey
+ |?Has recording url=Recording
+ |sort=Has start date
+ |order=desc
+ |format=table
+}}
+
+== Summary by Format ==
+{{#ask:
+ [[Category:Workshop]]
+ [[Has workshop format::in_person]]
+ |format=count
+ |intro='''In-person:'''
+}}
+
+{{#ask:
+ [[Category:Workshop]]
+ [[Has workshop format::virtual]]
+ |format=count
+ |intro='''Virtual:'''
+}}
+
+{{#ask:
+ [[Category:Workshop]]
+ [[Has workshop format::hybrid]]
+ |format=count
+ |intro='''Hybrid:'''
+}}
+
+== All Events ==
+
+For non-workshop events (webinars, office hours), see also:
+
+{{#ask:
+ [[Category:Event]]
+ [[Has event type::Webinar||Office Hours]]
+ |?Has start date=Date
+ |?Has event type=Type
+ |?Has location
+ |?Has recording url=Recording
+ |sort=Has start date
+ |order=desc
+ |limit=20
+ |format=table
+}}

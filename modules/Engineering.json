@@ -7,5 +7,8 @@
     "Hardware_Component",
     "Software_Component",
     "Pipeline"
+  ],
+  "dashboards": [
+    "Engineering_overview"
   ]
 }

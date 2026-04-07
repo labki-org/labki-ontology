@@ -1,0 +1,93 @@
+<!-- OntologySync Start -->
+{{Dashboard
+|has_description=Project components, development status, and bill of materials tracking
+|has_dashboard_scope=Module
+}}
+<!-- OntologySync End -->
+[[Category:Dashboard]]
+[[Category:OntologySync-managed-dashboard]]
+
+== Components by Type ==
+
+=== Hardware ===
+{{#ask:
+ [[Category:Hardware Component]]
+ |?Has project=Project
+ |?Has hardware type=Type
+ |?Has status
+ |?Has responsible party=Lead
+ |?Has design file url=Design Files
+ |format=table
+}}
+
+=== Software ===
+{{#ask:
+ [[Category:Software Component]]
+ |?Has project=Project
+ |?Has repository url=Repository
+ |?Has programming language=Language
+ |?Has license
+ |?Has status
+ |format=table
+}}
+
+=== Pipelines ===
+{{#ask:
+ [[Category:Pipeline]]
+ |?Has project=Project
+ |?Has input data type=Input
+ |?Has output data type=Output
+ |?Has computing environment=Environment
+ |?Has repository url=Repository
+ |?Has status
+ |format=table
+}}
+
+== Components by Project ==
+{{#ask:
+ [[Category:Component]]
+ |?Has project=Project
+ |?Has status
+ |?Has responsible party=Lead
+ |format=table
+ |sort=Has project
+}}
+
+== BOM Status ==
+
+=== Items Needing Attention ===
+{{#ask:
+ [[Category:Hardware Component]]
+ [[Has BOM item.Has BOM status::needed||ordered||backordered]]
+ |?Has name
+ |?Has BOM item.Has item=Item
+ |?Has BOM item.Has quantity=Qty
+ |?Has BOM item.Has BOM status=Status
+ |?Has BOM item.Has supplier=Supplier
+ |format=table
+}}
+
+=== All BOM Items ===
+{{#ask:
+ [[Category:Hardware Component]]
+ [[Has BOM item.Has item::+]]
+ |?Has name=Component
+ |?Has BOM item.Has item=Item
+ |?Has BOM item.Has quantity=Qty
+ |?Has BOM item.Has unit=Unit
+ |?Has BOM item.Has unit cost=Cost
+ |?Has BOM item.Has BOM status=Status
+ |?Has BOM item.Has catalog number=Catalog #
+ |format=table
+}}
+
+== Documentation Coverage ==
+
+Components that have associated guides:
+{{#ask:
+ [[Category:Component]]
+ [[Has component of::+]]
+ |?Has name
+ |?Has component of=Guides
+ |format=table
+}}
