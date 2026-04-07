@@ -1,0 +1,11 @@
+<!-- OntologySync Start -->
+{{Glossary
+|has_definition=An experimental condition in which the animal can move and behave naturally while neural recordings are collected
+}}
+<!-- OntologySync End -->
+[[Category:Glossary]]
+[[Category:OntologySync-managed-resource]]
+
+Freely behaving recordings allow researchers to study neural activity during natural behaviors such as exploration, social interaction, learning, and decision-making. This is a key advantage of the Miniscope platform over traditional two-photon microscopy, which typically requires the animal to be head-fixed.
+
+The lightweight, head-mounted design of the Miniscope is specifically engineered to minimize impact on the animal's natural behavior while recording from hundreds of neurons simultaneously.

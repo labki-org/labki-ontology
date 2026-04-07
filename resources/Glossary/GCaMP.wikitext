@@ -1,0 +1,15 @@
+<!-- OntologySync Start -->
+{{Glossary
+|has_definition=A genetically encoded calcium indicator (GECI) that fluoresces green when bound to calcium, used to optically report neural activity
+}}
+<!-- OntologySync End -->
+[[Category:Glossary]]
+[[Category:OntologySync-managed-resource]]
+
+GCaMP is a fusion protein combining GFP (green fluorescent protein), calmodulin, and the M13 peptide. When intracellular calcium rises (as occurs during neural activity), calmodulin binds calcium and undergoes a conformational change that increases GFP fluorescence. This makes GCaMP the most widely used indicator for calcium imaging in neuroscience.
+
+== Common Variants ==
+* '''GCaMP6f''' — fast kinetics, lower sensitivity
+* '''GCaMP6s''' — slow kinetics, higher sensitivity
+* '''GCaMP7/8''' — newer generations with improved signal-to-noise
+* '''jGCaMP8''' — Janelia-optimized variants with faster rise times

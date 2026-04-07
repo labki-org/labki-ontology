@@ -1,0 +1,14 @@
+<!-- OntologySync Start -->
+{{Glossary
+|has_definition=A gradient-index lens implanted in the brain to relay images from deep tissue to the Miniscope sensor
+}}
+<!-- OntologySync End -->
+[[Category:Glossary]]
+[[Category:OntologySync-managed-resource]]
+
+A GRIN (gradient-index) lens is a cylindrical optical element whose refractive index varies radially, causing light to follow curved paths through the lens. In Miniscope applications, a GRIN lens is surgically implanted above a brain region of interest to act as an optical relay, bringing the focal plane from deep brain structures up to the surface where the Miniscope can image it.
+
+== Key Properties ==
+* Typical diameters: 0.5 mm, 1.0 mm
+* Typical lengths: 4-8 mm depending on target depth
+* Can be used as a single element or in a compound (relay + objective) configuration

@@ -1,0 +1,18 @@
+<!-- OntologySync Start -->
+{{Technique
+|has_description=Direct electrical recording of neural activity using electrodes
+}}
+<!-- OntologySync End -->
+[[Category:Technique]]
+[[Category:OntologySync-managed-resource]]
+
+Electrophysiology records the electrical signals produced by neurons using implanted electrodes. It provides high temporal resolution (sub-millisecond) and can detect individual action potentials (spikes), making it complementary to optical approaches like calcium imaging.
+
+== Key Variants ==
+* '''Single-unit recording''' — isolating the activity of individual neurons
+* '''Multi-electrode arrays''' — simultaneous recording from many neurons
+* '''Local field potentials (LFP)''' — lower-frequency signals reflecting population activity
+* '''EEG/ECoG''' — surface-level recordings for broader spatial coverage
+
+== Relation to Miniscope ==
+Some Miniscope variants support simultaneous electrophysiology and imaging, allowing researchers to correlate optical calcium signals with electrical recordings from the same brain region.

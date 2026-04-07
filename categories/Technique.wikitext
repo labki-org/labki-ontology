@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Category
+|has_description=A scientific method or experimental technique — calcium imaging, fiber photometry, electrophysiology, etc.
+|has_required_property=Has name
+|has_optional_property=Has description, Has component, Has equipment used, Has related guide, Has url, Has notes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

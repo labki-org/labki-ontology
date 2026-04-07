@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=A concise definition of a term or concept
+|has_type=Text
+|display_label=Definition
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

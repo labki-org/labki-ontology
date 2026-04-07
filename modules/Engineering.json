@@ -1,12 +1,13 @@
 {
   "id": "Engineering",
   "label": "Engineering",
-  "description": "Project components, bills of materials, and development tracking for hardware, software, and computational work",
+  "description": "Project components, releases, bills of materials, and development tracking for hardware, software, and computational work",
   "categories": [
     "Component",
     "Hardware_Component",
     "Software_Component",
-    "Pipeline"
+    "Pipeline",
+    "Release"
   ],
   "dashboards": [
     "Engineering_overview"
