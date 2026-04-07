@@ -90,3 +90,45 @@ export function validateReferences(entityIndex) {
 
   return { errors, warnings }
 }
+
+/**
+ * Validate media references in resources.
+ *
+ * Checks that [[File:X]] references in resource wikitext point to files
+ * that exist in the media/ directory, and warns about oversized files.
+ *
+ * @param {Object} entityIndex - Entity index from buildEntityIndex
+ * @returns {{errors: Array, warnings: Array}} Validation results
+ */
+export function validateMediaReferences(entityIndex) {
+  const errors = []
+  const warnings = []
+  const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+
+  for (const [entityId, entity] of entityIndex.resources) {
+    const refs = entity._mediaRefs || []
+    for (const filename of refs) {
+      if (!entityIndex.media || !entityIndex.media.has(filename)) {
+        errors.push({
+          file: entity._filePath,
+          type: 'missing-media',
+          message: `Missing media file "${filename}" referenced via [[File:${filename}]]`
+        })
+      }
+    }
+  }
+
+  if (entityIndex.media) {
+    for (const [filename, meta] of entityIndex.media) {
+      if (meta.sizeBytes > MAX_FILE_SIZE) {
+        warnings.push({
+          file: meta._filePath,
+          type: 'media-size',
+          message: `Media file "${filename}" is ${(meta.sizeBytes / 1024 / 1024).toFixed(1)}MB (max 5MB recommended)`
+        })
+      }
+    }
+  }
+
+  return { errors, warnings }
+}

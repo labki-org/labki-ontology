@@ -47,5 +47,24 @@ export function findOrphanedEntities(entityIndex) {
     }
   }
 
+  // Detect orphaned media files
+  if (entityIndex.media) {
+    const referencedMedia = new Set()
+    for (const [, entity] of entityIndex.resources) {
+      for (const ref of (entity._mediaRefs || [])) {
+        referencedMedia.add(ref)
+      }
+    }
+    for (const [filename, meta] of entityIndex.media) {
+      if (!referencedMedia.has(filename)) {
+        warnings.push({
+          file: meta._filePath,
+          type: 'orphaned-media',
+          message: `Media file "${filename}" is not referenced by any resource`
+        })
+      }
+    }
+  }
+
   return { warnings }
 }

@@ -1,6 +1,6 @@
 import { describe, test } from 'node:test'
 import assert from 'node:assert'
-import { validateReferences, REFERENCE_FIELDS } from './reference-validator.js'
+import { validateReferences, validateMediaReferences, REFERENCE_FIELDS } from './reference-validator.js'
 import { createMockEntityIndex, createDependencyChainIndex, createReferenceTestIndex } from '../__fixtures__/mock-entity-index.js'
 
 describe('validateReferences', () => {
@@ -325,5 +325,91 @@ describe('REFERENCE_FIELDS', () => {
     assert.strictEqual(REFERENCE_FIELDS.modules.categories, 'categories')
     assert.strictEqual(REFERENCE_FIELDS.modules.dashboards, 'dashboards')
     assert.strictEqual(Object.keys(REFERENCE_FIELDS.modules).length, 2)
+  })
+})
+
+describe('validateMediaReferences', () => {
+  test('returns error for missing media file', () => {
+    const index = createMockEntityIndex({
+      resources: new Map([
+        ['Person/John_doe', {
+          id: 'Person/John_doe',
+          _mediaRefs: ['missing_image.png'],
+          _filePath: 'resources/Person/John_doe.wikitext'
+        }]
+      ]),
+      media: new Map()
+    })
+
+    const result = validateMediaReferences(index)
+
+    assert.strictEqual(result.errors.length, 1)
+    assert.strictEqual(result.errors[0].type, 'missing-media')
+    assert.ok(result.errors[0].message.includes('missing_image.png'))
+  })
+
+  test('returns warning for oversized media file', () => {
+    const index = createMockEntityIndex({
+      resources: new Map(),
+      media: new Map([
+        ['large_image.png', {
+          id: 'large_image.png',
+          filename: 'large_image.png',
+          extension: '.png',
+          sizeBytes: 6 * 1024 * 1024, // 6MB
+          _filePath: 'media/large_image.png'
+        }]
+      ])
+    })
+
+    const result = validateMediaReferences(index)
+
+    assert.strictEqual(result.errors.length, 0)
+    assert.strictEqual(result.warnings.length, 1)
+    assert.strictEqual(result.warnings[0].type, 'media-size')
+    assert.ok(result.warnings[0].message.includes('6.0MB'))
+  })
+
+  test('passes when all media references are valid', () => {
+    const index = createMockEntityIndex({
+      resources: new Map([
+        ['Person/John_doe', {
+          id: 'Person/John_doe',
+          _mediaRefs: ['photo.png'],
+          _filePath: 'resources/Person/John_doe.wikitext'
+        }]
+      ]),
+      media: new Map([
+        ['photo.png', {
+          id: 'photo.png',
+          filename: 'photo.png',
+          extension: '.png',
+          sizeBytes: 1024,
+          _filePath: 'media/photo.png'
+        }]
+      ])
+    })
+
+    const result = validateMediaReferences(index)
+
+    assert.strictEqual(result.errors.length, 0)
+    assert.strictEqual(result.warnings.length, 0)
+  })
+
+  test('passes when resources have no media refs', () => {
+    const index = createMockEntityIndex({
+      resources: new Map([
+        ['Person/John_doe', {
+          id: 'Person/John_doe',
+          _filePath: 'resources/Person/John_doe.wikitext'
+        }]
+      ]),
+      media: new Map()
+    })
+
+    const result = validateMediaReferences(index)
+
+    assert.strictEqual(result.errors.length, 0)
+    assert.strictEqual(result.warnings.length, 0)
   })
 })

@@ -7,7 +7,7 @@ import { GLOB_IGNORE_PATTERNS } from './lib/constants.js'
 
 // Reference validation modules
 import { buildEntityIndex } from './lib/entity-index.js'
-import { validateReferences } from './lib/reference-validator.js'
+import { validateReferences, validateMediaReferences } from './lib/reference-validator.js'
 import { validateConstraints } from './lib/constraint-validator.js'
 import { findOrphanedEntities } from './lib/orphan-detector.js'
 import { detectCycles } from './lib/cycle-detector.js'
@@ -465,6 +465,9 @@ async function main() {
     // Run reference validation
     const { errors: referenceErrors, warnings: referenceWarnings } = validateReferences(entityIndex)
 
+    // Run media reference validation
+    const { errors: mediaErrors, warnings: mediaWarnings } = validateMediaReferences(entityIndex)
+
     // Run constraint validation
     const { errors: constraintErrors } = validateConstraints(entityIndex)
 
@@ -475,8 +478,8 @@ async function main() {
     const { errors: cycleErrors } = detectCycles(entityIndex)
 
     // Combine all errors and warnings
-    const allErrors = [...schemaErrors, ...referenceErrors, ...constraintErrors, ...cycleErrors]
-    const allWarnings = [...referenceWarnings, ...orphanWarnings]
+    const allErrors = [...schemaErrors, ...referenceErrors, ...mediaErrors, ...constraintErrors, ...cycleErrors]
+    const allWarnings = [...referenceWarnings, ...mediaWarnings, ...orphanWarnings]
 
     // Get total entity count (always from full discovery for accurate reporting)
     const allFiles = await discoverFiles()

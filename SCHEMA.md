@@ -388,6 +388,43 @@ Category memberships appear outside the markers. Resources belong to both their 
 
 ---
 
+## Media
+
+Media files (images, diagrams) can be referenced from the free-form body text of resource wikitext files. OntologySync handles uploading these files to the wiki and rewriting references to avoid collisions in the wiki's flat `File:` namespace.
+
+### File Location
+
+`media/{filename}.{ext}`
+
+### Allowed Extensions
+
+`.png`, `.jpg`, `.jpeg`, `.gif`, `.svg`, `.webp`
+
+### Naming
+
+- Lowercase with underscores (e.g. `miniscope_v4_diagram.png`)
+- Filenames must be unique across all resources
+
+### Reference Syntax
+
+In the free-form body text of a resource (outside `<!-- OntologySync Start/End -->` markers):
+
+```wikitext
+[[File:filename.png]]
+[[File:filename.png|thumb|Caption text]]
+[[File:filename.png|200px|left|alt=Alt text]]
+```
+
+### OntologySync Rewriting
+
+On import, OntologySync rewrites references to `[[File:OntologySync-filename.png]]` to avoid collisions in the wiki's flat `File:` namespace.
+
+### Maximum File Size
+
+Maximum recommended file size: **5MB**
+
+---
+
 ## Module
 
 A Module is a logical grouping of related categories. Modules declare which categories they contain; dependency resolution (properties, subobjects, templates, resources) is handled at install time by OntologySync.
@@ -503,6 +540,7 @@ labki-ontology/
 ├── resources/                     # Resource .wikitext files (directory-based)
 │   └── Person/
 │       └── John_doe.wikitext
+├── media/                         # Media files (images, diagrams)
 ├── modules/                       # Module definitions
 │   ├── Core.vocab.json            # Source definition
 │   └── Core/

@@ -22,7 +22,8 @@ export function createMockEntityIndex(overrides = {}) {
     modules: overrides.modules ?? new Map(),
     bundles: overrides.bundles ?? new Map(),
     dashboards: overrides.dashboards ?? new Map(),
-    resources: overrides.resources ?? new Map()
+    resources: overrides.resources ?? new Map(),
+    media: overrides.media ?? new Map()
   }
 }
 

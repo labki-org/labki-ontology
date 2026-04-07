@@ -5,6 +5,7 @@ import {
   toEntityKey,
   extractTemplateCall,
   extractCategories,
+  extractFileReferences,
   parseCategory,
   parseProperty,
   parseSubobject,
@@ -286,5 +287,93 @@ describe('parseFilePath', () => {
     assert.deepStrictEqual(parseFilePath('bundles/Default.json'), {
       entityType: 'bundles', entityKey: 'Default', fileType: 'json',
     })
+  })
+})
+
+describe('extractFileReferences', () => {
+  it('extracts file references outside OntologySync markers', () => {
+    const wikitext = `<!-- OntologySync Start -->
+{{Person
+|has_name=John Doe
+}}
+<!-- OntologySync End -->
+[[Category:Person]]
+Here is a diagram:
+[[File:miniscope_v4.png]]`
+
+    const refs = extractFileReferences(wikitext)
+    assert.deepStrictEqual(refs, ['miniscope_v4.png'])
+  })
+
+  it('ignores file references inside OntologySync markers', () => {
+    const wikitext = `<!-- OntologySync Start -->
+{{Person
+|has_name=John Doe
+}}
+[[File:inside_marker.png]]
+<!-- OntologySync End -->
+[[File:outside_marker.png]]`
+
+    const refs = extractFileReferences(wikitext)
+    assert.deepStrictEqual(refs, ['outside_marker.png'])
+  })
+
+  it('handles pipe options in file references', () => {
+    const wikitext = `Some text
+[[File:diagram.png|thumb|200px|A nice diagram]]
+More text`
+
+    const refs = extractFileReferences(wikitext)
+    assert.deepStrictEqual(refs, ['diagram.png'])
+  })
+
+  it('extracts multiple file references from a single line', () => {
+    const wikitext = `Compare [[File:before.jpg]] with [[File:after.jpg]]`
+
+    const refs = extractFileReferences(wikitext)
+    assert.deepStrictEqual(refs, ['before.jpg', 'after.jpg'])
+  })
+
+  it('returns empty array when no file references exist', () => {
+    const wikitext = `<!-- OntologySync Start -->
+{{Person
+|has_name=John Doe
+}}
+<!-- OntologySync End -->
+[[Category:Person]]`
+
+    const refs = extractFileReferences(wikitext)
+    assert.deepStrictEqual(refs, [])
+  })
+})
+
+describe('parseResource with media references', () => {
+  it('includes _mediaRefs when file references are present', () => {
+    const wikitext = `<!-- OntologySync Start -->
+{{Person
+|has_description=Example person
+|display_label=John Doe
+|has_name=John Doe
+}}
+<!-- OntologySync End -->
+[[Category:Person]]
+[[File:john_photo.png]]`
+
+    const result = parseResource(wikitext, 'Person/John_doe')
+    assert.deepStrictEqual(result._mediaRefs, ['john_photo.png'])
+  })
+
+  it('omits _mediaRefs when no file references are present', () => {
+    const wikitext = `<!-- OntologySync Start -->
+{{Person
+|has_description=Example person
+|display_label=John Doe
+|has_name=John Doe
+}}
+<!-- OntologySync End -->
+[[Category:Person]]`
+
+    const result = parseResource(wikitext, 'Person/John_doe')
+    assert.strictEqual(result._mediaRefs, undefined)
   })
 })

@@ -143,6 +143,29 @@ export function extractCategories(wikitext) {
   return categories
 }
 
+/**
+ * Extract [[File:X]] references from wikitext outside OntologySync markers.
+ * @param {string} wikitext
+ * @returns {string[]} Array of referenced filenames
+ */
+export function extractFileReferences(wikitext) {
+  const refs = []
+  const lines = wikitext.split('\n')
+  let inBlock = false
+  for (const line of lines) {
+    const trimmed = line.trim()
+    if (trimmed === '<!-- OntologySync Start -->') { inBlock = true; continue }
+    if (trimmed === '<!-- OntologySync End -->') { inBlock = false; continue }
+    if (inBlock) continue
+    const fileRegex = /\[\[File:([^\]|]+?)(?:\|[^\]]*)?\]\]/g
+    let m
+    while ((m = fileRegex.exec(line)) !== null) {
+      refs.push(m[1].trim())
+    }
+  }
+  return refs
+}
+
 // ─── Entity-specific parsers ────────────────────────────────────────────────
 
 /**
@@ -342,6 +365,11 @@ export function parseResource(wikitext, entityKey) {
     } else {
       result[entityKeyName] = value
     }
+  }
+
+  const mediaRefs = extractFileReferences(wikitext)
+  if (mediaRefs.length > 0) {
+    result._mediaRefs = mediaRefs
   }
 
   return result

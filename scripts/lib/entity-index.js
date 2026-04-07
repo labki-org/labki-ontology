@@ -42,7 +42,8 @@ export async function buildEntityIndex(rootDir = process.cwd()) {
     modules: new Map(),
     bundles: new Map(),
     dashboards: new Map(),
-    resources: new Map()
+    resources: new Map(),
+    media: new Map()
   }
 
   // Discover all entity files (.wikitext, .json for modules/bundles)
@@ -112,6 +113,25 @@ export async function buildEntityIndex(rootDir = process.cwd()) {
     } catch (err) {
       // Skip files that can't be parsed (validate.js handles parse errors)
       continue
+    }
+  }
+
+  // Discover media files
+  const MEDIA_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp'])
+  const mediaDir = path.join(rootDir, 'media')
+  if (fs.existsSync(mediaDir)) {
+    for (const filename of fs.readdirSync(mediaDir)) {
+      if (filename === '.gitkeep') continue
+      const ext = path.extname(filename).toLowerCase()
+      if (!MEDIA_EXTENSIONS.has(ext)) continue
+      const stat = fs.statSync(path.join(mediaDir, filename))
+      index.media.set(filename, {
+        id: filename,
+        filename,
+        extension: ext,
+        sizeBytes: stat.size,
+        _filePath: `media/${filename}`,
+      })
     }
   }
 
