@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Category
+|has_description=A collection of frequently asked questions and answers about a tool, project, or topic
+|has_required_property=Has name
+|has_optional_property=Has description, Has author, Has difficulty level, Has target audience, Has component, Has project, Has url, Has notes
+|has_required_subobject=Has faq item
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

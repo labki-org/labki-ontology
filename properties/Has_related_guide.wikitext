@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Reference to a related guide for further reading
+|has_type=Page
+|display_label=Related Guide
+|allows_multiple_values=Yes
+|allows_value_from_category=Guide
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

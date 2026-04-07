@@ -1,0 +1,71 @@
+<!-- OntologySync Start -->
+{{Dashboard
+|has_description=Browse and search frequently asked questions across tools and projects
+|has_parent_dashboard=OntologyDashboard:Knowledge overview
+|has_sequence_number=3
+}}
+<!-- OntologySync End -->
+[[Category:Dashboard]]
+[[Category:OntologySync-managed-dashboard]]
+
+== All FAQ Pages ==
+
+{{#ask:
+ [[Category:FAQ]]
+ |?Has component=Tool
+ |?Has project=Project
+ |?Has difficulty level=Level
+ |?Has target audience=Audience
+ |format=table
+ |sort=Has name
+}}
+
+== FAQs by Component ==
+
+{{#ask:
+ [[Category:FAQ]]
+ [[Has component::+]]
+ |?Has component=Tool
+ |?Has project=Project
+ |?Has description
+ |format=table
+ |sort=Has component
+}}
+
+== FAQs by Project ==
+
+{{#ask:
+ [[Category:FAQ]]
+ [[Has project::+]]
+ |?Has project=Project
+ |?Has component=Tool
+ |?Has description
+ |format=table
+ |sort=Has project
+}}
+
+== Recent FAQ Items ==
+
+{{#ask:
+ [[Has faq item.Has question::+]]
+ |?Has faq item.Has question=Question
+ |?Has faq item.Has answer=Answer
+ |?Has component=Tool
+ |sort=Modification date
+ |order=desc
+ |limit=10
+ |format=table
+}}
+
+== Components Without FAQs ==
+
+Tools and components that do not yet have an associated FAQ page.
+
+{{#ask:
+ [[Category:Component]]
+ [[Has FAQ::!+]]
+ |?Has name
+ |?Has status
+ |format=table
+ |intro=''The following components have no FAQ yet:''
+}}

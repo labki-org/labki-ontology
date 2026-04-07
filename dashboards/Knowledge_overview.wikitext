@@ -1,6 +1,6 @@
 <!-- OntologySync Start -->
 {{Dashboard
-|has_description=Central hub for guides, curricula, workshops, and certificates
+|has_description=Central hub for guides, curricula, FAQs, workshops, and certificates
 |has_dashboard_scope=Module
 }}
 <!-- OntologySync End -->
@@ -51,6 +51,21 @@
  |?Has organization=Issued By
  |format=table
 }}
+
+== FAQs ==
+
+=== Recently Updated ===
+{{#ask:
+ [[Category:FAQ]]
+ |?Has component=Tool
+ |?Has project=Project
+ |sort=Modification date
+ |order=desc
+ |limit=5
+ |format=table
+}}
+
+''See [[OntologyDashboard:Knowledge overview/FAQ|full FAQ dashboard]] for all questions by component and project.''
 
 == Workshops ==
 
