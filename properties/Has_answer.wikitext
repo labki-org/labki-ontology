@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The answer text of an FAQ item
+|has_type=Text
+|display_label=Answer
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Link to a discussion thread or forum topic related to this item
+|has_type=URL
+|display_label=Discussion URL
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

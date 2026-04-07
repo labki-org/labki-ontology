@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Subobject
+|has_description=A question-answer pair within an FAQ page
+|display_label=FAQ Item
+|has_required_property=Has question, Has answer, Has sequence number
+|has_optional_property=Has author, Has related guide, Has url, Has discussion url, Has notes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-subobject]]
