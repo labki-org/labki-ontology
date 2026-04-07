@@ -1,7 +1,7 @@
 <!-- OntologySync Start -->
 {{Dashboard
 |has_description=Central hub for guides, curricula, workshops, and certificates
-|has_dashboard_scope=module
+|has_dashboard_scope=Module
 }}
 <!-- OntologySync End -->
 [[Category:Dashboard]]
