@@ -1,0 +1,27 @@
+<!-- OntologySync Start -->
+{{Glossary
+|has_definition=An open-source platform for building miniature fluorescence microscopes (Miniscopes) for neural imaging in freely behaving animals
+}}
+<!-- OntologySync End -->
+[[Category:Glossary]]
+[[Category:OntologySync-managed-resource]]
+
+The UCLA Miniscope Project is an open-source initiative to democratize in vivo calcium imaging by providing designs, software, and documentation for building miniature head-mounted fluorescence microscopes. These Miniscopes allow researchers to record the activity of hundreds to thousands of neurons in freely behaving animals.
+
+== Miniscope Versions ==
+* '''V3''' — single-wavelength excitation, ~3 g, first widely adopted version
+* '''V4''' — redesigned optics with electronic focus, ~2.6 g, improved field of view
+* '''Wireless Miniscope''' — onboard data compression and wireless transmission
+
+[[File:Miniscope-v4.png]]
+
+== Key Features ==
+* Open-source hardware and software
+* Compatible with GRIN lens implants for deep brain imaging
+* Works with GCaMP and other fluorescent indicators
+* Data acquisition via lightweight coaxial cable (wired) or wireless link
+* Analysis pipelines including Miniscope-DAQ and CaImAn/CNMF-E
+
+== Resources ==
+* [http://miniscope.org miniscope.org] — project homepage and documentation wiki
+* [https://github.com/Aharoni-Lab GitHub: Aharoni-Lab] — source designs and firmware
