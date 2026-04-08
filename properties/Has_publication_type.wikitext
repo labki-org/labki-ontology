@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The type of scholarly publication
+|has_type=Text
+|display_label=Publication Type
+|allows_value=Journal Article, Preprint, Conference Paper, Book Chapter, Review, Thesis
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Year of publication
+|has_type=Number
+|display_label=Publication Year
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

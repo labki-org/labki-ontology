@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=A keyword or subject tag
+|has_type=Text
+|display_label=Keyword
+|allows_multiple_values=Yes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Abstract or summary of a publication
+|has_type=Text
+|display_label=Abstract
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

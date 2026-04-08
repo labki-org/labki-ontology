@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Page range of a publication
+|has_type=Text
+|display_label=Pages
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

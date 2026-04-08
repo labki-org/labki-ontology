@@ -2,7 +2,7 @@
 {{Category
 |has_description=A researcher
 |has_parent_category=Person
-|has_optional_property=Has orcid, Has skill
+|has_optional_property=Has orcid, Has eRA commons ID, Has skill
 |has_optional_subobject=Has organizational role
 }}
 <!-- OntologySync End -->
