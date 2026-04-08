@@ -1,6 +1,6 @@
 <!-- OntologySync Start -->
 {{Property
-|has_description=Equipment used in this activity
+|has_description=Equipment used or referenced
 |has_type=Page
 |display_label=Equipment Used
 |allows_multiple_values=Yes

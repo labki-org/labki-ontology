@@ -6,5 +6,5 @@
     "Publication",
     "SOP"
   ],
-  "dashboards": []
+  "dashboards": ["Publications_overview"]
 }

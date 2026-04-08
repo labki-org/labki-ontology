@@ -1,0 +1,95 @@
+<!-- OntologySync Start -->
+{{Dashboard
+|has_description=Overview of publications — browse by year, type, status, and linked tools
+|has_dashboard_scope=Module
+}}
+<!-- OntologySync End -->
+[[Category:Dashboard]]
+[[Category:OntologySync-managed-dashboard]]
+
+== Recent Publications ==
+{{#ask:
+ [[Category:Publication]]
+ |?Has publication year=Year
+ |?Has journal=Journal
+ |?Has publication type=Type
+ |?Has publication status=Status
+ |?Has DOI=DOI
+ |sort=Has publication year
+ |order=desc
+ |limit=20
+ |format=table
+}}
+
+== By Status ==
+
+=== Preprints ===
+{{#ask:
+ [[Category:Publication]]
+ [[Has publication status::Preprint]]
+ |?Has publication year=Year
+ |?Has journal=Journal
+ |?Has DOI=DOI
+ |sort=Has publication year
+ |order=desc
+ |format=table
+}}
+
+=== Published ===
+{{#ask:
+ [[Category:Publication]]
+ [[Has publication status::Published]]
+ |?Has publication year=Year
+ |?Has journal=Journal
+ |?Has DOI=DOI
+ |sort=Has publication year
+ |order=desc
+ |format=table
+}}
+
+== By Component ==
+{{#ask:
+ [[Category:Publication]]
+ [[Has component::+]]
+ |?Has component=Component
+ |?Has publication year=Year
+ |?Has journal=Journal
+ |?Has publication status=Status
+ |sort=Has component
+ |format=table
+}}
+
+== By Equipment ==
+{{#ask:
+ [[Category:Publication]]
+ [[Has equipment used::+]]
+ |?Has equipment used=Equipment
+ |?Has publication year=Year
+ |?Has journal=Journal
+ |?Has publication status=Status
+ |sort=Has equipment used
+ |format=table
+}}
+
+== By Technique ==
+{{#ask:
+ [[Category:Publication]]
+ [[Has technique::+]]
+ |?Has technique=Technique
+ |?Has publication year=Year
+ |?Has journal=Journal
+ |?Has publication status=Status
+ |sort=Has technique
+ |format=table
+}}
+
+== By Project ==
+{{#ask:
+ [[Category:Publication]]
+ [[Has project::+]]
+ |?Has project=Project
+ |?Has publication year=Year
+ |?Has publication status=Status
+ |sort=Has project
+ |format=table
+}}
