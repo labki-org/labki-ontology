@@ -1,8 +1,8 @@
 <!-- OntologySync Start -->
 {{Category
 |has_description=An authored information artifact
-|has_required_property=Has author, Has document date, Has document type
-|has_optional_property=Has version, Has DOI, Has description
+|has_required_property=Has document date, Has document type
+|has_optional_property=Has author, Has version, Has DOI, Has description
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Volume number of a journal or book series
+|has_type=Text
+|display_label=Volume
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

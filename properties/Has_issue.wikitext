@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Issue number of a journal
+|has_type=Text
+|display_label=Issue
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

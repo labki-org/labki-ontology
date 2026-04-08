@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=NIH eRA Commons username
+|has_type=Text
+|display_label=eRA Commons ID
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

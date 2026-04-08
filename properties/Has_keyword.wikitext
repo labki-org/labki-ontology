@@ -1,10 +1,9 @@
 <!-- OntologySync Start -->
 {{Property
-|has_description=Equipment used or referenced
-|has_type=Page
-|display_label=Equipment Used
+|has_description=A keyword or subject tag
+|has_type=Text
+|display_label=Keyword
 |allows_multiple_values=Yes
-|allows_value_from_category=Equipment
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-property]]

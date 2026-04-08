@@ -138,6 +138,7 @@
 
 == Quick Links ==
 
+* [[OntologyDashboard:Publications overview|Publications]] — Papers by year, tool, and technique
 * [[OntologyDashboard:Knowledge overview|Knowledge Hub]] — Guides, curricula, certificates
 * [[OntologyDashboard:Workshop tracker|Workshop Tracker]] — Training events and surveys
 * [[OntologyDashboard:Engineering overview|Engineering]] — Components and BOMs

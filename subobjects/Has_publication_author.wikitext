@@ -1,9 +1,9 @@
 <!-- OntologySync Start -->
 {{Subobject
-|has_description=An author entry for a publication with role flags
+|has_description=An author entry for a publication with name fields and optional link to a Person page
 |display_label=Publication Author
-|has_required_property=Has person
-|has_optional_property=Is first author, Is corresponding author, Has organization
+|has_required_property=Has first name, Has last name
+|has_optional_property=Has middle name, Has person, Has orcid, Has organization, Is first author, Is corresponding author
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed-subobject]]

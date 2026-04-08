@@ -3,7 +3,7 @@
 |has_description=A scholarly publication such as a journal article, preprint, or conference paper
 |has_parent_category=Document
 |has_required_property=Has publication status
-|has_optional_property=Has journal, Has PubMed ID, Has DOI, Has project, Has attachment, Has website
+|has_optional_property=Has journal, Has PubMed ID, Has DOI, Has abstract, Has publication year, Has volume, Has issue, Has pages, Has keyword, Has publication type, Has project, Has component, Has equipment used, Has technique, Has attachment, Has website
 |has_optional_subobject=Has publication author
 }}
 <!-- OntologySync End -->
