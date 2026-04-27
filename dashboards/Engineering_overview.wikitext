@@ -31,9 +31,9 @@
  |format=table
 }}
 
-=== Pipelines ===
+=== Analysis Components ===
 {{#ask:
- [[Category:Pipeline]]
+ [[Category:Analysis Component]]
  |?Has project=Project
  |?Has input data type=Input
  |?Has output data type=Output

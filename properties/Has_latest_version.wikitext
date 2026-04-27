@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Page link to the latest released version of a component family
+|has_type=Page
+|display_label=Latest Version
+|allows_value_from_category=Component
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

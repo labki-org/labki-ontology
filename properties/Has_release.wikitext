@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=A project release that bundles this component version
+|has_type=Page
+|display_label=Release
+|allows_multiple_values=Yes
+|allows_value_from_category=Release
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

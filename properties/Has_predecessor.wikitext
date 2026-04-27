@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The prior project or component this one supersedes
+|has_type=Page
+|display_label=Predecessor
+|allows_value_from_category=Project
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

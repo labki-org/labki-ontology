@@ -6,7 +6,8 @@
     "Component",
     "Hardware_Component",
     "Software_Component",
-    "Pipeline",
+    "Firmware_Component",
+    "Analysis_Component",
     "Release"
   ],
   "dashboards": [

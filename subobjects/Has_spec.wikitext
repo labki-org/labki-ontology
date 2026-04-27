@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Subobject
+|has_description=A named specification value with optional unit — e.g., field of view = 3.5 mm
+|display_label=Spec
+|has_required_property=Has name, Has value
+|has_optional_property=Has unit, Has notes
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-subobject]]

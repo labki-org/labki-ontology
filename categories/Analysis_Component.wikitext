@@ -1,6 +1,7 @@
 <!-- OntologySync Start -->
 {{Category
-|has_description=A data processing or analysis workflow — image processing, electrophysiology analysis, genomics, statistical modeling, machine learning
+|has_description=A data processing or analysis component — image processing pipelines, electrophysiology analysis, genomics workflows, statistical modeling, machine learning
+|display_label=Analysis Component
 |has_parent_category=Component
 |has_optional_property=Has input data type, Has output data type, Has programming language, Has repository url, Has computing environment, Has documentation url
 }}

@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The next-generation project or component that supersedes this one
+|has_type=Page
+|display_label=Successor
+|allows_value_from_category=Project
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

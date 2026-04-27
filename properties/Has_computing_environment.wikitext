@@ -1,6 +1,6 @@
 <!-- OntologySync Start -->
 {{Property
-|has_description=Where this pipeline or software runs
+|has_description=Where this analysis component or software runs
 |has_type=Text
 |display_label=Computing Environment
 |allows_value=local, HPC_cluster, cloud, containerized

@@ -2,7 +2,8 @@
 {{Category
 |has_description=A distinct deliverable within a project — hardware, software, or computational
 |has_required_property=Has name, Has project
-|has_optional_property=Has description, Has version, Has status, Has responsible party, Has url, Has notes, Has SOP
+|has_optional_property=Has version, Has family, Has latest version, Has description, Has status, Has responsible party, Has url, Has notes, Has SOP, Has source path, Has design file url, Has repository url, Has license, Has release
+|has_optional_subobject=Has spec
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]

@@ -1,0 +1,10 @@
+<!-- OntologySync Start -->
+{{Category
+|has_description=Firmware running on embedded hardware as part of a project — bootloaders, MCU firmware, FPGA gateware
+|display_label=Firmware Component
+|has_parent_category=Component
+|has_required_property=Has repository url
+|has_optional_property=Has programming language, Has license, Has documentation url, Has artifact url
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed]]

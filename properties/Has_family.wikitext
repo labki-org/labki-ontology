@@ -1,0 +1,9 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=The canonical (un-versioned) component page this versioned component snapshot belongs to
+|has_type=Page
+|display_label=Family
+|allows_value_from_category=Component
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

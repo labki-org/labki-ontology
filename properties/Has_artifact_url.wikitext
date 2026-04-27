@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=URL to a release artifact — frozen tag tree, downloadable bundle, or build output
+|has_type=URL
+|display_label=Artifact URL
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

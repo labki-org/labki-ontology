@@ -1,0 +1,8 @@
+<!-- OntologySync Start -->
+{{Property
+|has_description=Path within the source repository where this component lives (e.g., pcb/rigid-flex)
+|has_type=Text
+|display_label=Source Path
+}}
+<!-- OntologySync End -->
+[[Category:OntologySync-managed-property]]

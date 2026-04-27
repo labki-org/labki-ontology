@@ -1,8 +1,9 @@
 <!-- OntologySync Start -->
 {{Category
 |has_description=A published version of a component or project — firmware, software, hardware revision, or full system release
-|has_required_property=Has name, Has version, Has release date
-|has_optional_property=Has description, Has changelog, Has component, Has project, Has download url, Has design file url, Has documentation url, Has author, Has status, Has url, Has notes
+|has_required_property=Has name, Has version, Has release date, Has project
+|has_optional_property=Has tag, Has description, Has changelog, Has component, Has download url, Has design file url, Has documentation url, Has artifact url, Has author, Has status, Has url, Has notes
+|has_optional_subobject=Has spec
 }}
 <!-- OntologySync End -->
 [[Category:OntologySync-managed]]
